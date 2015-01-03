@@ -1,0 +1,13 @@
+1. Changed Makefile: target=1.6, source=1.6
+because compiling with Java 1.7 creates spl.jar that doesn't work
+on Win7.
+
+2. Changed acknowledgeEvent in JavaBackEnd.java to send
+"result=___jbe___ack___" instead of "result:ack", assuming the former
+is less likely to occur as an actual console input from user. The string
+"___jbe___ack___" is caught by getResult() in platform.cpp.
+
+3. Added code for console menu (cut, copy, paste, select all) in 
+JBEConsole and JavaBackEnd.
+
+
