@@ -1,8 +1,11 @@
 /**
  * @file: filelib.h
  *
+ * @brief
  * This file exports a standardized set of tools for working with
- * files.  The library offers at least some portability across the
+ * files.
+ *
+ * The library offers at least some portability across the
  * file systems used in the three supported platforms: Mac OS X,
  * Windows, and Linux.  Pathnames and search paths are allowed to
  * contain separators in any of the supported styles described below,
@@ -73,9 +76,9 @@ bool openFile(std::ifstream & stream, std::string filename);
  * stream and returns \c false.
  *
  * Sample usage:
- * ~~~~~~~~~~~~~~~~~~~~
- * if ( openFile(stream, filename) ) {...}
- * ~~~~~~~~~~~~~~~~~~~~
+ *
+ *     if ( openFile(stream, filename) ) {...}
+ *
  */
 bool openFile(std::ofstream & stream, std::string filename);
 
@@ -91,9 +94,9 @@ std::string promptUserForFile(std::ifstream & stream, std::string prompt = "");
  * for the user.
  *
  * Sample usage:
- * ~~~~~~~~~~~~~~~~~~~~
- * string filename = promptUserForFile(stream, prompt);
- * ~~~~~~~~~~~~~~~~~~~~
+ *
+ *     string filename = promptUserForFile(stream, prompt);
+ *
  */
 std::string promptUserForFile(std::ofstream & stream, std::string prompt = "");
 
@@ -132,11 +135,11 @@ std::string openFileDialog(std::ifstream & stream, std::string title,
  * the empty string.
  *
  * Sample usages:
- * ~~~~~~~~~~~~~~~~~~~~
- * string filename = openFileDialog(stream);
- * string filename = openFileDialog(stream, title);
- * string filename = openFileDialog(stream, title, path);
- * ~~~~~~~~~~~~~~~~~~~~
+ *
+ *     string filename = openFileDialog(stream);
+ *     string filename = openFileDialog(stream, title);
+ *     string filename = openFileDialog(stream, title, path);
+ *
  */
 std::string openFileDialog(std::ofstream & stream, std::string title,
                                                    std::string path);
@@ -153,9 +156,9 @@ void readEntireFile(std::istream & is, Vector<std::string> & lines);
  * Stanford C++ libraries.
  *
  * Sample usage:
- * ~~~~~~~~~~~~~~~~~~~~
- * readEntireFile(stream, lines);
- * ~~~~~~~~~~~~~~~~~~~~
+ *
+ *     readEntireFile(stream, lines);
+ *
  */
 void readEntireFile(std::istream & is, std::vector<std::string> & lines);
 
@@ -173,6 +176,11 @@ std::string readEntireFile(std::string filename);
  * The second version fills the string reference \em out with the entire
  * file's text. It returns \c true if successful and \c false if the file
  * was not found or could not be opened for reading.
+ *
+ * Sample usage:
+ *
+ *     string s = readEntireFile(filename);
+ *     bool success = readEntireFile(filename, s);
  */
 bool readEntireFile(std::string filename, std::string& out);
 
@@ -308,9 +316,9 @@ void renameFile(std::string oldname, std::string newname);
  * Returns \c true if the specified file exists.
  *
  * Sample usage:
- * ~~~
- * if (fileExists(filename)) ...
- * ~~~
+ *
+ *     if (fileExists(filename)) ...
+ *
  */
 bool fileExists(std::string filename);
 
@@ -319,9 +327,9 @@ bool fileExists(std::string filename);
  * Returns \c true if the specified file is a regular file.
  *
  * Sample usage:
- * ~~~
- * if (isFile(filename)) ...
- * ~~~
+ *
+ *     if (isFile(filename)) ...
+ *
  */
 bool isFile(std::string filename);
 
@@ -330,9 +338,9 @@ bool isFile(std::string filename);
  * Returns \c true if the specified file is a symbolic link.
  *
  * Sample usage:
- * ~~~
- * if (isSymbolicLink(filename)) ...
- * ~~~
+ *
+ *     if (isSymbolicLink(filename)) ...
+ *
  */
 bool isSymbolicLink(std::string filename);
 
@@ -341,9 +349,9 @@ bool isSymbolicLink(std::string filename);
  * Returns \c true if the specified file is a directory.
  *
  * Sample usage:
- * ~~~
- * if (isDirectory(filename)) ...
- * ~~~
+ *
+ *     if (isDirectory(filename)) ...
+ *
  */
 bool isDirectory(std::string filename);
 
@@ -408,9 +416,9 @@ void listDirectory(std::string path, Vector<std::string> & list);
  * Errors are reported by calling \ref error.
  *
  * Sample usage:
- * ~~~
- * listDirectory(path, list);
- * ~~~
+ *
+ *     listDirectory(path, list);
+ *
  */
 void listDirectory(std::string path, std::vector<std::string> & list);
 
@@ -430,9 +438,9 @@ void listDirectory(std::string path, std::vector<std::string> & list);
  * form <code>a-z</code>.
  *
  * Sample usage:
- * ~~~
- * if (matchFilenamePattern(filename, pattern)) ...
- * ~~~
+ *
+ *     if (matchFilenamePattern(filename, pattern)) ...
+ *
  */
 bool matchFilenamePattern(std::string filename, std::string pattern);
 

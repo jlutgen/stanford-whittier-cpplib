@@ -1,8 +1,11 @@
 /**
  * @file gevents.h
  *
+ * @brief
  * This file defines the event types used in the StanfordCPPLib
- * graphics libraries.  The structure of this package is adapted from
+ * graphics libraries.
+ *
+ * The structure of this package is adapted from
  * the Java event model.
  * <div class=inset>
  * <img src="../images/GEventHierarchy.png"
@@ -178,7 +181,7 @@ public:
 
 
 /**
- * Returns the enumerated type constant indicating general category of this
+ * Returns the enumerated type constant indicating the general category of this
  * event.
  *
  * Sample usage:
@@ -195,9 +198,8 @@ public:
  * event type of this event.
  *
  * Sample usage:
- * ~~~
- * EventType type = e.getEventType();
- * ~~~
+ *
+ *     EventType type = e.getEventType();
  */
    EventType getEventType() const;
 
@@ -211,9 +213,8 @@ public:
  * the conventional zero point for computer-based time systems.
  *
  * Sample usage:
- * ~~~
- * double time = e.getEventTime();
- * ~~~
+ *
+ *     double time = e.getEventTime();
  */
    double getEventTime() const;
 
@@ -233,9 +234,8 @@ public:
  * Returns a human-readable string representation of this event.
  *
  * Sample usage:
- * ~~~
- * string str = e.toString();
- * ~~~
+ *
+ *     string str = e.toString();
  */
    virtual std::string toString() const;
 
@@ -244,9 +244,8 @@ public:
  * Returns \c true if this event is valid.
  *
  * Sample usage:
- * ~~~
- * if (e.isValid()) ...
- * ~~~
+ *
+ *     if (e.isValid()) ...
  */
    bool isValid();
 
@@ -263,9 +262,8 @@ public:
  * access to this method, but conventional clients don't.
  *
  * Sample usage:
- * ~~~
- * e.setEventTime(time);
- * ~~~
+ *
+ *     e.setEventTime(time);
  */
 
    void setEventTime(double time);
@@ -275,9 +273,8 @@ public:
  * access to this method, but conventional clients don't.
  *
  * Sample usage:
- * ~~~
- * e.setModifiers(modifiers);
- * ~~~
+ *
+ *     e.setModifiers(modifiers);
  */
 
    void setModifiers(int modifiers);
@@ -341,9 +338,9 @@ friend class GTimerEvent;
  * Waits for a mouse click in any window, discarding any other events.
  *
  * Sample usage:
- * ~~~
- * waitForClick();
- * ~~~
+ *
+ *     waitForClick();
+ *
  */
 
 void waitForClick();
@@ -366,24 +363,24 @@ void waitForClick();
  * event loop for an animated application that needs to respond to mouse,
  * key, and timer events:
  *
- * ~~~
- *    GTimer timer(ANIMATION_DELAY_IN_MILLISECONDS);
- *    timer.start();
- *    while (true) {
- *       GEvent e = waitForEvent(TIMER_EVENT + MOUSE_EVENT + KEY_EVENT);
- *       switch (e.getEventClass()) {
- *        case TIMER_EVENT:
- *          takeAnimationStep();
- *          break;
- *        case MOUSE_EVENT:
- *          handleMouseEvent(GMouseEvent(e));
- *          break;
- *        case KEY_EVENT:
- *          handleKeyEvent(GKeyEvent(e));
- *          break;
- *       }
- *    }
- * ~~~
+ *
+ *     GTimer timer(ANIMATION_DELAY_IN_MILLISECONDS);
+ *     timer.start();
+ *     while (true) {
+ *        GEvent e = waitForEvent(TIMER_EVENT + MOUSE_EVENT + KEY_EVENT);
+ *        switch (e.getEventClass()) {
+ *         case TIMER_EVENT:
+ *           takeAnimationStep();
+ *           break;
+ *         case MOUSE_EVENT:
+ *           handleMouseEvent(GMouseEvent(e));
+ *           break;
+ *         case KEY_EVENT:
+ *           handleKeyEvent(GKeyEvent(e));
+ *           break;
+ *        }
+ *     }
+ *
  */
 
 GEvent waitForEvent(int mask = ANY_EVENT);
@@ -397,9 +394,9 @@ GEvent waitForEvent(int mask = ANY_EVENT);
  * If it is missing, this function checks for any type of event.
  *
  * Sample usage:
- * ~~~
- * GEvent e = getNextEvent(MOUSE_EVENT);
- * ~~~
+ *
+ *     GEvent e = getNextEvent(MOUSE_EVENT);
+ *
  */
 GEvent getNextEvent(int mask = ANY_EVENT);
 
@@ -418,9 +415,8 @@ public:
  * Creates a <code>GWindowEvent</code> using the specified parameters.
  *
  * Sample usage:
- * ~~~
- * GWindowEvent windowEvent(type, gw);
- * ~~~
+ *
+ *     GWindowEvent windowEvent(type, gw);
  */
 
    GWindowEvent(EventType type, const GWindow & gw);
@@ -430,9 +426,8 @@ public:
  * Returns the graphics window in which this event occurred.
  *
  * Sample usage:
- * ~~~
- * GWindow gw = e.getGWindow();
- * ~~~
+ *
+ *     GWindow gw = e.getGWindow();
  */
    GWindow getGWindow() const;
 
@@ -441,9 +436,8 @@ public:
  * Converts the event to a human-readable representation of the event.
  *
  * Sample usage:
- * ~~~
- * cout << e.toString() << endl;
- * ~~~
+ *
+ *     cout << e.toString() << endl;
  */
    std::string toString() const;
 
@@ -488,9 +482,8 @@ public:
  * Creates a `%GActionEvent` using the specified parameters.
  *
  * Sample usage:
- * ~~~
- * GActionEvent actionEvent(type, source, actionCommand);
- * ~~~
+ *
+ *     GActionEvent actionEvent(type, source, actionCommand);
  */
    GActionEvent(EventType type, GObject *source, std::string actionCommand);
 
@@ -499,9 +492,8 @@ public:
  * Returns a pointer to the GObject that generated this event.
  *
  * Sample usage:
- * ~~~
- * GObject *gobj = e.getSource();
- * ~~~
+ *
+ *     GObject *gobj = e.getSource();
  */
    GObject *getSource() const;
 
@@ -510,9 +502,8 @@ public:
  * Returns the action command string associated with this event.
  *
  * Sample usage:
- * ~~~
- * string cmd = e.getActionCommand();
- * ~~~
+ *
+ *     string cmd = e.getActionCommand();
  */
    std::string getActionCommand() const;
 
@@ -521,9 +512,8 @@ public:
  * Returns a human-readable string representation of this event.
  *
  * Sample usage:
- * ~~~
- * string str = e.toString();
- * ~~~
+ *
+ *     string str = e.toString();
  */
    std::string toString() const;
 
@@ -542,7 +532,7 @@ public:
  * This event subclass represents a mouse event.  Each mouse event
  * records the event type (<code>MOUSE_PRESSED</code>,
  * <code>MOUSE_RELEASED</code>, <code>MOUSE_CLICKED</code>,
- * <code>MOUSE_MOVED</code>, <code>MOUSE_DRAGGED</code>) along
+ * <code>MOUSE_MOVED</code>, or <code>MOUSE_DRAGGED</code>) along
  * with the coordinates of the event.  Clicking the mouse generates
  * three events in the following order: <code>MOUSE_PRESSED</code>,
  * <code>MOUSE_RELEASED</code>, <code>MOUSE_CLICKED</code>.
@@ -587,9 +577,8 @@ public:
  * Creates a `%GMouseEvent` using the specified parameters.
  *
  * Sample usage:
- * ~~~
- * GMouseEvent mouseEvent(type, gw, x, y);
- * ~~~
+ *
+ *     GMouseEvent mouseEvent(type, gw, x, y);
  */
    GMouseEvent(EventType type, const GWindow & gw, double x, double y);
 
@@ -598,9 +587,8 @@ public:
  * Returns the graphics window in which this event occurred.
  *
  * Sample usage:
- * ~~~
- * GWindow gw = e.getGWindow();
- * ~~~
+ *
+ *     GWindow gw = e.getGWindow();
  */
    GWindow getGWindow() const;
 
@@ -610,9 +598,8 @@ public:
  * to the window origin at the upper-left corner of the window.
  *
  * Sample usage:
- * ~~~
- * double x = getX();
- * ~~~
+ *
+ *     double x = getX();
  */
    double getX() const;
 
@@ -622,9 +609,8 @@ public:
   * to the window origin at the upper-left corner of the window.
   *
   * Sample usage:
-  * ~~~
-  * double y = getY();
-  * ~~~
+  *
+  *     double y = getY();
   */
    double getY() const;
 
@@ -633,9 +619,8 @@ public:
   * Returns a human-readable string representation of this event.
   *
   * Sample usage:
-  * ~~~
-  * string str = e.toString();
-  * ~~~
+  *
+  *     string str = e.toString();
   */
    std::string toString() const;
 
@@ -669,9 +654,8 @@ public:
  * Creates a `%GKeyEvent` using the specified parameters.
  *
  * Sample usage:
- * ~~~
- * GKeyEvent keyEvent(type, gw, keyChar, keyCode);
- * ~~~
+ *
+ *     GKeyEvent keyEvent(type, gw, keyChar, keyCode);
  */
    GKeyEvent(EventType type, const GWindow & gw, int keyChar, int keyCode);
 
@@ -680,9 +664,8 @@ public:
   * Returns the graphics window in which this event occurred.
   *
   * Sample usage:
-  * ~~~
-  * GWindow gw = e.getGWindow();
-  * ~~~
+  *
+  *     GWindow gw = e.getGWindow();
   */
    GWindow getGWindow() const;
 
@@ -692,12 +675,11 @@ public:
  * keys into account.  For example, if the user typed the <code>'a'</code>
  * key with the shift key down, this method will return
  * <code>'A'</code>.  If the key code in the event does not correspond
- * to a character, this method returns the null character <code>`\0'</code>.
+ * to a character, this method returns the null character <code>'\0'</code>.
  *
  * Sample usage:
- * ~~~
- * char ch = e.getKeyChar();
- * ~~~
+ *
+ *     char ch = e.getKeyChar();
  */
    char getKeyChar() const;
 
@@ -707,9 +689,8 @@ public:
  * generated this event.
  *
  * Sample usage:
- * ~~~
- * int code = e.getKeyCode();
- * ~~~
+ *
+ *     int code = e.getKeyCode();
  */
    int getKeyCode() const;
 
@@ -718,9 +699,8 @@ public:
  * Returns a human-readable string representation of this event.
  *
  * Sample usage:
- * ~~~
- * cout << e.toString() << endl;
- * ~~~
+ *
+ *     cout << e.toString() << endl;
  */
    std::string toString() const;
 
@@ -734,7 +714,7 @@ public:
 
 
 /**
- * \class GTimer
+ * \class GTimerEvent
  *
  * This event subclass represents a timer event.  Timer events are
  * generated by a `%GTimer` object, which produces a new event at
@@ -764,9 +744,8 @@ public:
  * Creates a `%GTimerEvent` for the specified timer.
  *
  * Sample usage:
- * ~~~
- * GTimerEvent timerEvent(type, timer);
- * ~~~
+ *
+ *     GTimerEvent timerEvent(type, timer);
  */
    GTimerEvent(EventType type, const GTimer & timer);
 
@@ -775,9 +754,8 @@ public:
  * Returns the timer that generated this event.
  *
  * Sample usage:
- * ~~~
- * GTimer timer = e.getGTimer();
- * ~~~
+ *
+ *     GTimer timer = e.getGTimer();
  */
    GTimer getGTimer() const;
 
@@ -786,9 +764,8 @@ public:
  * Returns a human-readable string representation of this event.
  *
  * Sample usage:
- * ~~~
- * cout << e.toString() << endl;
- * ~~~
+ *
+ *     cout << e.toString() << endl;
  */
    std::string toString() const;
 

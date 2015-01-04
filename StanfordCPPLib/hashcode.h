@@ -1,8 +1,11 @@
 /**
  * @file hashcode.h
  *
+ * @brief
  * This file exports \ref hashCode functions for \c string and
- * the C++ primitive types. The HashSet and HashMap classes have
+ * the C++ primitive types.
+ *
+ * The HashSet and HashMap classes have
  * access to these functions, so that clients do not need to write their
  * own `hashCode` functions in order to be able to create a `%HashSet` of
  * strings or primitive types, or to create a `%HashMap` whose
@@ -55,9 +58,8 @@ int hashCode(const std::string& str);
  * all of the primitive types and the C++ \c string type.
  *
  * Sample usage:
- * ~~~
- * int hash = hashCode(key);
- * ~~~
+ *
+ *     int hash = hashCode(key);
  */
 int hashCode(void* key);
 

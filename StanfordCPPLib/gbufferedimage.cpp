@@ -204,7 +204,14 @@ void GBufferedImage::load(const std::string& filename) {
     if (!fileExists(filename)) {
         error("GBufferedImage::load: file not found: " + filename);
     }
-    
+
+    // BUGFIX (JL): due to back-end restriction, can't load if width or height was 0,
+    //   because no Java BufferedImage object was created.
+    bool wasEmpty = (this->m_width == 0 || this->m_height == 0);
+    if (wasEmpty) {
+        resize(1, 1);
+    }
+
     std::string result = pp->gbufferedimage_load(this, filename);
     result = Base64::decode(result);
     std::istringstream input(result);
@@ -217,6 +224,10 @@ void GBufferedImage::load(const std::string& filename) {
         error("GBufferedImage::load: image data does not contain valid height");
     }
     m_height = stringToInteger(line);
+
+    // BUGFIX (JL) : avoid crash if current grid not big enough to hold image
+    m_pixels.resize(m_height, m_width);
+
     for (int y = 0; y < m_height; y++) {
         for (int x = 0; x < m_width; x++) {
             if (!getline(input, line)) {

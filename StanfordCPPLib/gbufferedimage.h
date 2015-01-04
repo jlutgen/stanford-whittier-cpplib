@@ -1,6 +1,7 @@
 /**
  * @file gbufferedimage.h
  *
+ * @brief
  * This file exports the GBufferedImage class for per-pixel graphics.
  */
 
@@ -33,7 +34,7 @@
 #define GBUFFEREDIMAGE_DEFAULT_DIFF_PIXEL_COLOR 0xdd00dd
 
 /**
- * This class implements a 2D region of colored pixels that can be read/set
+ * This interactor subclass implements a 2D region of colored pixels that can be read/set
  * individually, not unlike the <code>BufferedImage</code> class in Java.
  * The color of each pixel in a \c %GBufferedImage is represented
  * as a 32-bit integer in the range from `0x000000` to `0xffffff`. Such a color
@@ -91,6 +92,13 @@ public:
      * If no background color is passed, the default of black (`0x000000`) is used.
      * Throws an error if \em width or \em height is negative.
      * Throws an error if the given \em rgb value is invalid or out of range.
+     *
+     * Sample usages:
+     *
+     *     GBufferedImage *im = new GBufferedImage();
+     *     GBufferedImage *im = new GBufferedImage(width, height);
+     *     GBufferedImage *im = new GBufferedImage(width, height, rgbBackground);
+     *     GBufferedImage *im = new GBufferedImage(x, y, width, height, rgbBackground);
      */
     GBufferedImage(double x, double y, double width, double height,
                    std::string rgbBackground);
@@ -105,6 +113,10 @@ public:
     /**
      * Sets all pixels in this image to be the original background color passed
      * to the constructor.
+     *
+     * Sample usage:
+     *
+     *     im->clear();
      */
     void clear();
     
@@ -114,6 +126,10 @@ public:
      * between this image and the given image.
      * If the images are not the same size, any pixels in the range of one image
      * but out of the bounds of the other are considered to be differing.
+     *
+     * Sample usage:
+     *
+     *     int n = im->countDiffPixels(other);
      */
     int countDiffPixels(GBufferedImage& image) const;
     
@@ -122,6 +138,11 @@ public:
      * Generates a new image whose content is equal to that of this image but with
      * any pixels that don't match those in given image colored in the given
      * color \em diffPixelColor (default purple) to highlight differences between the two.
+     *
+     * Sample usages:
+     *
+     *     GBufferedImage *diffIm = im->diff(im2);
+     *     GBufferedImage *diffIm = im->diff(im2, diffPixelColor);
      */
     GBufferedImage* diff(GBufferedImage& image, int diffPixelColor = GBUFFEREDIMAGE_DEFAULT_DIFF_PIXEL_COLOR) const;
     
@@ -133,6 +154,10 @@ public:
      * which may may be specified as an integer value or as a string like
      * `"#ff00cc"` or `"blue"`.
      * Throws an error if \em rgb value is not a valid color.
+     *
+     * Sample usage:
+     *
+     *     im->fill(rgb);
      */
     void fill(std::string rgb);
 
@@ -147,6 +172,10 @@ public:
      * Throws an error if the given x/y/width/height range goes outside the bounds
      * of the image.
      * Throws an error if \em rgb is not a valid color.
+     *
+     * Sample usage:
+     *
+     *     im->fillRegion(x, y, width, height, rgb)
      */
     void fillRegion(double x, double y, double width, double height,
                     std::string rgb);
@@ -154,6 +183,10 @@ public:
 
     /**
      * Returns the height of this image in pixels.
+     *
+     * Sample usage:
+     *
+     *     double h = im->getHeight();
      */
     double getHeight() const;
 
@@ -162,6 +195,10 @@ public:
      * Returns the color of the pixel at the given (\em x, \em y) coordinates of this image
      * as an integer such as \c 0xff00cc.
      * Throws an error if the given coordinates are out of bounds.
+     *
+     * Sample usage:
+     *
+     *     int rgb = im->getRGB(x, y);
      */
     int getRGB(double x, double y) const;
 
@@ -170,12 +207,20 @@ public:
      * Returns the color of the pixel at the given (\em x, \em y) coordinates of this image
      * as a string such as `"#ff00cc"`.
      * Throws an error if the given coordinates are out of bounds.
+     *
+     * Sample usage:
+     *
+     *     string rgb = im->getRGB(x, y);
      */
     std::string getRGBString(double x, double y) const;
 
 
     /**
      * Returns the width of this image in pixels.
+     *
+     * Sample usage:
+     *
+     *     double w = im->getWidth();
      */
     double getWidth() const;
     
@@ -183,13 +228,32 @@ public:
     /**
      * Returns \c true if the given (\em x, \em y) position is within the range of pixels
      * occupied by this image.
+     *
+     * Sample usage:
+     *
+     *     if (im->inBounds(x, y)) ...
      */
     bool inBounds(double x, double y) const;
     
 
     /**
-     * Reads this image's contents from the given image file.
-     * Throws an error if the given file is not a valid image file.
+     * Reads this image's contents from the specified image file.
+     * The file must have one of the following formats:
+     * <ul>
+     *  <li>Bitmap (BMP) format
+     *  <li>Graphics Interchange Format (GIF)
+     *  <li>Joint Photographic Experts Group (JPEG) format
+     *  <li>Portable Network Graphics (PNG) format
+     * </ul>
+     * If the image file is successfully loaded, this image's dimensions are
+     * set to match the dimensions of the loaded image.
+     *
+     * This method throws an error if the file could not be found, could not be
+     * opened for reading, or is not a valid image file in one of the supported formats.
+     *
+     * Sample usage:
+     *
+     *     im->load(filename);
      */
     void load(const std::string& filename);
     
@@ -204,13 +268,54 @@ public:
      * If \em retain is false, the contents will be erased and set to the background
      * color of this image.
      * Throws an error if \em width or \em height ranges is negative.
+     *
+     * Sample usages:
+     *
+     *     im->resize(width, height);
+     *     im->resize(width, height, false);
      */
     void resize(double width, double height, bool retain = true);
     
 
     /**
-     * Saves this image's contents to the given image file.
-     * Throws an error if the given file is not writeable.
+     * Saves this image's contents to the given image file. The format
+     * of the image file is determined by the extension of \em filename.
+     * The supported formats and corresponding filename extensions are
+     * as follows:
+     *
+     * <table>
+     * <tr>
+     *      <td>Bitmap (BMP)</td>
+     *      <td><code>.bmp</code></td>
+     *  </tr>
+     *  <tr>
+     *      <td>Graphics Interchange Format (GIF)</td>
+     *      <td><code>.gif</code></td>
+     *  </tr>
+     *  <tr>
+     *      <td>Joint Photographic Experts Group (JPEG)</td>
+     *      <td><code>.jpg</code>, <code>.jpeg</code></td>
+     *  </tr>
+     *  <tr>
+     *      <td>QuickDraw Native Format (PICT)</td>
+     *      <td><code>.pic</code>, <code>.pict</code></td>
+     *  </tr>
+     *  <tr>
+     *      <td>Portable Network Graphics (PNG)</td>
+     *      <td><code>.png</code></td>
+     *  </tr>
+     *  <tr>
+     *      <td>Tagged Image File Format (TIFF)</td>
+     *      <td><code>.tif</code>, <code>.tiff</code></td>
+     *  </tr>
+     * </table>
+     *
+     * This method throws an error if the given file is not writeable or the
+     * requested image file format is not supported.
+     *
+     * Sample usage:
+     *
+     *     im->save(filename);
      */
     void save(const std::string& filename) const;
 
@@ -227,6 +332,10 @@ public:
      * instead.
      * Throws an error if the given (\em x, \em y) values are out of bounds.
      * Throws an error if \em rgb is not a valid color.
+     *
+     * Sample usage:
+     *
+     *     im->setRGB(x, y, rgb);
      */
     void setRGB(double x, double y, std::string rgb);
 

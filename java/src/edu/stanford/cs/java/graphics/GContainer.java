@@ -176,8 +176,6 @@ class GObjectList implements Serializable {
    public synchronized void add(GObject gobj) {
       if (gobj.getParent() != null) gobj.getParent().remove(gobj);
       gobj.setParent(parent);
-      System.out.println("GObjectList.add: parent is " + parent); // DELETE
-      System.out.println("GObjectList.add: set parent of " + gobj + " to " + gobj.getParent()); // DELETE
       contents.add(gobj);
       if (enabledList != null && gobj.areMouseListenersEnabled()) {
          enabledList.add(gobj);

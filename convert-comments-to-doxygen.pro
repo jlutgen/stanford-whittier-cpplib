@@ -20,33 +20,32 @@ cache()
 #SOURCES += $$files($$PWD/src/tests-roberts/*.cpp)
 
 # convert comments
-SOURCES += $$PWD/src/convert-comments-to-doxygen.cpp
+#SOURCES += $$PWD/src/convert-comments-to-doxygen.cpp
+SOURCES += $$PWD/src/convert-sample-usages.cpp
+
 
 
 ####################################################################
 # Common configuration for all projects
 
-#message("CONFIG: " $$CONFIG)
-#message("QMAKE_CXXFLAGS_WARN_ON:" $$QMAKE_CXXFLAGS_WARN_ON)
+
+# Mac users: change `10.9` to match your version of Mac OS X, if necessary.
 QMAKE_MAC_SDK = macosx10.9
 
 TEMPLATE = app
-
 CONFIG -= qt
-CONFIG -= qt_framework
+#CONFIG -= qt_framework
 CONFIG -= debug_and_release
-CONFIG -= release
-CONFIG -= shared
-CONFIG -= qpa
-CONFIG -= incremental
-CONFIG -= lex yacc
-CONFIG -= rez
-CONFIG -= testcase_targets
-CONFIG -= import_plugins import_qpa_plugin
+#CONFIG -= release
+#CONFIG -= shared
+#CONFIG -= qpa
+#CONFIG -= incremental
+#CONFIG -= lex yacc
+#CONFIG -= rez
+#CONFIG -= testcase_targets
+#CONFIG -= import_plugins import_qpa_plugin
 CONFIG += debug
 win32:CONFIG += console
-
-#message("CUSTOM CONFIG: " $$CONFIG)
 
 # StanfordCPPLib headers
 HEADERS += $$files($$PWD/StanfordCPPLib/*.h)
@@ -54,10 +53,18 @@ HEADERS += $$files($$PWD/StanfordCPPLib/stacktrace/*.h)
 HEADERS += $$files($$PWD/StanfordCPPLib/private/*.h)
 
 # StanfordCPPLib library
-win32:LIBS += -L$$PWD/StanfordCPPLib/lib/win -lStanfordCPPLib
-unix:!macx:LIBS += -L$$PWD/StanfordCPPLib/lib/linux -lStanfordCPPLib
-macx:LIBS += -L$$PWD/StanfordCPPLib/lib/mac -lStanfordCPPLib
-
+win32 {
+    LIBS += -L$$PWD/StanfordCPPLib/lib/win -lStanfordCPPLib
+    PRE_TARGETDEPS = $$PWD/StanfordCPPLib/lib/win/libStanfordCPPLib.a
+}
+unix:!macx {
+    LIBS += -L$$PWD/StanfordCPPLib/lib/linux -lStanfordCPPLib
+    PRE_TARGETDEPS = $$PWD/StanfordCPPLib/lib/linux/libStanfordCPPLib.a
+}
+macx {
+    LIBS += -L$$PWD/StanfordCPPLib/lib/mac -lStanfordCPPLib
+    PRE_TARGETDEPS = $$PWD/StanfordCPPLib/lib/mac/libStanfordCPPLib.a
+}
 
 QMAKE_CXXFLAGS += -std=c++11
 QMAKE_CXXFLAGS += -fvisibility-inlines-hidden
@@ -70,6 +77,7 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-missing-field-initializers
 win32: QMAKE_LFLAGS += -static
 
 unix:!macx {
+    QMAKE_LFLAGS += -pthread
     QMAKE_LFLAGS += -rdynamic  # for backtraces
 }
 
@@ -81,10 +89,7 @@ win32:LIBS += -lDbghelp # for backtraces
 INCLUDEPATH += $$PWD/StanfordCPPLib
 INCLUDEPATH += $$PWD/src
 
-DESTDIR = $$PWD/out
 OBJECTS_DIR = $$OUT_PWD/obj
-MOC_DIR = $$OUT_PWD/tmp
-
 
 # Function that copies the given files to the destination directory
 defineTest(copyToDestdir) {
@@ -107,9 +112,11 @@ defineTest(copyToDestdir) {
 
     export(QMAKE_POST_LINK)
 }
-#!win32 {
-#    copyToDestdir($$files($$PWD/resources/*))
-#}
-#win32 {
-#    copyToDestdir($$PWD/resources)
-#}
+!win32 {
+    copyToDestdir($$files($$PWD/resources/*))
+    copyToDestdir($$files($$PWD/extra/*))
+}
+win32 {
+    copyToDestdir($$PWD/resources)
+    copyToDestdir($$PWD/extra)
+}

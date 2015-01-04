@@ -1,6 +1,7 @@
 /**
  * @file gwindow.h
  *
+ * @brief
  * This file exports the GWindow class, which supports
  * drawing graphical objects on the screen.
  */
@@ -101,10 +102,9 @@ public:
  * the width and height in pixels.
  *
  * Sample usages:
- * ~~~
- * GWindow gw;
- * GWindow gw(width, height);
- * ~~~
+ *
+ *     GWindow gw;
+ *     GWindow gw(width, height);
  */ 
    GWindow(double width, double height);
 
@@ -121,9 +121,8 @@ public:
  * Deletes this window from the screen.
  *
  * Sample usage:
- * ~~~
- * gw.close();
- * ~~~
+ *
+ *     gw.close();
  */
    void close();
 
@@ -134,9 +133,8 @@ public:
  * the window.  Clicking in the window automatically requests the focus.
  *
  * Sample usage:
- * ~~~
- * gw.requestFocus();
- * ~~~
+ *
+ *     gw.requestFocus();
  */
    void requestFocus();
 
@@ -145,9 +143,8 @@ public:
  * Clears the contents of this window.
  *
  * Sample usage:
- * ~~~
- * gw.clear();
- * ~~~
+ *
+ *     gw.clear();
  */
    void clear();
 
@@ -156,9 +153,8 @@ public:
  * Determines whether this window is visible on the screen.
  *
  * Sample usage:
- * ~~~
- * gw.setVisible(flag);
- * ~~~
+ *
+ *     gw.setVisible(flag);
  */
    void setVisible(bool flag);
 
@@ -167,9 +163,8 @@ public:
  * Tests whether this window is visible.
  *
  * Sample usage:
- * ~~~
- * if (gw.isVisible()) ...
- * ~~~
+ *
+ *     if (gw.isVisible()) ...
  */
    bool isVisible();
 
@@ -180,10 +175,9 @@ public:
  * Draws a line connecting the specified points.
  *
  * Sample usages:
- * ~~~
- * gw.drawLine(p0, p1);
- * gw.drawLine(x0, y0, x1, y1);
- * ~~~
+ *
+ *     gw.drawLine(p0, p1);
+ *     gw.drawLine(x0, y0, x1, y1);
  */
    void drawLine(double x0, double y0, double x1, double y1);
 
@@ -197,10 +191,9 @@ public:
  * the endpoint of the line.
  *
  * Sample usages:
- * ~~~
- * GPoint p1 = gw.drawPolarLine(p0, r, theta);
- * GPoint p1 = gw.drawPolarLine(x0, y0, r, theta);
- * ~~~
+ *
+ *     GPoint p1 = gw.drawPolarLine(p0, r, theta);
+ *     GPoint p1 = gw.drawPolarLine(x0, y0, r, theta);
  */  
    GPoint drawPolarLine(double x0, double y0, double r, double theta);
 
@@ -211,10 +204,9 @@ public:
  * Draws an oval with the specified bounding box.
  *
  * Sample usages:
- * ~~~
- * gw.drawOval(bounds);
- * gw.drawOval(x, y, width, height);
- * ~~~
+ *
+ *     gw.drawOval(bounds);
+ *     gw.drawOval(x, y, width, height);
  */ 
    void drawOval(double x, double y, double width, double height);
 
@@ -225,10 +217,9 @@ public:
  * Draws a filled oval with the specified bounding box.
  *
  * Sample usages:
- * ~~~
- * gw.fillOval(bounds);
- * gw.fillOval(x, y, width, height);
- * ~~~
+ *
+ *     gw.fillOval(bounds);
+ *     gw.fillOval(x, y, width, height);
  */ 
    void fillOval(double x, double y, double width, double height);
 
@@ -239,10 +230,9 @@ public:
  * Draws a rectangle with the specified bounds.
  *
  * Sample usages:
- * ~~~
- * gw.drawRect(bounds);
- * gw.drawRect(x, y, width, height);
- * ~~~
+ *
+ *     gw.drawRect(bounds);
+ *     gw.drawRect(x, y, width, height);
  */ 
    void drawRect(double x, double y, double width, double height);
 
@@ -253,10 +243,9 @@ public:
  * Draws a filled rectangle with the specified bounds.
  *
  * Sample usages:
- * ~~~
- * gw.fillRect(bounds);
- * gw.fillRect(x, y, width, height);
- * ~~~
+ *
+ *     gw.fillRect(bounds);
+ *     gw.fillRect(x, y, width, height);
  */
    void fillRect(double x, double y, double width, double height);
 
@@ -300,13 +289,12 @@ public:
  * pair is omitted from the color string, the alpha value is set to 255 by default.
  *
  * Sample usages:
- * ~~~
- * gw.setColor("LIGHT_GRAY");  // these five statements have the same effect
- * gw.setColor("#bfbfbf");
- * gw.setColor("#ffbfbfbf");
- * gw.setColor(0xffbfbfbf);
- * gw.setColor(4290756543);
- * ~~~
+ *
+ *     gw.setColor("LIGHT_GRAY");  // these five statements have the same effect
+ *     gw.setColor("#bfbfbf");
+ *     gw.setColor("#ffbfbfbf");
+ *     gw.setColor(0xffbfbfbf);
+ *     gw.setColor(4290756543);
  */
    void setColor(int color);
 
@@ -324,9 +312,8 @@ public:
  * see the description of \ref setColor.)
  *
  * Sample usage:
- * ~~~
- * string color = gw.getColor();
- * ~~~
+ *
+ *     string color = gw.getColor();
  */
    std::string getColor();
 
@@ -337,9 +324,8 @@ public:
  * have been placed into control strips by \ref addToRegion.
  *
  * Sample usage:
- * ~~~
- * double width = gw.getCanvasWidth();
- * ~~~
+ *
+ *     double width = gw.getCanvasWidth();
  */
    double getCanvasWidth();
 
@@ -350,9 +336,8 @@ public:
  * have been placed into control strips by \ref addToRegion.
  *
  * Sample usage:
- * ~~~
- * double height = gw.getCanvasHeight();
- * ~~~
+ *
+ *     double height = gw.getCanvasHeight();
  */
    double getCanvasHeight();
 
@@ -361,9 +346,8 @@ public:
  * Returns the width of this window in pixels.
  *
  * Sample usage:
- * ~~~
- * double width = gw.getWidth();
- * ~~~
+ *
+ *     double width = gw.getWidth();
  */
    double getWidth();
 
@@ -372,9 +356,8 @@ public:
  * Returns the height of this window in pixels.
  *
  * Sample usage:
- * ~~~
- * double height = gw.getHeight();
- * ~~~
+ *
+ *     double height = gw.getHeight();
  */
    double getHeight();
 
@@ -383,9 +366,8 @@ public:
  * Schedules a repaint on this window.
  *
  * Sample usage:
- * ~~~
- * gw.repaint();
- * ~~~
+ *
+ *     gw.repaint();
  */
    void repaint();
 
@@ -394,9 +376,8 @@ public:
  * Sets the title of this window.
  *
  * Sample usage:
- * ~~~
- * gw.setWindowTitle(title);
- * ~~~
+ *
+ *     gw.setWindowTitle(title);
  */
    void setWindowTitle(std::string title);
 
@@ -405,9 +386,8 @@ public:
  * Returns the title of the graphics window.
  *
  * Sample usage:
- * ~~~
- * string title = gw.getWindowTitle();
- * ~~~
+ *
+ *     string title = gw.getWindowTitle();
  */
    std::string getWindowTitle();
 
@@ -428,10 +408,9 @@ public:
  * drawing.
  *
  * Sample usages:
- * ~~~
- * gw.draw(gobj);
- * gw.draw(gobj, x, y);
- * ~~~
+ *
+ *     gw.draw(gobj);
+ *     gw.draw(gobj, x, y);
  */
    void draw(GObject *gobj, double x, double y);
 
@@ -449,10 +428,9 @@ void add(GObject *gobj);
  * any `%GObjects` it contains.
  *
  * Sample usages:
- * ~~~
- * gw.add(gobj);
- * gw.add(gobj, x, y);
- * ~~~
+ *
+ *     gw.add(gobj);
+ *     gw.add(gobj, x, y);
  */
    void add(GObject *gobj, double x, double y);
 
@@ -461,9 +439,8 @@ void add(GObject *gobj);
  * Removes the given GObject from this window.
  *
  * Sample usage:
- * ~~~
- * gw.remove(gobj);
- * ~~~
+ *
+ *     gw.remove(gobj);
  */
    void remove(GObject *gobj);
 
@@ -478,9 +455,8 @@ void add(GObject *gobj);
  * or <code>"WEST"</code>.
  *
  * Sample usage:
- * ~~~
- * gw.addToRegion(interactor, region);
- * ~~~
+ *
+ *     gw.addToRegion(interactor, region);
  */ 
    void addToRegion(GLabel *gobj, std::string region);
 
@@ -495,9 +471,8 @@ void add(GObject *gobj);
  * or <code>"WEST"</code>.
  *
  * Sample usage:
- * ~~~
- * gw.removeFromRegion(interactor, region);
- * ~~~
+ *
+ *     gw.removeFromRegion(interactor, region);
  */
    void removeFromRegion(GLabel *gobj, std::string region);
 
@@ -508,9 +483,8 @@ void add(GObject *gobj);
  * object exists.
  *
  * Sample usage:
- * ~~~
- * GObject *gobj = gw.getGObjectAt(x, y);
- * ~~~
+ *
+ *     GObject *gobj = gw.getGObjectAt(x, y);
  */
    GObject *getGObjectAt(double x, double y);
 
@@ -525,9 +499,8 @@ void add(GObject *gobj);
  * <code>CENTER</code> alignment.
  *
  * Sample usage:
- * ~~~
- * gw.setRegionAlignment(region, align);
- * ~~~
+ *
+ *     gw.setRegionAlignment(region, align);
  */
    void setRegionAlignment(std::string region, std::string align);
 
@@ -536,9 +509,8 @@ void add(GObject *gobj);
  * Checks whether the two objects refer to the same window.
  *
  * Sample usage:
- * ~~~
- * if (w1 == w2) ...
- * ~~~
+ *
+ *     if (w1 == w2) ...
  */
    bool operator==(GWindow w2);
 
@@ -547,9 +519,8 @@ void add(GObject *gobj);
  * Checks whether the two objects refer to different windows.
  *
  * Sample usage:
- * ~~~
- * if (w1 != w2) ...
- * ~~~
+ *
+ *     if (w1 != w2) ...
  */
    bool operator!=(GWindow w2);
 
@@ -593,9 +564,9 @@ private:
  * explicitly.
  *
  * Sample usage:
- * ~~~
- * repaint();
- * ~~~
+ *
+ *     repaint();
+ *
  */
 
 void repaint();
@@ -606,9 +577,9 @@ void repaint();
  * useful for animation where the motion would otherwise be too fast.
  *
  * Sample usage:
- * ~~~
- * pause(milliseconds);
- * ~~~
+ *
+ *     pause(milliseconds);
+ *
  */
 
 void pause(double milliseconds);
@@ -618,9 +589,9 @@ void pause(double milliseconds);
  * Returns the width of the entire display screen in pixels.
  *
  * Sample usage:
- * ~~~
- * width = getScreenWidth();
- * ~~~
+ *
+ *     width = getScreenWidth();
+ *
  */
 
 double getScreenWidth();
@@ -630,9 +601,9 @@ double getScreenWidth();
  * Returns the height of the entire display screen in pixels.
  *
  * Sample usage:
- * ~~~
- * height = getScreenHeight();
- * ~~~
+ *
+ *     height = getScreenHeight();
+ *
  */
 
 double getScreenHeight();
@@ -646,14 +617,13 @@ double getScreenHeight();
  * for more information about colors and valid color names.
  *
  * Sample usage:
- * ~~~
- * int rgb = convertColorToRGB("ORANGE");
- * int rgb = convertColorToRGB("#ffc800");
- * int rgb = convertColorToRGB("#85ffc800");
- * ~~~
+ *
+ *     int rgb = convertColorToRGB("ORANGE");
+ *     int rgb = convertColorToRGB("#ffc800");
+ *     int rgb = convertColorToRGB("#85ffc800");
  */
-
 int convertColorToRGB(std::string colorName);
+
 
 /**
  * Converts an integer <code>rgb</code> value into a color name in the
@@ -668,11 +638,9 @@ int convertColorToRGB(std::string colorName);
  * GWindow::setColor\endlink.)
  *
  * Sample usage:
- * ~~~
- * int colorName = convertRGBToColor(rgb);
- * ~~~
+ *
+ *     int colorName = convertRGBToColor(rgb);
  */
-
 std::string convertRGBToColor(int rgb);
 
 
@@ -680,11 +648,9 @@ std::string convertRGBToColor(int rgb);
  * Waits for a mouse click to occur anywhere in any window.
  *
  * Sample usage:
- * ~~~
- * waitForClick();
- * ~~~
+ *
+ *     waitForClick();
  */
-
 void waitForClick();
 
 
@@ -693,11 +659,9 @@ void waitForClick();
  * waiting for any additional user interaction.
  *
  * Sample usage:
- * ~~~
- * exitGraphics();
- * ~~~
+ *
+ *     exitGraphics();
  */
-
 void exitGraphics();
 
 

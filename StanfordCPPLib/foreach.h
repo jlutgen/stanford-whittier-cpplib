@@ -1,8 +1,10 @@
 /**
  * @file foreach.h
  *
+ * @brief
  * This file defines the \em foreach keyword, which implements
  * a substitute for the range-based \em for loop from C++11.
+ *
  * All iterable classes in the Stanford libraries import this file, so
  * clients don't ordinarily need to do so explicitly.  This version of
  * \em foreach also supports C++ strings and arrays.

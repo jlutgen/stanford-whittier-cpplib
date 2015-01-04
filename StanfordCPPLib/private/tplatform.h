@@ -26,7 +26,7 @@
 /* Methods for threads */
 
 int forkForPlatform(void (*fn)(void *), void *arg);
-void incThreadRefCountForPlatform(int id);
+void incThreadRefCountForPlatform(int id, std::string s);
 void decThreadRefCountForPlatform(int id);
 void joinForPlatform(int id);
 int getCurrentThreadForPlatform();

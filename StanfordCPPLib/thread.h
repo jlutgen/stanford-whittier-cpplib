@@ -1,6 +1,7 @@
 /**
  * @file thread.h
  *
+ * @brief
  * This file exports a simple, platform-independent thread abstraction,
  * along with simple tools for concurrency control.
  *
@@ -9,11 +10,10 @@
  * by the specified lock.  The general strategy for using this facility
  * is shown in the following paradigmatic pattern:
  *
- * ~~~
- *    synchronized (lock) {
- *       ... statements in the critical section ...
- *    }
- * ~~~
+ *
+ *     synchronized (lock) {
+ *        ... statements in the critical section ...
+ *     }
  */
 
 /*************************************************************************/
@@ -39,6 +39,8 @@
 
 #include <string>
 
+static const bool debug = false;
+
 /* Forward definition */
 
 class Lock;
@@ -51,11 +53,10 @@ class Lock;
  * space as the creator.  The class itself is opaque and is manipulated by
  * top-level functions as illustrated in the following paradigm:
  *
- * ~~~
- *    Thread child = fork(fn);
- *    ... code for the parent thread ...
- *    join(child);
- * ~~~
+ *
+ *     Thread child = fork(fn);
+ *     ... code for the parent thread ...
+ *     join(child);
  *
  * This code calls <code>fn</code> so that it runs in parallel with the
  * parent code.
@@ -69,9 +70,8 @@ public:
  * by the result of a \ref fork call.
  *
  * Sample usage:
- * ~~~
- * Thread thread;
- * ~~~
+ *
+ *     Thread thread;
  */
    Thread();
 
@@ -86,9 +86,8 @@ public:
  * Returns a printable string representation of this thread.
  *
  * Sample usage:
- * ~~~
- * string str = thread.toString();
- * ~~~
+ *
+ *     string str = thread.toString();
  */
    std::string toString();
 
@@ -100,6 +99,16 @@ public:
 /* of the implementation and should not be of interest to clients.    */
 /**********************************************************************/
 
+   long getId();
+
+   // Construct new thread with given id
+   Thread(long id, std::string s, bool initial=false);
+   // Copy constructor
+   Thread(const Thread& other);
+   // Assignment operator
+   Thread& operator=(const Thread& other);
+
+private:
    long id;   /* id linking this thread to the platform-specific data */
 
 };
@@ -113,10 +122,9 @@ Thread fork(void (*fn)());
  * pass an argument to \em fn, which may be of any type.
  *
  * Sample usages:
- * ~~~
- * Thread child = fork(fn);
- * Thread child = fork(fn, data);
- * ~~~
+ *
+ *     Thread child = fork(fn);
+ *     Thread child = fork(fn, data);
  */
 template <typename ClientType>
 Thread fork(void (*fn)(ClientType & data), ClientType & data);
@@ -126,9 +134,8 @@ Thread fork(void (*fn)(ClientType & data), ClientType & data);
  * Waits for the specified thread to finish before proceeding.
  *
  * Sample usage:
- * ~~~
- * join(thread);
- * ~~~
+ *
+ *     join(thread);
  */
 void join(Thread & thread);
 
@@ -137,9 +144,8 @@ void join(Thread & thread);
  * Yields the processor to allow another thread to run.
  *
  * Sample usage:
- * ~~~
- * yield();
- * ~~~
+ *
+ *     yield();
  */
 void yield();
 
@@ -148,9 +154,8 @@ void yield();
  * Returns the currently executing thread.
  *
  * Sample usage:
- * ~~~
- * Thread self = getCurrentThread();
- * ~~~
+ *
+ *     Thread self = getCurrentThread();
  */
 Thread getCurrentThread();
 
@@ -170,9 +175,8 @@ public:
  * Initializes a lock, which is initially in the unlocked state.
  *
  * Sample usage:
- * ~~~
- * Lock lock;
- * ~~~
+ *
+ *     Lock lock;
  */
    Lock();
 
@@ -204,9 +208,8 @@ public:
  * ~~~
  *
  * Sample usage:
- * ~~~
- * lock.wait();
- * ~~~
+ *
+ *     lock.wait();
  */
    void wait();
 
@@ -216,9 +219,8 @@ public:
  * recheck the corresponding condition.
  *
  * Sample usage:
- * ~~~
- * lock.signal();
- * ~~~
+ *
+ *     lock.signal();
  */
    void signal();
 
@@ -227,6 +229,11 @@ public:
 /* Note: Everything below this point in this class is logically part  */
 /* of the implementation and should not be of interest to clients.    */
 /**********************************************************************/
+public:
+   // Copy constructor
+   Lock(const Lock& other);
+   // Assignment operator
+   Lock& operator=(const Lock& other);
 
 private:
 
@@ -284,6 +291,7 @@ int forkForPlatform(void (*fn)(void *), void *dp);
 
 struct StartWithVoid {
    void (*fn)();
+   void *unused; // JL added so layout matches StartWithClientData, so forkForPlatform can copy fields
 };
 
 template <typename ClientType>
@@ -299,12 +307,20 @@ static void forkWithClientData(void *arg) {
    startup->fn(*startup->dp);
 }
 
+
 template <typename ClientType>
 Thread fork(void (*fn)(ClientType & data), ClientType & data) {
+   Thread t;
    StartWithClientData<ClientType> startup = { fn, &data };
-   Thread thread;
-   thread.id = forkForPlatform(forkWithClientData<ClientType>, &startup);
-   return thread;
+//   synchronized(getThreadRefCountLock()) {
+//       std::cout << "*** synch: fork" << std::endl;
+       long id = forkForPlatform(forkWithClientData<ClientType>, &startup);
+       t = Thread(id, "fork", true);
+//       std::cout << "*** end synch: fork" << std::endl;
+//   }
+   return t;
 }
+
+Lock & getThreadRefCountLock();
 
 #endif

@@ -70,6 +70,7 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-missing-field-initializers
 win32: QMAKE_LFLAGS += -static
 
 unix:!macx {
+    QMAKE_LFLAGS += -pthread
     QMAKE_LFLAGS += -rdynamic  # for backtraces
 }
 

@@ -1,6 +1,7 @@
 /**
- * @file: direction.h
+ * @file direction.h
  *
+ * @brief
  * This file exports an enumerated type called \ref Direction
  * whose elements are the four compass points: <code>NORTH</code>,
  * <code>EAST</code>, <code>SOUTH</code>, and <code>WEST</code>.
@@ -47,9 +48,8 @@ enum Direction {
  * Returns the direction that is to the left of \em dir.
  *
  * Sample usage:
- * ~~~
- *  Direction newdir = leftFrom(dir);
- * ~~~
+ *
+ *     Direction newdir = leftFrom(dir);
  */
 Direction leftFrom(Direction dir);
 
@@ -58,9 +58,8 @@ Direction leftFrom(Direction dir);
  * Returns the direction that is to the right of \em dir.
  *
  * Sample usage:
- * ~~~
- *  Direction newdir = rightFrom(dir);
- * ~~~
+ *
+ *     Direction newdir = rightFrom(dir);
  */
 Direction rightFrom(Direction dir);
 
@@ -69,9 +68,8 @@ Direction rightFrom(Direction dir);
  * Returns the direction that is to opposite to \em dir.
  *
  * Sample usage:
- * ~~~
- *  Direction newdir = opposite(dir);
- * ~~~
+ *
+ *     Direction newdir = opposite(dir);
  */
 Direction opposite(Direction dir);
 
@@ -85,13 +83,24 @@ std::string directionToString(Direction dir);
 /**
  * Overloads the `<<` operator so that it is able
  * to display \ref Direction values.
+ *
+ * Sample usage:
+ *
+ *     cout << dir;
  */
 std::ostream & operator<<(std::ostream & os, const Direction & dir);
 
 
 /**
  * Overloads the `>>` operator so that it is able
- * to read \ref Direction values.
+ * to read \ref Direction values. This method signals an error if
+ * it reads an invalid string from the input stream. Valid strings
+ * are \c "NORTH", \c "SOUTH", \c "EAST", and \c "WEST".
+ *
+ *
+ * Sample usage:
+ *
+ *     cin >> dir;
  */
 std::istream & operator>>(std::istream & os, Direction & dir);
 
@@ -101,9 +110,7 @@ std::istream & operator>>(std::istream & os, Direction & dir);
  * work with \ref Direction values.  The sole purpose of this
  * definition is to support the following idiom:
  *
- * ~~~
- * for (Direction dir = NORTH; dir <= WEST; dir++) {...}
- * ~~~
+ *     for (Direction dir = NORTH; dir <= WEST; dir++) {...}
  */
 Direction operator++(Direction & dir, int);
 

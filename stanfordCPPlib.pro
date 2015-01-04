@@ -20,6 +20,7 @@ win32:LIBS += -lDbghelp
 
 QMAKE_CXXFLAGS += -std=c++11
 QMAKE_CXXFLAGS += -fvisibility-inlines-hidden
+#QMAKE_CXXFLAGS += -fno-elide-constructors       # DEBUG
 
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 QMAKE_CXXFLAGS_WARN_ON += -Wno-sign-compare

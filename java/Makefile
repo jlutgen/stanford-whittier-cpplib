@@ -11,6 +11,7 @@ EXPORTJAR = $(HOME)/java/jar
 EXPORTBIN = $(HOME)/bin
 
 JAVAC = javac -source 1.6 -target 1.6 -sourcepath src \
+              -g \
               -d classes \
               -Xlint:-serial
 
@@ -656,6 +657,7 @@ classes/edu/stanford/cs/java/spl/JavaBackEnd.class: \
           src/edu/stanford/cs/java/graphics/GResizable.java \
           src/edu/stanford/cs/java/graphics/GRoundRect.java \
           src/edu/stanford/cs/java/graphics/GScalable.java \
+          src/edu/stanford/cs/java/spl/GBufferedImage.java \
           src/edu/stanford/cs/java/spl/GButton.java \
           src/edu/stanford/cs/java/spl/GCheckBox.java \
           src/edu/stanford/cs/java/spl/GChooser.java \

@@ -1,6 +1,7 @@
 /**
  * @file random.h
  *
+ * @brief
  * This file exports functions for generating pseudorandom numbers.
  */
 
@@ -31,9 +32,8 @@
  * \em high, inclusive.
  *
  * Sample usage:
- * ~~~
- * int n = randomInteger(low, high);
- * ~~~
+ *
+ *     int n = randomInteger(low, high);
  */
 int randomInteger(int low, int high);
 
@@ -46,9 +46,8 @@ int randomInteger(int low, int high);
  * \em low but strictly less than \em high.
  *
  * Sample usage:
- * ~~~
- * double d = randomReal(low, high);
- * ~~~
+ *
+ *     double d = randomReal(low, high);
  */
 double randomReal(double low, double high);
 
@@ -61,9 +60,8 @@ double randomReal(double low, double high);
  * 30% of the time.
  *
  * Sample usage:
- * ~~~
- * if (randomChance(p)) ...
- * ~~~
+ *
+ *     if (randomChance(p)) ...
  */
 bool randomChance(double p);
 
@@ -75,9 +73,8 @@ bool randomChance(double p);
  * repeatable during the debugging phase.
  *
  * Sample usage:
- * ~~~
- * setRandomSeed(seed);
- * ~~~
+ *
+ *     setRandomSeed(seed);
  */
 void setRandomSeed(int seed);
 

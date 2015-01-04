@@ -1,6 +1,7 @@
 /**
  * @file point.h
  *
+ * @brief
  * This file exports a Point class, which represents an integer-valued (\em x,&nbsp;\em y)
  * pair.
  */
@@ -47,10 +48,9 @@ public:
  * fields to 0.
  *
  * Sample usages:
- * ~~~
- * Point origin;
- * Point pt(x, y);
- * ~~~
+ *
+ *     Point origin;
+ *     Point pt(x, y);
  */
    Point(int x, int y);
 
@@ -59,9 +59,8 @@ public:
  * Returns the <i>x</i>-coordinate of this point.
  *
  * Sample usage:
- * ~~~
- * int x = pt.getX();
- * ~~~
+ *
+ *     int x = pt.getX();
  */
    int getX() const;
 
@@ -70,9 +69,8 @@ public:
  * Returns the <i>y</i>-coordinate of this point.
  *
  * Sample usage:
- * ~~~
- * int y = pt.getY();
- * ~~~
+ *
+ *     int y = pt.getY();
  */
    int getY() const;
 
@@ -81,9 +79,8 @@ public:
  * Returns a printable string representation of this point.
  *
  * Sample usage:
- * ~~~
- * string str = pt.toString();
- * ~~~
+ *
+ *     string str = pt.toString();
  */
    std::string toString() const;
 
@@ -136,9 +133,8 @@ private:
  * to display `%Point` values.
  *
  * Sample usage:
- * ~~~
- * cout << pt;
- * ~~~
+ *
+ *     cout << pt;
  */
 std::ostream & operator<<(std::ostream & os, const Point & pt);
 
@@ -150,9 +146,8 @@ std::ostream & operator<<(std::ostream & os, const Point & pt);
  * Point objects or a HashMap whose keys are Point objects.
  *
  * Sample usage:
- * ~~~
- * int hash = hashCode(p);
- * ~~~
+ *
+ *     int hash = hashCode(p);
  */
 int hashCode(const Point & p);
 

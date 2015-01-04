@@ -24,6 +24,7 @@ package edu.stanford.cs.java.spl;
 
 import edu.stanford.cs.java.graphics.GObject;
 import edu.stanford.cs.java.tokenscanner.TokenScanner;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -46,6 +47,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.io.BufferedInputStream;
@@ -60,6 +62,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -147,38 +150,49 @@ public class JavaBackEnd implements WindowListener, MouseListener,
       String prop = System.getProperty("stanfordspl.debug");
       DEBUG = (prop != null) && ((prop.startsWith("t")) || (prop.startsWith("1")));
     } catch (Exception localException) {
+    	/* empty */
     }
-      new JavaBackEnd().run(args);
+    new JavaBackEnd().run(args);	  
    }
 
    public void run(String[] args) {
-      if (DEBUG) printLog("starting");
-      processArguments(args);
-      initSystemProperties();
-      addAppleQuitHandler();
-      cmdTable = JBECommand.createCommandTable();
-      imageTable = new HashMap<String,Image>();
-      windowTable = new HashMap<String,JBEWindow>();
-      gobjTable = new HashMap<String,GObject>();
-      timerTable = new HashMap<String,GTimer>();
-      clipTable = new HashMap<String,Clip>();
-      clipIdTable = new HashMap<String,Clip>();
-      sourceTable = new HashMap<JComponent,String>();
-      eventMask = 0;
-      eventAcknowledged = false;
-      eventPending = false;
-      activeWindowCount = 0;
-      console = new JBEConsole();
-      if (exec != null) {
-         try {
-            Process proc = Runtime.getRuntime().exec(exec);
-            System.setIn(proc.getInputStream());
-            System.setOut(new PrintStream(proc.getOutputStream(), true));
-         } catch (IOException ex) {
-            System.err.println("Can't exec process");
-         }
-      }
-      commandLoop();
+	   if (DEBUG) printLog("starting");
+	   processArguments(args);
+	   initSystemProperties();
+	   addAppleQuitHandler();
+	   cmdTable = JBECommand.createCommandTable();
+	   imageTable = new HashMap<String,Image>();
+	   windowTable = new HashMap<String,JBEWindow>();
+	   gobjTable = new HashMap<String,GObject>();
+	   timerTable = new HashMap<String,GTimer>();
+	   clipTable = new HashMap<String,Clip>();
+	   clipIdTable = new HashMap<String,Clip>();
+	   sourceTable = new HashMap<JComponent,String>();
+	   eventMask = 0;
+	   eventAcknowledged = false;
+	   eventPending = false;
+	   activeWindowCount = 0;
+	   try {
+		   SwingUtilities.invokeAndWait(new Runnable() {
+			   public void run() {
+				   console = new JBEConsole();
+			   }
+		   });
+	   } catch (InvocationTargetException e) {
+		   e.printStackTrace(System.err);
+	   } catch (InterruptedException e) {
+		   e.printStackTrace(System.err);
+	   }
+	   if (exec != null) {
+		   try {
+			   Process proc = Runtime.getRuntime().exec(exec);
+			   System.setIn(proc.getInputStream());
+			   System.setOut(new PrintStream(proc.getOutputStream(), true));
+		   } catch (IOException ex) {
+			   System.err.println("Can't exec process");
+		   }
+	   }
+	   commandLoop();
    }
 
    protected void createWindow(String id, int width, int height,
@@ -362,19 +376,20 @@ public class JavaBackEnd implements WindowListener, MouseListener,
       }
    }
 
+   // called only from Event Dispatch Thread
    private void showConsole() {
-      console.setPreferredSize(new Dimension(consoleWidth, consoleHeight));
-      consoleFrame = new JFrame("Console");
-      consoleFrame.setLayout(new BorderLayout());
-      consoleFrame.add(console);
-      consoleFrame.pack();
-      consoleFrame.setLocation(consoleX, consoleY);
-      consoleFrame.addWindowListener(this);
-      menuBar = console.createMenuBar();
-      consoleFrame.setJMenuBar(menuBar);
-      consoleFrame.setVisible(true);
-      waitForWindowActive(consoleFrame);
-      activeWindowCount++;
+	   console.setPreferredSize(new Dimension(consoleWidth, consoleHeight));
+	   consoleFrame = new JFrame("Console");
+	   consoleFrame.setLayout(new BorderLayout());
+	   consoleFrame.add(console);
+	   consoleFrame.pack();
+	   consoleFrame.setLocation(consoleX, consoleY);
+	   consoleFrame.addWindowListener(this);
+	   menuBar = console.createMenuBar();
+	   consoleFrame.setJMenuBar(menuBar);
+	   consoleFrame.setVisible(true);
+	   waitForWindowActive(consoleFrame);
+	   activeWindowCount++;
    }
 
    protected void createSound(String id, String filename) {
@@ -727,8 +742,9 @@ public class JavaBackEnd implements WindowListener, MouseListener,
             JBECommand cmd = cmdTable.get(fn);
             if (cmd != null) cmd.execute(scanner, this);
          } catch (Exception ex) {
+            //System.err.println("error:" + ex.getMessage());
+            System.out.println("error:" + ex.getMessage().replace('\n', ' '));
             ex.printStackTrace(System.err);
-            System.err.println("Unexpected error: " + ex.getMessage());
          }
       }
    }
@@ -742,7 +758,7 @@ public class JavaBackEnd implements WindowListener, MouseListener,
             if (arg.equals("-exec")) {
                exec = args[++i];
             } else {
-               System.err.println("Error: Unrecognized option " + arg);
+               System.err.println("error: Unrecognized option " + arg);
             }
          } else {
             appName = arg;
@@ -878,6 +894,7 @@ public class JavaBackEnd implements WindowListener, MouseListener,
    private PrintStream out = null;
 
 }
+
 
 /**
  * This package class is used to ensure that the application quits when

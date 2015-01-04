@@ -22,10 +22,10 @@
 
 package edu.stanford.cs.java.spl;
 
-import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
+//import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Event;
+//import java.awt.Dimension;
+//import java.awt.Event;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
@@ -41,8 +41,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-import javax.swing.JViewport;
+//import javax.swing.JViewport;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
@@ -173,6 +174,7 @@ class ConsoleTextPane extends JTextPane implements KeyListener {
     /**
      * Create an Edit menu to support cut/copy/paste.
      */
+   // Called from Event Dispatch Thread
     public JMenuBar createMenuBar () {
         JMenuItem menuItem = null;
         JMenuBar menuBar = new JMenuBar();
@@ -272,7 +274,7 @@ class ConsoleTextPane extends JTextPane implements KeyListener {
  * Returns a substring from the text using endpoints defined as in
  * <code>substring</code> for strings.
  */
-
+   // Called from Event Dispatch Thread
    public String getText(int start, int end) {
       try {
          return document.getText(start, end - start);
@@ -284,7 +286,7 @@ class ConsoleTextPane extends JTextPane implements KeyListener {
 /**
  * Returns the length of the text stored in the console model.
  */
-
+   // Called from EDT
    public int getLength() {
       return document.getLength();
    }
@@ -499,7 +501,8 @@ class ConsoleTextPane extends JTextPane implements KeyListener {
  * Inserts a string into the text pane at the position specified by
  * <code>dot</code>, using the specified style.
  */
-
+   // Called from EDT when user types, but not when a print is requested
+   // via front-end command. Fixed command.
    private void insert(String str, int dot, int style) {
       try {
          SimpleAttributeSet attributes = outputAttributes;
@@ -517,7 +520,7 @@ class ConsoleTextPane extends JTextPane implements KeyListener {
  * Deletes text from the text pane beginning at position <code>p1</code> and
  * continuing up to but not including <code>p2</code>.
  */
-
+   // Called from Event Dispatch Thread
    private void delete(int p1, int p2) {
       try {
          document.remove(p1, p2 - p1);
@@ -541,7 +544,7 @@ class ConsoleTextPane extends JTextPane implements KeyListener {
 /**
  * Sets the relevant components of the graphics context from the attribute set.
  */
-
+/*
    private void setStyleFromAttributes(Graphics g, AttributeSet attributes) {
       Font oldFont = getFont();
       int style = 0;
@@ -556,7 +559,7 @@ class ConsoleTextPane extends JTextPane implements KeyListener {
       if (color == null) color = getForeground();
       g.setColor(color);
    }
-
+*/
 /* Constants */
 
    public static final int OUTPUT_STYLE = 0;
@@ -565,7 +568,7 @@ class ConsoleTextPane extends JTextPane implements KeyListener {
 
 /* Private instance variables */
 
-   private ActionListener actionListener;
+//   private ActionListener actionListener;
    private Document document;
    private JBEConsole console;
    private SimpleAttributeSet errorAttributes;

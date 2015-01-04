@@ -1,6 +1,7 @@
 /**
  * @file gtypes.h
  *
+ * @brief
  * This file exports classes for representing points, dimensions, and
  * rectangles.
  */
@@ -45,10 +46,9 @@ public:
  * the default constructor sets these fields to 0.
  *
  * Sample usages:
- * ~~~
- * GPoint origin;
- * GPoint pt(x, y);
- * ~~~
+ *
+ *     GPoint origin;
+ *     GPoint pt(x, y);
  */
    GPoint(double x, double y);
 
@@ -57,9 +57,8 @@ public:
  * Returns the \em x component of this point.
  *
  * Sample usage:
- * ~~~
- * double x = pt.getX();
- * ~~~
+ *
+ *     double x = pt.getX();
  */
    double getX() const;
 
@@ -67,9 +66,8 @@ public:
  * Returns the \em y component of this point.
  *
  * Sample usage:
- * ~~~
- * double y = pt.getY();
- * ~~~
+ *
+ *     double y = pt.getY();
  */
    double getY() const;
 
@@ -78,9 +76,8 @@ public:
  * Returns a printable string representation of this point.
  *
  * Sample usage:
- * ~~~
- * string str = pt.toString();
- * ~~~
+ *
+ *     string str = pt.toString();
  */
    std::string toString() const;
 
@@ -125,10 +122,9 @@ public:
  * fields to 0.
  *
  * Sample usages:
- * ~~~
- * GDimension empty;
- * GDimension dim(width, height);
- * ~~~
+ *
+ *     GDimension empty;
+ *     GDimension dim(width, height);
  */ 
    GDimension(double width, double height);
 
@@ -137,9 +133,8 @@ public:
  * Returns the width component of this GDimension object.
  *
  * Sample usage:
- * ~~~
- * double width = dim.getWidth();
- * ~~~
+ *
+ *     double width = dim.getWidth();
  */
    double getWidth() const;
 
@@ -148,9 +143,8 @@ public:
  * Returns the height component of this GDimension object.
  *
  * Sample usage:
- * ~~~
- * double height = dim.getHeight();
- * ~~~
+ *
+ *     double height = dim.getHeight();
  */
    double getHeight() const;
 
@@ -159,9 +153,8 @@ public:
  * Returns a printable string representation of this GDimension object.
  *
  * Sample usage:
- * ~~~
- * string str = dim.toString();
- * ~~~
+ *
+ *     string str = dim.toString();
  */
    std::string toString() const;
 
@@ -207,10 +200,9 @@ public:
  * these fields to 0.
  *
  * Sample usages:
- * ~~~
- * GRectangle empty;
- * GRectangle r(x, y, width, height);
- * ~~~
+ *
+ *     GRectangle empty;
+ *     GRectangle r(x, y, width, height);
  */
    GRectangle(double x, double y, double width, double height);
 
@@ -219,9 +211,8 @@ public:
  * Returns the \em x component of this rectangle.
  *
  * Sample usage:
- * ~~~
- * double x = r.getX();
- * ~~~
+ *
+ *     double x = r.getX();
  */
    double getX() const;
 
@@ -230,9 +221,8 @@ public:
  * Returns the \em y component of this rectangle.
  *
  * Sample usage:
- * ~~~
- * double y = pt.getY();
- * ~~~
+ *
+ *     double y = pt.getY();
  */
    double getY() const;
 
@@ -241,9 +231,8 @@ public:
  * Returns the \em width component of this rectangle.
  *
  * Sample usage:
- * ~~~
- * double width = r.getWidth();
- * ~~~
+ *
+ *     double width = r.getWidth();
  */
    double getWidth() const;
 
@@ -252,9 +241,8 @@ public:
  * Returns the \em height component of this rectangle.
  *
  * Sample usage:
- * ~~~
- * double height = pt.getHeight();
- * ~~~
+ *
+ *     double height = pt.getHeight();
  */
    double getHeight() const;
 
@@ -263,9 +251,8 @@ public:
  * Returns \c true if this rectangle is empty.
  *
  * Sample usage:
- * ~~~
- * if (r.isEmpty()) ...
- * ~~~
+ *
+ *     if (r.isEmpty()) ...
  */
    bool isEmpty() const;
 
@@ -278,10 +265,9 @@ public:
  * \em x and \em y coordinates.
  *
  * Sample usages:
- * ~~~
- * if (r.contains(pt)) ...
- * if (r.contains(x, y)) ...
- * ~~~
+ *
+ *     if (r.contains(pt)) ...
+ *     if (r.contains(x, y)) ...
  */
    bool contains(double x, double y) const;
 
@@ -290,9 +276,8 @@ public:
  * Returns a printable string representation of this rectangel.
  *
  * Sample usage:
- * ~~~
- * string str = r.toString();
- * ~~~
+ *
+ *     string str = r.toString();
  */
    std::string toString() const;
 
@@ -332,16 +317,34 @@ private:
 std::ostream & operator<<(std::ostream & os, const GPoint & pt);
 bool operator==(const GPoint & p1, const GPoint & p2);
 bool operator!=(const GPoint & p1, const GPoint & p2);
+
+
+/** \_overload */
 int hashCode(const GPoint & pt);
+/** \_overload */
+int hashCode(const GDimension & dim);
+/**
+ * Returns a hash code for the given object (a GPoint, GDimension, or GRectangle).
+ * This function is provided
+ * for convenience so that clients do not need to write their own
+ * \c hashCode function in order to be able to create a HashSet whose elements
+ * are of one of these types, or a HashMap whose keys are of one of these types.
+ *
+ * Sample usage:
+ *
+ *     int hash = hashCode(p);
+ *
+ */
+int hashCode(const GRectangle & r);
 
 std::ostream & operator<<(std::ostream & os, const GDimension & dim);
 bool operator==(const GDimension & d1, const GDimension & d2);
 bool operator!=(const GDimension & d1, const GDimension & d2);
-int hashCode(const GDimension & dim);
+
 
 std::ostream & operator<<(std::ostream & os, const GRectangle & rect);
 bool operator==(const GRectangle & r1, const GRectangle & r2);
 bool operator!=(const GRectangle & r1, const GRectangle & r2);
-int hashCode(const GRectangle & r);
+
 
 #endif

@@ -89,6 +89,8 @@
       saveerr = cerr.rdbuf(); \
       try { \
          int exitCode = startupMain(argc, argv); \
+         cout.flush(); \
+         cerr.flush(); \
          cin.rdbuf(savein); \
          cout.rdbuf(saveout); \
          cerr.rdbuf(saveerr); \

@@ -1,6 +1,7 @@
 /**
  * @file tokenscanner.h
  *
+ * @brief
  * This file exports a TokenScanner class that divides
  * a string into individual logical units called <b><i>tokens</i></b>.
  */
@@ -78,11 +79,10 @@ public:
  * constructor creates a scanner with an empty token stream.
  *
  * Sample usages:
- * ~~~
- * TokenScanner scanner;
- * TokenScanner scanner(str);
- * TokenScanner scanner(infile);
- * ~~~
+ *
+ *     TokenScanner scanner;
+ *     TokenScanner scanner(str);
+ *     TokenScanner scanner(infile);
  */
    TokenScanner(std::istream & infile);
 
@@ -100,10 +100,9 @@ public:
  * input stream.  Any previous token stream is discarded.
  *
  * Sample usages:
- * ~~~
- * scanner.setInput(str);
- * scanner.setInput(infile);
- * ~~~
+ *
+ *     scanner.setInput(str);
+ *     scanner.setInput(infile);
  */
    void setInput(std::istream & infile);
 
@@ -113,9 +112,8 @@ public:
  * scanner to read.
  *
  * Sample usage:
- * ~~~
- * if (scanner.hasMoreTokens()) ...
- * ~~~
+ *
+ *     if (scanner.hasMoreTokens()) ...
  */
    bool hasMoreTokens();
 
@@ -125,9 +123,8 @@ public:
  * is called when no tokens are available, it returns the empty string.
  *
  * Sample usage:
- * ~~~
- * token = scanner.nextToken();
- * ~~~
+ *
+ *     token = scanner.nextToken();
  */
    std::string nextToken();
 
@@ -139,9 +136,8 @@ public:
  * token stream.
  *
  * Sample usage:
- * ~~~
- * scanner.saveToken(token);
- * ~~~
+ *
+ *     scanner.saveToken(token);
  */
    void saveToken(std::string token);
 
@@ -153,9 +149,8 @@ public:
  * called more than once, this method returns -1.
  *
  * Sample usage:
- * ~~~
- * int pos = scanner.getPosition();
- * ~~~
+ *
+ *     int pos = scanner.getPosition();
  */
    int getPosition() const;
 
@@ -172,9 +167,8 @@ public:
  * changes this behavior so that the scanner ignores whitespace characters.
  *
  * Sample usage:
- * ~~~
- * scanner.ignoreWhitespace();
- * ~~~
+ *
+ *     scanner.ignoreWhitespace();
  */
    void ignoreWhitespace();
 
@@ -189,9 +183,8 @@ public:
  * sets the scanner to ignore such comments.
  *
  * Sample usage:
- * ~~~
- * scanner.ignoreComments();
- * ~~~
+ *
+ *     scanner.ignoreComments();
  */
    void ignoreComments();
 
@@ -208,9 +201,8 @@ public:
  * longest substring that can be interpreted as a real number.
  *
  * Sample usage:
- * ~~~
- * scanner.scanNumbers();
- * ~~~
+ *
+ *     scanner.scanNumbers();
  */
    void scanNumbers();
 
@@ -228,9 +220,8 @@ public:
  * clients can differentiate strings from other token types.
  *
  * Sample usage:
- * ~~~
- * scanner.scanStrings();
- * ~~~
+ *
+ *     scanner.scanStrings();
  */
    void scanStrings();
 
@@ -245,9 +236,8 @@ public:
  * set of characters that are accepted as part of a word.
  *
  * Sample usage:
- * ~~~
- * scanner.addWordCharacters(str);
- * ~~~
+ *
+ *     scanner.addWordCharacters(str);
  */
    void addWordCharacters(std::string str);
 
@@ -256,9 +246,8 @@ public:
  * Returns \c true if the character \em ch is valid in a word.
  *
  * Sample usage:
- * ~~~
- * if (scanner.isWordCharacter(ch)) ...
- * ~~~
+ *
+ *     if (scanner.isWordCharacter(ch)) ...
  */
    bool isWordCharacter(char ch) const;
 
@@ -270,9 +259,8 @@ public:
  * string that can be read at that point.
  *
  * Sample usage:
- * ~~~
- * scanner.addOperator(op);
- * ~~~
+ *
+ *     scanner.addOperator(op);
  */
    void addOperator(std::string op);
 
@@ -283,9 +271,8 @@ public:
  * an error.
  *
  * Sample usage:
- * ~~~
- * scanner.verifyToken(expected);
- * ~~~
+ *
+ *     scanner.verifyToken(expected);
  */
    void verifyToken(std::string expected);
 
@@ -297,9 +284,8 @@ public:
  * <code>STRING</code>, or <code>OPERATOR</code>.
  *
  * Sample usage:
- * ~~~
- * TokenType type = scanner.getTokenType(token);
- * ~~~
+ *
+ *     TokenType type = scanner.getTokenType(token);
  */
 TokenType getTokenType(std::string token) const;
 
@@ -308,9 +294,8 @@ TokenType getTokenType(std::string token) const;
  * Reads the next character from this scanner's input stream.
  *
  * Sample usage:
- * ~~~
- * int ch = scanner.getChar();
- * ~~~
+ *
+ *     int ch = scanner.getChar();
  */
 int getChar();
 
@@ -320,9 +305,8 @@ int getChar();
  * The character must match the last one that was read.
  *
  * Sample usage:
- * ~~~
- * scanner.ungetChar(ch);
- * ~~~
+ *
+ *     scanner.ungetChar(ch);
  */
 void ungetChar(int ch);
 
@@ -333,9 +317,8 @@ void ungetChar(int ch);
  * appropriate characters.
  *
  * Sample usage:
- * ~~~
- * string str = scanner.getStringValue(token);
- * ~~~
+ *
+ *     string str = scanner.getStringValue(token);
  */
    std::string getStringValue(std::string token) const;
 

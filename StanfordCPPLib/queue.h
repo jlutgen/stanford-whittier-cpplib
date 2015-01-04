@@ -1,6 +1,7 @@
 /**
  * @file queue.h
  *
+ * @brief
  * This file exports the Queue class, a collection
  * in which values are processed in a first-in/first-out
  * (FIFO) order.
@@ -45,9 +46,8 @@ public:
  * Creates a new empty queue.
  *
  * Sample usage:
- * ~~~
- * Queue<ValueType> queue;
- * ~~~
+ *
+ *     Queue<ValueType> queue;
  */
    Queue();
 
@@ -62,9 +62,8 @@ public:
  * Returns the number of values in this queue.
  *
  * Sample usage:
- * ~~~
- * int n = queue.size();
- * ~~~
+ *
+ *     int n = queue.size();
  */
    int size() const;
 
@@ -73,9 +72,8 @@ public:
  * Returns \c true if this queue contains no elements.
  *
  * Sample usage:
- * ~~~
- * if (queue.isEmpty()) ...
- * ~~~
+ *
+ *     if (queue.isEmpty()) ...
  */
    bool isEmpty() const;
 
@@ -84,9 +82,8 @@ public:
  * Removes all elements from this queue.
  *
  * Sample usage:
- * ~~~
- * queue.clear();
- * ~~~
+ *
+ *     queue.clear();
  */
    void clear();
 
@@ -95,9 +92,8 @@ public:
  * Adds a value to the end of this queue.
  *
  * Sample usage:
- * ~~~
- * queue.enqueue(value);
- * ~~~
+ *
+ *     queue.enqueue(value);
  */
 
    void enqueue(ValueType value);
@@ -106,9 +102,8 @@ public:
  * Removes and returns the first item in this queue.
  *
  * Sample usage:
- * ~~~
- * ValueType first = queue.dequeue();
- * ~~~
+ *
+ *     ValueType first = queue.dequeue();
  */
    ValueType dequeue();
 
@@ -120,9 +115,8 @@ public:
  * value by reference.
  *
  * Sample usage:
- * ~~~
- * ValueType first = queue.peek();
- * ~~~
+ *
+ *     ValueType first = queue.peek();
  */
    ValueType peek() const;
 
@@ -131,9 +125,8 @@ public:
  * Returns the first value in this queue by reference.
  *
  * Sample usage:
- * ~~~
- * ValueType first = queue.front();
- * ~~~
+ *
+ *     ValueType first = queue.front();
  */
    ValueType & front();
 
@@ -142,9 +135,8 @@ public:
  * Returns the last value in this queue by reference.
  *
  * Sample usage:
- * ~~~
- * ValueType last = queue.back();
- * ~~~
+ *
+ *     ValueType last = queue.back();
  */
    ValueType & back();
 
@@ -153,9 +145,8 @@ public:
  * Returns a printable string representation of this queue.
  *
  * Sample usage:
- * ~~~
- * string str = queue.toString();
- * ~~~
+ *
+ *     string str = queue.toString();
  */
    std::string toString();
 

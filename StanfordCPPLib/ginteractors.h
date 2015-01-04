@@ -1,8 +1,10 @@
 /**
  * @file ginteractors.h
  *
+ * @brief
  * This file exports a hierarchy of graphical interactors similar to those
  * provided in the Java Swing libraries.
+ *
  * <div class=inset>
  * <img src="../images/GInteractorHierarchy.png"
  *   width=558 alt="GInteractorHierarchy">
@@ -38,10 +40,12 @@
 /**
  * \class GInteractor
  *
- * This abstract class is the superclass for all graphical interactors.
+ * This abstract class is the common superclass for all graphical interactors.
  * In most applications, interactors will be added to a control strip
- * along one of the sides of the GWindow, but they can
- * also be placed in specific positions just like any other
+ * along one of the sides of the GWindow by calling the \link GWindow::addToRegion
+ * addToRegion \endlink method, but they can also be placed in specific positions (by calling
+ * \link GWindow::add add \endlink or \link GWindow::draw draw\endlink,
+ * for example) just like any other
  * GObject.
  */
 class GInteractor : public GObject {
@@ -53,9 +57,8 @@ public:
  * empty, activating the interactor generates a GActionEvent.
  *
  * Sample usage:
- * ~~~
- * interactor.setActionCommand(cmd);
- * ~~~
+ *
+ *     interactor.setActionCommand(cmd);
  */
    void setActionCommand(std::string cmd);
 
@@ -64,9 +67,8 @@ public:
  * Returns the action command associated with this interactor.
  *
  * Sample usage:
- * ~~~
- * string cmd = interactor.getActionCommand();
- * ~~~
+ *
+ *     string cmd = interactor.getActionCommand();
  */
    std::string getActionCommand();
 
@@ -77,10 +79,9 @@ public:
  * Changes the size of this interactor to the specified size.
  *
  * Sample usages:
- * ~~~
- * interactor.setSize(size);
- * interactor.setSize(width, height);
- * ~~~
+ *
+ *     interactor.setSize(size);
+ *     interactor.setSize(width, height);
  */
    void setSize(double width, double height);
 
@@ -88,13 +89,12 @@ public:
 /** \_overload */
    void setBounds(const GRectangle & size);
 /**
- * Changes the bounds of the interactor to the specified values.
+ * Changes the bounds of this interactor to the specified values.
  *
  * Sample usages:
- * ~~~
- * interactor.setBounds(rect);
- * interactor.setBounds(x, y, width, height);
- * ~~~
+ *
+ *     interactor.setBounds(rect);
+ *     interactor.setBounds(x, y, width, height);
  */ 
    void setBounds(double x, double y, double width, double height);
 
@@ -112,6 +112,8 @@ protected:
 };
 
 /**
+ * \class GButton
+ *
  * This interactor subclass represents an onscreen button.  The following
  * program displays a button that, when pressed, generates the message
  * <em>Please do not press this button again</em>
@@ -131,7 +133,6 @@ protected:
  *    }
  * ~~~
  */
-
 class GButton : public GInteractor {
 
 public:
@@ -139,15 +140,14 @@ public:
 /**
  * Creates a `%GButton` with the specified label.  This
  * constructor also sets the action command for the button to the
- * label string.
+ * \em label string.
  *
  * Sample usage:
- * ~~~
- * GButton *button = new GButton(label);
- * ~~~
+ *
+ *     GButton *button = new GButton(label);
  */
-
    GButton(std::string label);
+
 
 /* Prototypes for the virtual methods */
 
@@ -160,12 +160,14 @@ private:
 };
 
 /**
- * This interactor subclass represents an onscreen check box.  Clicking
- * once on the check box selects it; clicking again removes the selection.
- * If a <code>GCheckBox</code> has an action command, clicking on the box
- * generates a <code>GActionEvent</code>.
+ * \class GCheckBox
  *
- * The appearance of a check box is machine-dependent, but the declaration
+ * This interactor subclass represents an onscreen check box.  Clicking
+ * once on the check box selects it; clicking again unselects it.
+ * If a `%GCheckBox` has an action command, clicking on the box
+ * generates a GActionEvent.
+ *
+ * The appearance of a check box is platform-dependent, but the declaration
  * ~~~
  *  GCheckBox *traceBox = new GCheckBox("Trace");
  * ~~~
@@ -180,39 +182,36 @@ class GCheckBox : public GInteractor {
 public:
 
 /**
- * Creates a <code>GCheckBox</code> with the specified label.  In contrast
- * to the <code>GButton</code> constructor, this constructor does not set
+ * Creates a `%GCheckBox` with the specified label.  In contrast
+ * to the GButton constructor, this constructor does not set
  * an action command.
  *
  * Sample usage:
- * ~~~
- * GCheckBox *chkbox = new GCheckBox(label);
- * ~~~
+ *
+ *     GCheckBox *chkbox = new GCheckBox(label);
  */
-
    GCheckBox(std::string label);
 
+
 /**
- * Sets the state of the check box.
+ * Sets the state of this check box.
  *
  * Sample usage:
- * ~~~
- * chkbox->setSelected(state);
- * ~~~
+ *
+ *     chkbox->setSelected(state);
  */
-
    void setSelected(bool state);
 
+
 /**
- * Returns <code>true</code> if the check box is selected.
+ * Returns \c true if this check box is selected.
  *
  * Sample usage:
- * ~~~
- * if (chkbox->isSelected()) ...
- * ~~~
+ *
+ *     if (chkbox->isSelected()) ...
  */
-
    bool isSelected();
+
 
 /* Prototypes for the virtual methods */
 
@@ -225,11 +224,13 @@ private:
 };
 
 /**
+ * \class GSlider
+ *
  * This interactor subclass represents an onscreen slider.  Dragging
- * the slider control generates an <code>ActionEvent</code> if the
+ * the slider control generates an ActionEvent if the
  * slider has a nonempty action command.
  *
- * The display image of a slider is machine-dependent, but the declaration
+ * The display image of a slider is platform-dependent, but the declaration
  * ~~~
  *  GSlider *slider = new GSlider();
  * ~~~
@@ -238,15 +239,14 @@ private:
  * <img src="../images/GSlider.png" alt="GSlider">
  * </div>
  */
-
 class GSlider : public GInteractor {
 
 public:
 
-    /** \_overload */
-    GSlider();
+/** \_overload */
+   GSlider();
 /**
- * Creates a horizontal <code>GSlider</code>.  The second form allows
+ * Creates a horizontal `%GSlider`. The second form allows
  * the client to specify the minimum value, maximum value, and current
  * value of the slider.  The first form is equivalent to calling
  * `%GSlider(0, 100, 50)`.  Assigning an action command
@@ -254,35 +254,32 @@ public:
  * the slider value changes.
  *
  * Sample usages:
- * ~~~
- * GSlider *slider = new GSlider();   // same as GSlider(0, 100, 50)
- * GSlider *slider = new GSlider(min, max, value);
- * ~~~
+ *
+ *     GSlider *slider = new GSlider();   // same as GSlider(0, 100, 50)
+ *     GSlider *slider = new GSlider(min, max, value);
  */
    GSlider(int min, int max, int value);
 
 
 /**
- * Sets the current value of the slider.
+ * Sets the current value of this slider.
  *
  * Sample usage:
- * ~~~
- * slider->setValue(value);
- * ~~~
+ *
+ *     slider->setValue(value);
  */
-
    void setValue(int value);
 
+
 /**
- * Returns the current value of the slider.
+ * Returns the current value of this slider.
  *
  * Sample usage:
- * ~~~
- * int value = slider->getValue();
- * ~~~
+ *
+ *     int value = slider->getValue();
  */
-
    int getValue();
+
 
 /* Prototypes for the virtual methods */
 
@@ -297,51 +294,46 @@ private:
 };
 
 /**
+ * \class GTextField
+ *
  * This interactor subclass represents a text field for entering short
- * text strings.  Hitting the Enter key while in a text field generates a
+ * text strings.  Hitting the ENTER key while in a text field generates a
  * <code>GActionEvent</code> if the text field has a nonempty action command.
-
  */
-
 class GTextField : public GInteractor {
 
 public:
 
-    /** \_overload */
-    GTextField();
+/** \_overload */
+   GTextField();
 /**
- * Creates a text field capable of holding \em nChars characters,
- * which defaults to 10.  Assigning an action command to the text field
- * causes it to generate an action event whenever the user types the
- * Enter key.
+ * Creates a text field capable of holding \em nChars characters. The
+ * default constructor sets \em nChars to 10.
  *
  * Sample usages:
- * ~~~
- * GTextField *field = new GTextField();  // same as GTextField(10)
- * GTextField *field = new GTextField(nChars);
- * ~~~
+ *
+ *     GTextField *field = new GTextField();
+ *     GTextField *field = new GTextField(nChars);
  */
    GTextField(int nChars);
 
 
 /**
- * Sets the text of the field to the specified string.
+ * Sets the contents of this text field to the specified string.
  *
  * Sample usage:
- * ~~~
- * field->setText(str);
- * ~~~
+ *
+ *     field->setText(str);
  */
    void setText(std::string str);
 
 
 /**
- * Returns the contents of the text field.
+ * Returns the contents of this text field.
  *
  * Sample usage:
- * ~~~
- * string str = field->getText();
- * ~~~
+ *
+ *     string str = field->getText();
  */
    std::string getText();
 
@@ -354,11 +346,13 @@ public:
 };
 
 /**
+ * \class GChooser
+ *
  * This interactor subclass represents a selectable list.  The
- * %GChooser constructor creates an empty chooser.
+ * `%GChooser` constructor creates an empty chooser.
  * Once the chooser has been created, clients can use \ref addItem
- * to add the options.  For example, the following code creates a
- * %GChooser containing the four strings
+ * to add items to the chooser.  For example, the following code creates a
+ * `%GChooser` containing the four strings
  * <code>"Small"</code>, <code>"Medium"</code>, <code>"Large"</code>,
  * and <code>"X-Large"</code>:
  *
@@ -370,61 +364,55 @@ public:
  *    sizeChooser->addItem("X-Large");
  * ~~~
  *
- * The appearance of a %GChooser is machine-dependent,
+ * The appearance of a %GChooser is platform-dependent,
  * but the chooser generated by this code typically looks something like this:
  * <div class=inset>
  * <img src="../images/GChooser.png" alt="GChooser">
  * </div>
  */
-
 class GChooser : public GInteractor {
 
 public:
 
 /**
- * Creates a chooser that initially contains no items, which are added
- * using the \ref addItem method.  Assigning an action command
- * to the chooser causes it to generate an action event whenever the
- * user selects an item.
+ * Creates a chooser that initially contains no items.
+ * Assigning an action command to the chooser causes it
+ * to generate an action event whenever the user selects an item.
  *
  * Sample usage:
- * ~~~
- * GChooser *chooser = new GChooser();
- * ~~~
+ *
+ *     GChooser *chooser = new GChooser();
  */
    GChooser();
 
 
 /**
- * Adds a new item consisting of the specified string.
+ * Adds a new item to this chooser.
  *
  * Sample usage:
- * ~~~
- * chooser->addItem(item);
- * ~~~
+ *
+ *     chooser->addItem(item);
  */
    void addItem(std::string item);
 
 
 /**
- * Sets the chooser so that it shows the specified item.  If the item
- * does not exist in the chooser, no change occurs.
+ * Sets this chooser so that it shows the specified item.  If the item
+ * does not exist in the chooser, this method does nothing.
  *
  * Sample usage:
- * ~~~
- * chooser->setSelectedItem(item);
- * ~~~
+ *
+ *     chooser->setSelectedItem(item);
  */
    void setSelectedItem(std::string item);
 
 
 /**
- * Returns the current item selected in the chooser.
+ * Returns the current item selected in this chooser.
  *
  * Sample usage:
- * ~~~
- * string item = chooser->getSelectedItem();
- * ~~~
+ *
+ *     string item = chooser->getSelectedItem();
  */
    std::string getSelectedItem();
 

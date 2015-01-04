@@ -26,9 +26,13 @@
 #include <iostream>
 #include <string>
 #include <pthread.h>
+#include <cstring>  // JL: for strerror
+#include <sstream> // JL: temporary for debug msgs
+#include "strlib.h"
 #include "error.h"
 #include "map.h"
 #include "private/tplatform.h"
+#include "thread.h"
 
 using namespace std;
 
@@ -55,6 +59,34 @@ struct LockData {
    int refCount;
 };
 
+// added by JL - layout matches StartWithVoid and StartWithClientData from thread.h
+struct StartInfo {
+    void *fn;
+    void *data;
+};
+
+// debug stuff
+struct MemInfo {
+    int refCount;
+    string type;
+};
+// global map for debugging to keep track of
+// dynamic memory
+Map<void *, MemInfo> chunks;
+void store(void *p, string type) {
+    if (!chunks.containsKey(p)) {
+        MemInfo info;
+        info.refCount = 1;
+        info.type = type;
+        chunks[p] = info;
+    } else {
+        chunks[p].refCount++;
+    }
+}
+void storeDel(void *p) {
+    chunks[p].refCount--;
+}
+
 /* Constants */
 
 #define MAX_THREAD_ID int(unsigned(-1) >> 1)
@@ -75,37 +107,85 @@ static void *startThread(void *arg);
 int forkForPlatform(void (*fn)(void *), void *arg) {
    int id = getNextFreeThread();
    ThreadData *tdp = new ThreadData;
+   //store(tdp, "forkForPlatform tdp"); // DEBUG
+   tdp->id = id; // JL
    tdp->terminated = false;
    tdp->refCount = 1;
+   if (debug) printf("forkForPlatform(%d), setting refCount=1\n", id);
    tdp->fn = fn;
-   tdp->arg = arg;
-   getThreadDataMap().put(id, tdp);
+   //tdp->arg = arg;
+   tdp->arg = new StartInfo; // JL
+   //store(tdp->arg, "forkForPlatform tdp->arg"); // DEBUG
+   *(StartInfo *)(tdp->arg) = *(StartInfo *) arg; // BUGFIX (JL): arg pointed to local struct in thread.h::fork that was sometimes
+                                                  //   getting clobbered before new thread accessed it, so we copy the struct
+
+   synchronized(getThreadRefCountLock()) {
+      getThreadDataMap().put(id, tdp);
+   }
    pthread_attr_t attr;
    pthread_attr_init(&attr);
-   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);  // BUGFIX (JL): was DETACHED, but need to be able to join, so...
    int osErr = pthread_create(&tdp->pid, &attr, startThread, tdp);
    pthread_attr_destroy(&attr);
    if (osErr != 0) error("fork: Can't create new thread");
    return id;
 }
 
-void incThreadRefCountForPlatform(int id) {
-   // Fill in
+void incThreadRefCountForPlatform(int id, string s) {
+   ThreadData *tdp = getThreadDataMap().get(id);
+   if (tdp == NULL) {
+     if (debug) cout << "incThreadRef from " << s <<  ", id " << id << " has null tdp. Doing nothing." << endl;
+     return;
+   }
+   tdp->refCount++; // JL body
+   if (debug) cout << "incThreadRef from " << s << ", id " << id << " refCount now " << tdp->refCount << endl;
 }
 
-void decThreadRefCountForPlatform(int id) {
-   // Fill in
+void decThreadRefCountForPlatform(int id) { // JL body
+    ThreadData *tdp = getThreadDataMap().get(id);
+    if (tdp == NULL) {
+        if (debug) cout << "decThreadRef: id " << id << " has null tdp. Doing nothing." << endl;
+        return;
+    }
+    if (--(tdp->refCount) == 0) {
+        if (debug) cout << "decThreadRef: id " << id << " refCount now " << tdp->refCount << endl;
+        if (tdp->arg != NULL) {
+           delete (StartInfo *) (tdp->arg);
+           //storeDel(tdp->arg); // DEBUGGING
+        }
+
+        getThreadDataMap().remove(id);
+        // storeDel(tdp); // DEBUGGING
+        delete tdp;
+    }
+    else {
+        if (debug) cout << "decThreadRef: id " << id << " refCount now " << tdp->refCount << endl;
+    }
 }
 
 void joinForPlatform(int id) {
-   pthread_join(getThreadDataMap().get(id)->pid, NULL);
+   pthread_t pid;
+   synchronized(getThreadRefCountLock()) {
+      ThreadData *tdp = getThreadDataMap().get(id);
+      if (tdp == NULL) error(string("join: bad id: ") + integerToString(id));
+      pid = tdp->pid;
+   }
+//   stringstream msg;
+//   msg << "joinForPlatform: " << id << "->";
+//   msg <<  tdp->pid << "\n";
+//   cout << msg.str();
+   int osErr = pthread_join(pid, NULL);
+   if (osErr != 0) error(string("join: Can't join thread: ") + strerror(osErr)); // JL
 }
 
 int getCurrentThreadForPlatform() {
    ThreadData *tdp = (ThreadData *) pthread_getspecific(getThreadDataKey());
    if (tdp == NULL) {
+      if (debug) cout << "getCurrentThreadForPlatform: tdp is NULL, creating id 0" << endl;
       tdp = new ThreadData;
+      //store(tdp, "getCurrentThreadForPlatform tdp"); // DEBUG
       tdp->id = 0;
+      tdp->arg = NULL; // JL
       pthread_setspecific(getThreadDataKey(), tdp);
    }
    return tdp->id;
@@ -118,6 +198,7 @@ void yieldForPlatform() {
 int initLockForPlatform() {
    int id = getNextFreeLock();
    LockData *ldp = new LockData;
+   //store(ldp, "initLockForPlatform ldp");
    pthread_mutexattr_t attr;
    pthread_mutexattr_init(&attr);
    pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
@@ -126,27 +207,40 @@ int initLockForPlatform() {
    pthread_cond_init(&ldp->condition, NULL);
    ldp->owner = -1;
    ldp->depth = 0;
+   ldp->refCount = 1;
    getLockDataMap().put(id, ldp);
    return id;
 }
 
 void incLockRefCountForPlatform(int id) {
-   // Fill in
+   getLockDataMap().get(id)->refCount++; // JL
 }
 
-void decLockRefCountForPlatform(int id) {
-   // Fill in
+void decLockRefCountForPlatform(int id) { // JL body
+   LockData *ldp = getLockDataMap().get(id);
+   if (--(ldp->refCount) == 0) {
+       delete ldp;
+       //if (id > 1) // not the global Lock
+        //storeDel(ldp);
+       getLockDataMap().remove(id);
+   }
 }
 
 void lockForPlatform(int id) {
    LockData *ldp = getLockDataMap().get(id);
    pthread_mutex_lock(&ldp->mutex);
-   if (ldp->depth++ == 0) ldp->owner = getCurrentThreadForPlatform();
+   if (ldp->depth++ == 0) {
+        ldp->owner = getCurrentThreadForPlatform();
+        if (debug) printf("LOCK #%d acquired by thread %d\n",  id, ldp->owner);
+   }
 }
 
 void unlockForPlatform(int id) {
    LockData *ldp = getLockDataMap().get(id);
-   if (--ldp->depth == 0) ldp->owner = -1;
+   if (--ldp->depth == 0) {
+       if (debug) printf("UNLOCK #%d by thread %d\n", id, ldp->owner);
+       ldp->owner = -1;
+   }
    pthread_mutex_unlock(&ldp->mutex);
 }
 
@@ -175,9 +269,11 @@ static Map<int,LockData *> & getLockDataMap() {
 static int getNextFreeThread() {
    static int nextThread = 1;
    Map<int,ThreadData *> & map = getThreadDataMap();
-   while (map.containsKey(nextThread)) {
-      nextThread++;
-      if (nextThread == MAX_THREAD_ID) nextThread = 1;
+   synchronized(getThreadRefCountLock()) {
+      while (map.containsKey(nextThread)) {
+         nextThread++;
+         if (nextThread == MAX_THREAD_ID) nextThread = 1;
+      }
    }
    return nextThread++;
 }
@@ -214,3 +310,4 @@ static void *startThread(void *arg) {
    }
    return NULL;
 }
+

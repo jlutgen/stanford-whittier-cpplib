@@ -1,6 +1,7 @@
 /**
  * @file vector.h
  *
+ * @brief
  * This file exports the Vector class, which provides an
  * efficient, safe, convenient replacement for the array type in C++.
  */
@@ -54,10 +55,9 @@ public:
  * to the default value for the type.
  *
  * Sample usages:
- * ~~~
- * Vector<ValueType> vec;
- * Vector<ValueType> vec(n, value);
- * ~~~
+ *
+ *     Vector<ValueType> vec;
+ *     Vector<ValueType> vec(n, value);
  */
 
    Vector();
@@ -74,9 +74,8 @@ public:
  * Returns the number of elements in this vector.
  *
  * Sample usage:
- * ~~~
- * int nElems = vec.size();
- * ~~~
+ *
+ *     int nElems = vec.size();
  */
 
    int size() const;
@@ -85,9 +84,8 @@ public:
  * Returns <code>true</code> if this vector contains no elements.
  *
  * Sample usage:
- * ~~~
- * if (vec.isEmpty()) ...
- * ~~~
+ *
+ *     if (vec.isEmpty()) ...
  */
 
    bool isEmpty() const;
@@ -96,9 +94,8 @@ public:
  * Removes all elements from this vector.
  *
  * Sample usage:
- * ~~~
- * vec.clear();
- * ~~~
+ *
+ *     vec.clear();
  */
 
    void clear();
@@ -108,9 +105,8 @@ public:
  * method signals an error if the index is not in the array range.
  *
  * Sample usage:
- * ~~~
- * ValueType val = vec.get(index);
- * ~~~
+ *
+ *     ValueType val = vec.get(index);
  */
 
    const ValueType & get(int index) const;
@@ -121,9 +117,8 @@ public:
  * This method signals an error if the index is not in the array range.
  *
  * Sample usage:
- * ~~~
- * vec.set(index, value);
- * ~~~
+ *
+ *     vec.set(index, value);
  */
 
    void set(int index, const ValueType & value);
@@ -137,9 +132,8 @@ public:
  * <code>insertAt</code>.
  *
  * Sample usage:
- * ~~~
- * vec.insert(0, value);
- * ~~~
+ *
+ *     vec.insert(0, value);
  */
 
    void insert(int index, ValueType value);
@@ -159,9 +153,8 @@ public:
  * be called as \c removeAt.
  *
  * Sample usage:
- * ~~~
- * vec.remove(index);
- * ~~~
+ *
+ *     vec.remove(index);
  */
    void remove(int index);
 
@@ -178,9 +171,8 @@ public:
  * this method is may also be called as \c push_back.
  *
  * Sample usage:
- * ~~~
- * vec.add(value);
- * ~~~
+ *
+ *     vec.add(value);
  */
    void add(ValueType value);
 
@@ -198,9 +190,8 @@ public:
  * the index is outside the array range.
  *
  * Sample usage:
- * ~~~
- * vec[index]
- * ~~~
+ *
+ *     vec[index]
  */
    ValueType & operator[](int index);
    const ValueType & operator[](int index) const;
@@ -210,9 +201,8 @@ public:
  * Concatenates two vectors.
  *
  * Sample usage:
- * ~~~
- * v1 + v2
- * ~~~
+ *
+ *     v1 + v2
  */
    Vector operator+(const Vector & v2) const;
 
@@ -229,10 +219,9 @@ public:
  * ~~~
  *
  * Sample usages:
- * ~~~
- * v1 += v2;
- * v1 += value;
- * ~~~
+ *
+ *     v1 += v2;
+ *     v1 += value;
  */
 
    Vector & operator+=(const Vector & v2);
@@ -243,9 +232,8 @@ public:
  * Converts this vector to a printable string representation.
  *
  * Sample usage:
- * ~~~
- * string str = vec.toString();
- * ~~~
+ *
+ *     string str = vec.toString();
  */
 
    std::string toString();
@@ -255,9 +243,8 @@ public:
  * ascending index order.
  *
  * Sample usage:
- * ~~~
- * vec.mapAll(fn);
- * ~~~
+ *
+ *     vec.mapAll(fn);
  */
 
    void mapAll(void (*fn)(ValueType)) const;

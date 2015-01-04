@@ -1,6 +1,7 @@
 /**
  * @file pqueue.h
  *
+ * @brief
  * This file exports the PriorityQueue class, a
  * collection in which values are processed in priority order.
  */
@@ -45,9 +46,8 @@ public:
  * Initializes a new priority queue, which is initially empty.
  *
  * Sample usage:
- * ~~~
- * PriorityQueue<ValueType> pq;
- * ~~~
+ *
+ *     PriorityQueue<ValueType> pq;
  */
    PriorityQueue();
 
@@ -62,9 +62,8 @@ public:
  * Returns the number of values in this priority queue.
  *
  * Sample usage:
- * ~~~
- * int n = pq.size();
- * ~~~
+ *
+ *     int n = pq.size();
  */
    int size() const;
 
@@ -73,9 +72,8 @@ public:
  * Returns \c true if this priority queue contains no elements.
  *
  * Sample usage:
- * ~~~
- * if (pq.isEmpty()) ...
- * ~~~
+ *
+ *     if (pq.isEmpty()) ...
  */
    bool isEmpty() const;
 
@@ -84,9 +82,8 @@ public:
  * Removes all elements from this priority queue.
  *
  * Sample usage:
- * ~~~
- * pq.clear();
- * ~~~
+ *
+ *     pq.clear();
  */
    void clear();
 
@@ -98,9 +95,8 @@ public:
  * "priority 2" elements.
  *
  * Sample usage:
- * ~~~
- * pq.enqueue(value, priority);
- * ~~~
+ *
+ *     pq.enqueue(value, priority);
  */
    void enqueue(ValueType value, double priority);
 
@@ -111,9 +107,8 @@ public:
  * dequeued in the same order in which they were enqueued.
  *
  * Sample usage:
- * ~~~
- * ValueType first = pq.dequeue();
- * ~~~
+ *
+ *     ValueType first = pq.dequeue();
  */
    ValueType dequeue();
 
@@ -123,9 +118,8 @@ public:
  * removing it.
  *
  * Sample usage:
- * ~~~
- * ValueType first = pq.peek();
- * ~~~
+ *
+ *     ValueType first = pq.peek();
  */
    ValueType peek() const;
 
@@ -135,9 +129,8 @@ public:
  * removing it.
  *
  * Sample usage:
- * ~~~
- * double priority = pq.peekPriority();
- * ~~~
+ *
+ *     double priority = pq.peekPriority();
  */
    double peekPriority() const;
 
@@ -147,9 +140,8 @@ public:
  * removing it.
  *
  * Sample usage:
- * ~~~
- * ValueType first = pq.front();
- * ~~~
+ *
+ *     ValueType first = pq.front();
  */
    ValueType & front();
 
@@ -159,9 +151,8 @@ public:
  * removing it.
  *
  * Sample usage:
- * ~~~
- * ValueType last = pq.back();
- * ~~~
+ *
+ *     ValueType last = pq.back();
  */
    ValueType & back();
 
@@ -170,9 +161,8 @@ public:
  * Returns a printable string representation of this priority queue.
  *
  * Sample usage:
- * ~~~
- * string str = pq.toString();
- * ~~~
+ *
+ *     string str = pq.toString();
  */
    std::string toString();
 

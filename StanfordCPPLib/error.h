@@ -1,6 +1,7 @@
 /**
- * @file: error.h
+ * @file error.h
  *
+ * @brief
  * This file exports the ErrorException class and the
  * \ref error function.
  */

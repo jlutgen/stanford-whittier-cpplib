@@ -1,6 +1,7 @@
 /**
  * @file simpio.h
  *
+ * @brief
  * This file exports a set of functions that simplify input/output
  * operations in C++ and provide some error-checking on console input.
  */
@@ -38,9 +39,8 @@
  * \em prompt string is printed before reading the value.
  *
  * Sample usage:
- * ~~~
- * int n = getInteger(prompt);
- * ~~~
+ *
+ *     int n = getInteger(prompt);
  */
 int getInteger(std::string prompt = "");
 
@@ -54,9 +54,8 @@ int getInteger(std::string prompt = "");
  * optional \em prompt string is printed before reading the value.
  *
  * Sample usage:
- * ~~~
- * double x = getReal(prompt);
- * ~~~
+ *
+ *     double x = getReal(prompt);
  */
 double getReal(std::string prompt = "");
 
@@ -68,9 +67,8 @@ double getReal(std::string prompt = "");
  * \em prompt string is printed before reading the value.
  *
  * Sample usage:
- * ~~~
- * string line = getLine(prompt);
- * ~~~
+ *
+ *     string line = getLine(prompt);
  */
 std::string getLine(std::string prompt = "");
 

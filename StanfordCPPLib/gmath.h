@@ -1,6 +1,7 @@
 /**
  * @file gmath.h
  *
+ * @brief
  * This file exports several functions for working with graphical
  * geometry along with the mathematical constants \em PI
  * and \em E.
@@ -48,9 +49,9 @@ extern const double E;
  * expressed in degrees.
  *
  * Sample usage:
- * ~~~
- * double sine = sinDegrees(angle);
- * ~~~
+ *
+ *     double sine = sinDegrees(angle);
+ *
  */
 double sinDegrees(double angle);
 
@@ -60,9 +61,9 @@ double sinDegrees(double angle);
  * expressed in degrees.
  *
  * Sample usage:
- * ~~~
- * double cosine = cosDegrees(angle);
- * ~~~
+ *
+ *     double cosine = cosDegrees(angle);
+ *
  */
 double cosDegrees(double angle);
 
@@ -72,9 +73,9 @@ double cosDegrees(double angle);
  * expressed in degrees.
  *
  * Sample usage:
- * ~~~
- * double tangent = tanDegrees(angle);
- * ~~~
+ *
+ *     double tangent = tanDegrees(angle);
+ *
  */
 double tanDegrees(double angle);
 
@@ -83,9 +84,9 @@ double tanDegrees(double angle);
  * Converts an angle from radians to degrees.
  *
  * Sample usage:
- * ~~~
- * double degrees = toDegrees(radians);
- * ~~~
+ *
+ *     double degrees = toDegrees(radians);
+ *
  */
 double toDegrees(double radians);
 
@@ -94,9 +95,9 @@ double toDegrees(double radians);
  * Converts an angle from degrees to radians.
  *
  * Sample usage:
- * ~~~
- * double radians = toRadians(degrees);
- * ~~~
+ *
+ *     double radians = toRadians(degrees);
+ *
  */
 double toRadians(double degrees);
 
@@ -107,10 +108,10 @@ double vectorDistance(const GPoint & pt);
  * Computes the distance between the origin and the specified point.
  *
  * Sample usages:
- * ~~~
- * double r = vectorDistance(pt);
- * double r = vectorDistance(x, y);
- * ~~~
+ *
+ *     double r = vectorDistance(pt);
+ *     double r = vectorDistance(x, y);
+ *
  */
 double vectorDistance(double x, double y);
 
@@ -124,10 +125,10 @@ double vectorAngle(const GPoint & pt);
  * Cartesian plane.
  *
  * Sample usages:
- * ~~~
- * double angle = vectorAngle(pt);
- * double angle = vectorAngle(x, y);
- * ~~~
+ *
+ *     double angle = vectorAngle(pt);
+ *     double angle = vectorAngle(x, y);
+ *
  */
 double vectorAngle(double x, double y);
 

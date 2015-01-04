@@ -1,6 +1,7 @@
 /**
  * @file sound.h
  *
+ * @brief
  * This file exports the Sound class, which represents a sound.
  */
 
@@ -48,9 +49,8 @@ public:
  * the specified file.
  *
  * Sample usage:
- * ~~~
- * Sound sound(filename);
- * ~~~
+ *
+ *     Sound sound(filename);
  */
    Sound(std::string filename);
 
@@ -66,9 +66,8 @@ public:
  * for the playing to finish.
  *
  * Sample usage:
- * ~~~
- * sound.play();
- * ~~~
+ *
+ *     sound.play();
  */
    void play();
 

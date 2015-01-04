@@ -1,6 +1,7 @@
 /**
  * @file lexicon.h
  *
+ * @brief
  * This file exports the Lexicon class, which is a
  * compact structure for storing a list of words.
  */
@@ -81,10 +82,9 @@ public:
  * ~~~
  *
  * Sample usages:
- * ~~~
- * Lexicon lex;
- * Lexicon lex(filename);
- * ~~~
+ *
+ *     Lexicon lex;
+ *     Lexicon lex(filename);
  */
    Lexicon(std::string filename);
 
@@ -99,9 +99,8 @@ public:
  * Returns the number of words contained in this lexicon.
  *
  * Sample usage:
- * ~~~
- * int n = lex.size();
- * ~~~
+ *
+ *     int n = lex.size();
  */
    int size() const;
 
@@ -110,9 +109,8 @@ public:
  * Returns \c true if this lexicon contains no words.
  *
  * Sample usage:
- * ~~~
- * if (lex.isEmpty()) ...
- * ~~~
+ *
+ *     if (lex.isEmpty()) ...
  */
    bool isEmpty() const;
 
@@ -121,9 +119,8 @@ public:
  * Removes all words from the lexicon.
  *
  * Sample usage:
- * ~~~
- * lex.clear();
- * ~~~
+ *
+ *     lex.clear();
  */
    void clear();
 
@@ -132,9 +129,8 @@ public:
  * Adds the specified word to the lexicon.
  *
  * Sample usage:
- * ~~~
- * lex.add(word);
- * ~~~
+ *
+ *     lex.add(word);
  */
    void add(std::string word);
 
@@ -147,9 +143,8 @@ public:
  * is called or this method will signal an error.
  *
  * Sample usage:
- * ~~~
- * lex.addWordsFromFile(filename);
- * ~~~
+ *
+ *     lex.addWordsFromFile(filename);
  */
    void addWordsFromFile(std::string filename);
 
@@ -160,9 +155,8 @@ public:
  * ignored, so "Zoo" is the same as "ZOO" or "zoo".
  *
  * Sample usage:
- * ~~~
- * if (lex.contains(word)) ...
- * ~~~
+ *
+ *     if (lex.contains(word)) ...
  */
    bool contains(std::string word) const;
 
@@ -173,9 +167,8 @@ public:
  * so that "MO" is a prefix of both "monkey" and "Monday".
  *
  * Sample usage:
- * ~~~
- * if (lex.containsPrefix(prefix)) ...
- * ~~~
+ *
+ *     if (lex.containsPrefix(prefix)) ...
  */
    bool containsPrefix(std::string prefix) const;
 
@@ -184,9 +177,8 @@ public:
  * Calls the specified function on each word in this lexicon.
  *
  * Sample usage:
- * ~~~
- * lexicon.mapAll(fn);
- * ~~~
+ *
+ *     lexicon.mapAll(fn);
  */
    void mapAll(void (*fn)(std::string)) const;
    void mapAll(void (*fn)(const std::string &)) const;

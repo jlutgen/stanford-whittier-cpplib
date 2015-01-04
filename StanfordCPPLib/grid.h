@@ -1,6 +1,7 @@
 /**
  * @file grid.h
  *
+ * @brief
  * This file exports the Grid class, which offers a
  * convenient abstraction for representing a two-dimensional array.
  */
@@ -67,10 +68,9 @@ public:
  * dimensions.
  *
  * Sample usages:
- * ~~~
- * Grid<ValueType> grid;
- * Grid<ValueType> grid(nRows, nCols);
- * ~~~
+ *
+ *     Grid<ValueType> grid;
+ *     Grid<ValueType> grid(nRows, nCols);
  */
    Grid(int nRows, int nCols);
 
@@ -85,9 +85,8 @@ public:
  * Returns the number of rows in this grid.
  *
  * Sample usage:
- * ~~~
- * int nRows = grid.numRows();
- * ~~~
+ *
+ *     int nRows = grid.numRows();
  */
    int numRows() const;
 
@@ -96,9 +95,8 @@ public:
  * Returns the number of columns in this grid.
  *
  * Sample usage:
- * ~~~
- * int nCols = grid.numCols();
- * ~~~
+ *
+ *     int nCols = grid.numCols();
  */
    int numCols() const;
 
@@ -111,10 +109,9 @@ public:
  * are discarded.
  *
  * Sample usages:
- * ~~~
- * grid.resize(nRows, nCols);
- * grid.resize(nRows, nCols, retain);
- * ~~~
+ *
+ *     grid.resize(nRows, nCols);
+ *     grid.resize(nRows, nCols, retain);
  */
    void resize(int nRows, int nCols, bool retain = false);
 
@@ -123,9 +120,8 @@ public:
   * Stores the given value in every cell of this grid.
   *
   * Sample usage:
-  * ~~~
-  * grid.fill(value);
-  * ~~~
+  *
+  *     grid.fill(value);
   */
    void fill(const ValueType& value);
 
@@ -135,9 +131,8 @@ public:
  * is inside the bounds of the grid.
  *
  * Sample usage:
- * ~~~
- * if (grid.inBounds(row, col)) ...
- * ~~~
+ *
+ *     if (grid.inBounds(row, col)) ...
  */
    bool inBounds(int row, int col) const;
 
@@ -148,9 +143,8 @@ public:
  * specified location is outside the grid boundaries.
  *
  * Sample usage:
- * ~~~
- * ValueType value = grid.get(row, col);
- * ~~~
+ *
+ *     ValueType value = grid.get(row, col);
  */
    ValueType get(int row, int col);
    const ValueType & get(int row, int col) const;
@@ -162,9 +156,8 @@ public:
  * if the specified location is outside the grid boundaries.
  *
  * Sample usage:
- * ~~~
- * grid.set(row, col, value);
- * ~~~
+ *
+ *     grid.set(row, col, value);
  */
    void set(int row, int col, ValueType value);
 
@@ -177,9 +170,8 @@ public:
  * the grid boundaries.
  *
  * Sample usage:
- * ~~~
- *  grid[row][col]
- * ~~~
+ *
+ *      grid[row][col]
  */
    GridRow operator[](int row);
    const GridRowConst operator [](int row) const;
@@ -189,9 +181,8 @@ public:
  * Returns a printable string representation of this grid.
  *
  * Sample usage:
- * ~~~
- * string str = grid.toString();
- * ~~~
+ *
+ *     string str = grid.toString();
  */
    std::string toString();
 
@@ -203,9 +194,8 @@ public:
  * in row 1, and so on.
  *
  * Sample usage:
- * ~~~
- * grid.mapAll(fn);
- * ~~~
+ *
+ *     grid.mapAll(fn);
  */
    void mapAll(void (*fn)(ValueType value)) const;
    void mapAll(void (*fn)(const ValueType & value)) const;

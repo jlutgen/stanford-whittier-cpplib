@@ -1,6 +1,7 @@
 /**
  * @file graph.h
  *
+ * @brief
  * This file exports a parameterized Graph class used
  * to represent <b><i>graphs,</i></b> which consist of a set of
  * <b><i>nodes</i></b> (vertices) and a set of <b><i>arcs</i></b> (edges).
@@ -55,6 +56,10 @@
  *   <li>A `NodeType *` field called \c start
  *   <li>A `NodeType *` field called \c finish
  * </ul>
+ *
+ * As a convenience, this class provides methods that support reading graph data
+ * in a simple textual form from an input stream (or string) via a TokenScanner,
+ * and methods that support writing graph data to an output stream.
  */
 
 template <typename NodeType, typename ArcType>
@@ -64,9 +69,8 @@ public:
  * Creates an empty `%Graph` object.
  *
  * Sample usage:
- * ~~~
- * Graph<NodeType,ArcType> g;
- * ~~~
+ *
+ *     Graph<NodeType,ArcType> g;
  */
     Graph();
     
@@ -74,7 +78,11 @@ public:
  * Frees the internal storage allocated to represent the graph.
  */
     virtual ~Graph();
-    
+
+/** \_overload */
+   ArcType* addArc(const std::string& s1, const std::string& s2);
+/** \_overload */
+   ArcType* addArc(NodeType* n1, NodeType* n2);
 /**
  * Adds an arc to this graph.  The endpoints of the arc can be specified
  * either as strings indicating the names of the nodes or as pointers
@@ -84,58 +92,58 @@ public:
  * case the client needs to capture this value.
  * If the third form is called and the start/finish nodes passed are not
  * already part of the graph, they are added to the graph.
- * If any pointer passed is \c NULL, throws an error.
+ * If any pointer passed is \c NULL, this method signals an error.
  *
  * Sample usages:
- * ~~~
- * g.addArc(s1, s2);
- * g.addArc(n1, n2);
- * g.addArc(arc);
- * ~~~
+ *
+ *     g.addArc(s1, s2);
+ *     g.addArc(n1, n2);
+ *     g.addArc(arc);
  */
-    ArcType* addArc(const std::string& s1, const std::string& s2);
-    ArcType* addArc(NodeType* n1, NodeType* n2);
     ArcType* addArc(ArcType* arc);
 
+
+/** \_overload */
+   NodeType* addNode(const std::string& name);
 /**
  * Adds a node to this graph.  The first version of this method
  * creates a new node of the appropriate type and initializes its
  * fields; the second assumes that the client has already created
  * the node and simply adds it to the graph.  Both versions of this
  * method return a pointer to the node.
- * If any pointer passed is \c NULL, throws an error.
+ * If any pointer passed is \c NULL, this method signals an error.
  *
  * Sample usages:
- * ~~~
- * NodeType* node = g.addNode(name);
- * NodeType* node = g.addNode(node);
- * ~~~
+ *
+ *     NodeType* node = g.addNode(name);
+ *     NodeType* node = g.addNode(node);
  */
-    NodeType* addNode(const std::string& name);
     NodeType* addNode(NodeType* node);
+
 
 /**
  * Reinitializes this graph to be empty, freeing any heap storage.
  *
  * Sample usage:
- * ~~~
- * g.clear();
- * ~~~
+ *
+ *     g.clear();
  */
     void clear();
     
+
 /**
  * Compares two graphs for equality.
  * Returns \c true if this graph contains exactly the same
  * vertices, edges, and connections as the given other graph.
  *
  * Sample usage:
- * ~~~
- * if (g.equals(graph2)) ...
- * ~~~
+ *
+ *     if (g.equals(graph2)) ...
  */
     bool equals(const Graph<NodeType, ArcType>& graph2) const;
     
+    const Set<ArcType*>& getArcSet(NodeType* node) const;
+    const Set<ArcType*>& getArcSet(const std::string& name) const;
 /**
  * Returns the set of all arcs in this graph or, in the second and
  * third forms, the arcs that start at the specified node, which
@@ -143,16 +151,16 @@ public:
  * If any pointer passed is \c NULL, throws an error.
  *
  * Sample usages:
- * ~~~
- * for (ArcType* arc : g.getArcSet()) ...
- * for (ArcType* arc : g.getArcSet(node)) ...
- * for (ArcType* arc : g.getArcSet(name)) ...
- * ~~~
+ *
+ *     for (ArcType* arc : g.getArcSet()) ...
+ *     for (ArcType* arc : g.getArcSet(node)) ...
+ *     for (ArcType* arc : g.getArcSet(name)) ...
  */
     const Set<ArcType*>& getArcSet() const;
-    const Set<ArcType*>& getArcSet(NodeType* node) const;
-    const Set<ArcType*>& getArcSet(const std::string& name) const;
-    
+
+
+/** \_overload */
+   const Set<NodeType*> getNeighbors(NodeType* node) const;
 /**
  * Returns the set of nodes that are neighbors of the specified
  * node, which can be indicated either as a pointer or by name.
@@ -160,13 +168,12 @@ public:
  * in this graph, throws an error.
  *
  * Sample usages:
- * ~~~
- * for (NodeType *node : g.getNeighbors(node)) ...
- * for (NodeType *node : g.getNeighbors(name)) ...
- * ~~~
+ *
+ *     for (NodeType *node : g.getNeighbors(node)) ...
+ *     for (NodeType *node : g.getNeighbors(name)) ...
  */
-    const Set<NodeType*> getNeighbors(NodeType* node) const;
-    const Set<NodeType*> getNeighbors(const std::string& node) const;
+   const Set<NodeType*> getNeighbors(const std::string& node) const;
+
 
 /**
  * Looks up a node in the name table attached to this graph and
@@ -174,22 +181,24 @@ public:
  * name exists, returns \c NULL.
  *
  * Sample usage:
- * ~~~
- * NodeType* node = g.getNode(name);
- * ~~~
+ *
+ *     NodeType* node = g.getNode(name);
  */
-    NodeType* getNode(const std::string& name) const;
+   NodeType* getNode(const std::string& name) const;
     
+
 /**
  * Returns the set of all nodes in this graph.
  *
  * Sample usage:
- * ~~~
- * for (NodeType *node : g.getNodeSet()) ...
- * ~~~
+ *
+ *     for (NodeType *node : g.getNodeSet()) ...
  */
     const Set<NodeType*>& getNodeSet() const;
 
+
+/** \_overload */
+   bool isConnected(NodeType* n1, NodeType* n2) const;
 /**
  * Returns \c true if this graph contains an arc from
  * \em n1 to \em n2</code>.  As in the \ref addArc
@@ -198,58 +207,60 @@ public:
  * in this graph, returns false.
  *
  * Sample usages:
- * ~~~
- * if (g.isConnected(n1, n2)) ...
- * if (g.isConnected(s1, s2)) ...
- * ~~~
+ *
+ *     if (g.isConnected(n1, n2)) ...
+ *     if (g.isConnected(s1, s2)) ...
  */
-    bool isConnected(NodeType* n1, NodeType* n2) const;
     bool isConnected(const std::string& s1, const std::string& s2) const;
+
 
 /**
  * Returns \c true if this graph is empty.
  *
  * Sample usage:
- * ~~~
- * if (g.isEmpty()) ...
- * ~~~
+ *
+ *     if (g.isEmpty()) ...
  */
     bool isEmpty() const;
-    
+
+
+/** \_overload */
+   void removeArc(NodeType* n1, NodeType* n2);
+/** \_overload */
+   void removeArc(ArcType* arc);
 /**
  * Removes an arc from this graph. The arc can be specified in any
  * of three ways: by the names of its endpoints, by the node pointers
  * at its endpoints, or as an arc pointer.  If more than one arc
  * connects the specified endpoints, all of them are removed.
  * If no arc connects the given endpoints, or the given arc is not found,
- * the call has no effect.
+ * this method has no effect.
  *
  * Sample usages:
- * ~~~
- * g.removeArc(s1, s2);
- * g.removeArc(n1, n2);
- * g.removeArc(arc);
- * ~~~
+ *
+ *     g.removeArc(s1, s2);
+ *     g.removeArc(n1, n2);
+ *     g.removeArc(arc);
  */
-    void removeArc(const std::string& s1, const std::string& s2);
-    void removeArc(NodeType* n1, NodeType* n2);
-    void removeArc(ArcType* arc);
+   void removeArc(const std::string& s1, const std::string& s2);
 
+
+/** \_overload */
+   void removeNode(const std::string& name);
 /**
  * Removes a node from this graph. The node can be specified
  * either by its name or as a pointer value.  Removing a node also
  * removes all arcs that contain that node.
  * If a node or name is passed that is not part of the graph,
- * the call has no effect.
+ * this method has no effect.
  *
  * Sample usages:
- * ~~~
- * g.removeNode(name);
- * g.removeNode(node);
- * ~~~
+ *
+ *     g.removeNode(name);
+ *     g.removeNode(node);
  */
-    void removeNode(const std::string& name);
-    void removeNode(NodeType* node);
+   void removeNode(NodeType* node);
+
 
 /**
  * Reads the data for an arc from the scanner.  The \em forward
@@ -261,30 +272,28 @@ public:
  * that it initializes one or both arcs, as appropriate.
  *
  * Sample usage:
- * ~~~
- * scanArcData(scanner, forward, backward);
- * ~~~
+ *
+ *     scanArcData(scanner, forward, backward);
  */
     virtual void scanArcData(TokenScanner& scanner,
                              ArcType* forward, ArcType* backward) {
         /* Empty */
     }
 
+
 /**
- * Reads one "entry" for the graph, which is either a node
- * description or an arc description.  This
+ * Reads one "entry" for the graph from a scanner. An entry
+ * is either a node description or an arc description.  This
  * method returns \c true if it reads an entry, and
  * \c false at the end of file or at text that cannot be
  * recognized as a graph entry.
  *
- * Node entries consist of the name of a node (which may be quoted
+ * A node description consists of the name of the node (which may be quoted
  * if it contains special characters), optionally followed by data for
- * the node.  Arc descriptions have one of the following forms:
+ * the node.  An arc description has one of the following forms:
  *
- * ~~~
- *    n1 -> n2
- *    n1 - n2
- * ~~~
+ *       n1 -> n2
+ *       n1 - n2
  *
  * either of which can be followed by data for the arc.  The first form
  * creates a single directed arc; the second creates two arcs, one in
@@ -295,77 +304,77 @@ public:
  * defined in this interface.
  *
  * Sample usage:
- * ~~~
- * while (g.scanGraphEntry(scanner)) { }
- * ~~~
+ *
+ *     while (g.scanGraphEntry(scanner)) { }
  */
     virtual bool scanGraphEntry(TokenScanner& scanner);
 
+
 /**
- * Reads the data for the specified node from the scanner.  The default
+ * Reads the data for a node from a scanner.  The default
  * implementation of this method is empty.  Clients that want to initialize
  * other fields in the node from the token stream must override this method.
  *
  * Sample usage:
- * ~~~
- * scanNodeData(scanner, node);
- * ~~~
+ *
+ *     scanNodeData(scanner, node);
  */
     virtual void scanNodeData(TokenScanner& scanner, NodeType* node) {
         /* Empty */
     }
 
+
 /**
  * Returns the number of nodes in this graph.
  *
  * Sample usage:
- * ~~~
- * int size = g.size();
- * ~~~
+ *
+ *     int size = g.size();
  */
     int size() const;
+
 
 /**
  * Returns a printable string representation of this graph.
  *
  * Sample usage:
- * ~~~
- * string str = g.toString();
- * ~~~
+ *
+ *     string str = g.toString();
  */
     std::string toString() const;
     
+
 /**
- * Writes the data for the arc to the output stream.  The default
+ * Writes the data for an arc to an output stream.  The default
  * implementation of this method is empty.  Clients that want to store
  * other fields from the arc must override this method so that it writes
  * that data in a form that \ref scanArcData can read.
  *
  * Sample usage:
- * ~~~
- * writeArcData(os, arc);
- * ~~~
+ *
+ *     writeArcData(os, arc);
  */
     virtual void writeArcData(std::ostream& os, ArcType* arc) const {
         /* Empty */
     }
 
+
 /**
- * Writes the data for the node to the output stream.  The default
+ * Writes the data for a node to an output stream.  The default
  * implementation of this method is empty.  Clients that want to store
  * other fields from the node must override this method so that it
  * writes that data in a form that \ref scanNodeData can read.
  *
  * Sample usage:
- * ~~~
- * writeNodeData(os, node);
- * ~~~
+ *
+ *     writeNodeData(os, node);
  */
     virtual void writeNodeData(std::ostream& os, NodeType* node) const {
         /* Empty */
     }
 
-//    /*
+
+// /*
 // * Iterator support
 // * ----------------
 // * The classes in the StanfordCPPLib collection implement input
@@ -543,6 +552,22 @@ private:
     void verifyNotNull(void* p, const std::string& member = "") const;
     NodeType* scanNode(TokenScanner& scanner);
 };
+
+
+/**
+ * Returns a hash code for the given Graph. This function is provided
+ * for convenience so that clients do not need to write their own
+ * \c hashCode function in order to be able to create a HashSet of
+ * Graph objects or a HashMap whose keys are Graph objects.
+ *
+ * Sample usage:
+ *
+ *     int hash = hashCode(graph);
+ *
+ */
+template <typename NodeType, typename ArcType>
+int hashCode(const Graph<NodeType, ArcType>& graph);
+
 
 /*
  * Implementation notes: Graph constructor

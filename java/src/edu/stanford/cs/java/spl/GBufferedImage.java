@@ -1,5 +1,6 @@
 package edu.stanford.cs.java.spl;
 
+import edu.stanford.cs.java.graphics.GImageTools;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
@@ -71,15 +72,20 @@ public class GBufferedImage extends GInteractor {
 		return imageWidth;
 	}
 	
-	public void load(String filename) {
+	public String load(String filename) {
 		try {
+			System.err.println("JBE DEBUG: here"); // DELETE
 			bufferedImage = ImageIO.read(new File(filename));
+			if (bufferedImage == null)
+				throw (new RuntimeException("Could not load image file: unsupported file format"));
+			System.err.println("JBE DEBUG here2"); // DELETE
 			imageWidth = bufferedImage.getWidth();
 			imageHeight = bufferedImage.getHeight();
 			repaintImage();
-			System.out.println("result:" + toStringBase64());   // this is a LONG string
+			//System.out.println("result:" + toStringBase64());   // this is a LONG string
+		    return toStringBase64();
 		} catch (Exception ex) {
-			System.out.println("error:" + ex.getClass().getSimpleName() + ": " + ex.getMessage().replace('\n', ' '));
+			throw (new RuntimeException(ex.getMessage()));
 		}
 	}
 	
@@ -97,18 +103,7 @@ public class GBufferedImage extends GInteractor {
 	}
 	
 	public void save(String filename) {
-		String extension = "png";
-		int dot = filename.lastIndexOf('.');
-		if (dot >= 0) {
-			extension = filename.substring(dot + 1).toLowerCase();
-		}
-		
-		try {
-			ImageIO.write(bufferedImage, extension, new File(filename));
-			System.out.println("ok");
-		} catch (Exception ex) {
-			System.out.println("error:" + ex.getClass().getSimpleName() + ": " + ex.getMessage().replace('\n', ' '));
-		}
+		GImageTools.saveImage(bufferedImage, filename);
 	}
 	
 	public void setRGB(int x, int y, int rgb) {

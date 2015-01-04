@@ -1,8 +1,10 @@
 /**
  * @file gobjects.h
  *
+ * @brief
  * This file exports a hierarchy of graphical shapes based on
  * the model developed for the ACM Java Graphics library.
+ *
  * <div class=inset>
  * <img src="../images/GObjectHierarchy-h.png"
  *   width=768 alt="GObjectHierarchy">
@@ -42,7 +44,7 @@ class GCompound;
 /**
  * \class GObject
  *
- * This class is the common superclass of all graphical objects that can
+ * This abstract class is the common superclass of all graphical objects that can
  * be displayed on a graphical window.  The class `%GObject`
  * itself is an <b><i>abstract class</i></b>, which means that you are not
  * allowed to construct a `%GObject` directly but must instead
@@ -70,9 +72,8 @@ public:
  * Returns the <i>x</i>-coordinate of this object.
  *
  * Sample usage:
- * ~~~
- * double x = gobj->getX();
- * ~~~
+ *
+ *     double x = gobj->getX();
  */
    double getX() const;
 
@@ -81,9 +82,8 @@ public:
  * Returns the <i>y</i>-coordinate of this object.
  *
  * Sample usage:
- * ~~~
- * double y = gobj->getY();
- * ~~~
+ *
+ *     double y = gobj->getY();
  */
    double getY() const;
 
@@ -92,9 +92,8 @@ public:
  * Returns the location of this object as a GPoint.
  *
  * Sample usage:
- * ~~~
- * GPoint pt = gobj->getLocation();
- * ~~~
+ *
+ *     GPoint pt = gobj->getLocation();
  */
    GPoint getLocation() const;
 
@@ -107,10 +106,9 @@ public:
  * of separate \em x and \em y coordinates.
  *
  * Sample usages:
- * ~~~
- * gobj->setLocation(x, y);
- * gobj->setLocation(pt);
- * ~~~
+ *
+ *     gobj->setLocation(x, y);
+ *     gobj->setLocation(pt);
  */
    void setLocation(const GPoint & pt);
 
@@ -120,9 +118,8 @@ public:
  * \em dx and \em dy.
  *
  * Sample usage:
- * ~~~
- * gobj->move(dx, dy);
- * ~~~
+ *
+ *     gobj->move(dx, dy);
  */
    void move(double dx, double dy);
 
@@ -132,9 +129,8 @@ public:
  * its bounding box.
  *
  * Sample usage:
- * ~~~
- * double width = gobj->getWidth();
- * ~~~
+ *
+ *     double width = gobj->getWidth();
  */
    double getWidth() const;
 
@@ -144,9 +140,8 @@ public:
  * of its bounding box.
  *
  * Sample usage:
- * ~~~
- * double height = gobj->getHeight();
- * ~~~
+ *
+ *     double height = gobj->getHeight();
  */
    double getHeight() const;
 
@@ -155,9 +150,8 @@ public:
  * Returns the size of this object as a GDimension.
  *
  * Sample usage:
- * ~~~
- * GDimension size = gobj->getSize();
- * ~~~
+ *
+ *     GDimension size = gobj->getSize();
  */
    GDimension getSize() const;
 
@@ -173,9 +167,8 @@ public:
  * rectangle that covers the entire window area occupied by the string.
  *
  * Sample usage:
- * ~~~
- * GRectangle rect = gobj->getBounds();
- * ~~~
+ *
+ *     GRectangle rect = gobj->getBounds();
  */
    virtual GRectangle getBounds() const = 0;
 
@@ -184,9 +177,8 @@ public:
  * Sets the width of the line used to draw this object.
  *
  * Sample usage:
- * ~~~
- * gobj->setLineWidth(lineWidth);
- * ~~~
+ *
+ *     gobj->setLineWidth(lineWidth);
  */
    void setLineWidth(double lineWidth);
 
@@ -195,9 +187,8 @@ public:
  * Returns the width of the line used to draw this object.
  *
  * Sample usage:
- * ~~~
- * double lineWidth = gobj->getLineWidth();
- * ~~~
+ *
+ *     double lineWidth = gobj->getLineWidth();
  */
    double getLineWidth() const;
 
@@ -241,13 +232,12 @@ public:
  * pair is omitted from the color string, the alpha value is set to 255 by default.
  *
  * Sample usages:
- * ~~~
- * gw.setColor("LIGHT_GRAY");  // these five statements have the same effect
- * gw.setColor("#bfbfbf");
- * gw.setColor("#ffbfbfbf");
- * gw.setColor(0xffbfbfbf);
- * gw.setColor(4290756543);
- * ~~~
+ *
+ *     gw.setColor("LIGHT_GRAY");  // these five statements have the same effect
+ *     gw.setColor("#bfbfbf");
+ *     gw.setColor("#ffbfbfbf");
+ *     gw.setColor(0xffbfbfbf);
+ *     gw.setColor(4290756543);
  */
    void setColor(int rgb);
 
@@ -264,9 +254,8 @@ public:
  * see the description of \ref setColor.
  *
  * Sample usage:
- * ~~~
- * string color = gobj->getColor();
- * ~~~
+ *
+ *     string color = gobj->getColor();
  */
    std::string getColor() const;
 
@@ -281,10 +270,9 @@ public:
  * to the \em x and \em y dimensions.
  *
  * Sample usages:
- * ~~~
- * gobj->scale(sf);
- * gobj->scale(sx, sy);
- * ~~~
+ *
+ *     gobj->scale(sf);
+ *     gobj->scale(sx, sy);
  */ 
    void scale(double sx, double sy);
 
@@ -294,9 +282,8 @@ public:
  * counterclockwise around its origin.
  *
  * Sample usage:
- * ~~~
- * gobj->rotate(theta);
- * ~~~
+ *
+ *     gobj->rotate(theta);
  */
    void rotate(double theta);
 
@@ -305,9 +292,8 @@ public:
  * Sets whether this object is visible.
  *
  * Sample usage:
- * ~~~
- * gobj->setVisible(flag);
- * ~~~
+ *
+ *     gobj->setVisible(flag);
  */
    void setVisible(bool flag);
 
@@ -316,9 +302,8 @@ public:
  * Returns <code>true</code> if this object is visible.
  *
  * Sample usage:
- * ~~~
- * if (gobj->isVisible()) ...
- * ~~~
+ *
+ *     if (gobj->isVisible()) ...
  */
    bool isVisible() const;
 
@@ -328,9 +313,8 @@ public:
  * If it was already at the front of the stack, nothing happens.
  *
  * Sample usage:
- * ~~~
- * gobj->sendForward();
- * ~~~
+ *
+ *     gobj->sendForward();
  */
    void sendForward();
 
@@ -342,9 +326,8 @@ public:
  * are further back.
  *
  * Sample usage:
- * ~~~
- * gobj->sendToFront();
- * ~~~
+ *
+ *     gobj->sendToFront();
  */
    void sendToFront();
 
@@ -354,9 +337,8 @@ public:
  * If it was already at the back of the stack, nothing happens.
  *
  * Sample usage:
- * ~~~
- * gobj->sendBackward();
- * ~~~
+ *
+ *     gobj->sendBackward();
  */
    void sendBackward();
 
@@ -368,9 +350,8 @@ public:
  * in front.
  *
  * Sample usage:
- * ~~~
- * gobj->sendToBack();
- * ~~~
+ *
+ *     gobj->sendToBack();
  */
    void sendToBack();
 
@@ -378,27 +359,25 @@ public:
 /** \_overload */
    virtual bool contains(double x, double y) const;
 /**
- * Returns <code>true</code> if the specified point is inside the object.
+ * Returns <code>true</code> if the specified point is inside this object.
  * The second version takes a single GPoint argument instead of separate
  * \em x and \em y coordinates.
  *
  * Sample usages:
- * ~~~
- * if (gobj->contains(x, y)) ...
- * if (gobj->contains(pt)) ...
- * ~~~
+ *
+ *     if (gobj->contains(x, y)) ...
+ *     if (gobj->contains(pt)) ...
  */   
    bool contains(GPoint pt) const;
 
 
 /**
- * Returns the concrete type of the object as a string, as in
+ * Returns the concrete type of this object as a string, as in
  * <code>"GOval"</code> or <code>"GLabel"</code>.
  *
  * Sample usage:
- * ~~~
- * string type = gobj->getType();
- * ~~~
+ *
+ *     string type = gobj->getType();
  */
    virtual std::string getType() const = 0;
 
@@ -407,9 +386,8 @@ public:
  * Returns a printable string representation of this object.
  *
  * Sample usage:
- * ~~~
- * gobj->toString();
- * ~~~
+ *
+ *     string s = gobj->toString();
  */
    virtual std::string toString() const = 0;
 
@@ -424,9 +402,8 @@ public:
  * returns <code>NULL</code>.
  *
  * Sample usage:
- * ~~~
- * GCompound *parent = gobj->getParent();
- * ~~~
+ *
+ *     GCompound *parent = gobj->getParent();
  */
    GCompound *getParent() const;
 
@@ -443,7 +420,7 @@ protected:
    double x;                       /* The x coordinate of the origin     */
    double y;                       /* The y coordinate of the origin     */
    double lineWidth;               /* The width of the line in pixels    */
-   std::string color;              /* The color of the object            */
+   std::string color;              /* The color of this object            */
    bool visible;                   /* Indicates if object is visible     */
    bool transformed;               /* Indicates if object is transformed */
    GCompound *parent;              /* Pointer to the parent              */
@@ -474,9 +451,9 @@ protected:
 /**
  * \class GRect
  *
- * This class represents a graphical object whose appearance consists of
+ * This graphical object subclass represents a graphical object whose appearance consists of
  * a rectangular box.  For example, the following code adds a filled, red
- * 200<small>x</small>100 rectangle
+ * 200-by-100 rectangle
  * at the upper-left corner of the graphics window:
  *
  * ~~~
@@ -503,10 +480,9 @@ public:
  * given by \em x and \em y.
  *
  * Sample usages:
- * ~~~
- * GRect *rect = new GRect(width, height);
- * GRect *rect = new GRect(x, y, width, height);
- * ~~~
+ *
+ *     GRect *rect = new GRect(width, height);
+ *     GRect *rect = new GRect(x, y, width, height);
  */
    GRect(double x, double y, double width, double height);
 
@@ -525,10 +501,9 @@ public:
  * separate width and height values.
  *
  * Sample usages:
- * ~~~
- * rect->setSize(width, height);
- * rect->setSize(size);
- * ~~~
+ *
+ *     rect->setSize(width, height);
+ *     rect->setSize(size);
  */
    void setSize(const GDimension & size);
 
@@ -540,10 +515,9 @@ public:
  * The second version takes a single GRectangle parameter.
  *
  * Sample usages:
- * ~~~
- * rect->setBounds(x, y, width, height);
- * rect->setBounds(size);
- * ~~~
+ *
+ *     rect->setBounds(x, y, width, height);
+ *     rect->setBounds(size);
  */
    void setBounds(const GRectangle & size);
 
@@ -553,9 +527,8 @@ public:
  * outlined and <code>true</code> is filled.
  *
  * Sample usage:
- * ~~~
- * rect->setFilled(flag);
- * ~~~
+ *
+ *     rect->setFilled(flag);
  */
    void setFilled(bool flag);
 
@@ -564,9 +537,8 @@ public:
  * Returns <code>true</code> if this rectangle is filled.
  *
  * Sample usage:
- * ~~~
- * if (rect->isFilled()) ...
- * ~~~
+ *
+ *     if (rect->isFilled()) ...
  */
    bool isFilled() const;
 
@@ -576,22 +548,26 @@ public:
 /**
  * Sets the color used to display the filled region of this rectangle.
  *
+ * Colors may specified as strings or integers as described in the
+ * documentation for the \ref setColor method.
+ *
  * Sample usage:
- * ~~~
- * rect->setFillColor(color);
- * ~~~
+ *
+ *     rect->setFillColor(color);
  */
    void setFillColor(int rgb);
 
 
 /**
  * Returns the color used to display the filled region of this rectangle.  If
- * none has been set, <code>getFillColor</code> returns the empty string.
+ * none has been set, this method returns the empty string.
+ *
+ * Please see \ref getColor for more information about the format of the string
+ * returned by this method.
  *
  * Sample usage:
- * ~~~
- * string color = rect->getFillColor();
- * ~~~
+ *
+ *     string color = rect->getFillColor();
  */
    std::string getFillColor() const;
 
@@ -608,8 +584,8 @@ protected:
 
    double width;           /* The width of the rectangle              */
    double height;          /* The height of the rectangle             */
-   bool fillFlag;          /* Indicates whether the object is filled  */
-   std::string fillColor;  /* Color used to fill the object           */
+   bool fillFlag;          /* Indicates whether this object is filled  */
+   std::string fillColor;  /* Color used to fill this object           */
 
 /* Protected methods */
 
@@ -622,7 +598,7 @@ protected:
 /**
  * \class GRoundRect
  *
- * This class represents a graphical object having the appearance
+ * This graphical object subclass represents a graphical object having the appearance
  * of a rectangular box with rounded corners.
  */
 class GRoundRect : public GRect {
@@ -643,12 +619,11 @@ public:
  * specifies the diameter of the arc forming the rounded corners.
  *
  * Sample usages:
- * ~~~
- * GRoundRect *rect = new GRoundRect(width, height);
- * GRoundRect *rect = new GRoundRect(width, height, corner);
- * GRoundRect *rect = new GRoundRect(x, y, width, height);
- * GRoundRect *rect = new GRoundRect(x, y, width, height, corner);
- * ~~~
+ *
+ *     GRoundRect *rect = new GRoundRect(width, height);
+ *     GRoundRect *rect = new GRoundRect(width, height, corner);
+ *     GRoundRect *rect = new GRoundRect(x, y, width, height);
+ *     GRoundRect *rect = new GRoundRect(x, y, width, height, corner);
  */
    GRoundRect(double x, double y, double width, double height, double corner);
 
@@ -700,12 +675,11 @@ public:
  * suggest that it is raised above the background.
  *
  * Sample usages:
- * ~~~
- * G3DRect *rect = new G3DRect(width, height);
- * G3DRect *rect = new G3DRect(width, height, raised);
- * G3DRect *rect = new G3DRect(x, y, width, height);
- * G3DRect *rect = new G3DRect(x, y, width, height, raised);
- * ~~~
+ *
+ *     G3DRect *rect = new G3DRect(width, height);
+ *     G3DRect *rect = new G3DRect(width, height, raised);
+ *     G3DRect *rect = new G3DRect(x, y, width, height);
+ *     G3DRect *rect = new G3DRect(x, y, width, height, raised);
  */
    G3DRect(double x, double y, double width, double height, bool raised);
 
@@ -720,9 +694,8 @@ public:
  * Requests that this rectangle should appear raised.
  *
  * Sample usage:
- * ~~~
- * rect->setRaised(raised);
- * ~~~
+ *
+ *     rect->setRaised(raised);
  */
    void setRaised(bool raised);
 
@@ -731,9 +704,8 @@ public:
  * Returns <code>true</code> if this rectangle appears raised.
  *
  * Sample usage:
- * ~~~
- * if (rect->isRaised()) ...
- * ~~~
+ *
+ *     if (rect->isRaised()) ...
  */
    bool isRaised() const;
 
@@ -785,10 +757,9 @@ public:
  * given by \em x and \em y.
  *
  * Sample usages:
- * ~~~
- * GOval *oval = new GOval(width, height);
- * GOval *oval = new GOval(x, y, width, height);
- * ~~~
+ *
+ *     GOval *oval = new GOval(width, height);
+ *     GOval *oval = new GOval(x, y, width, height);
  */
    GOval(double x, double y, double width, double height);
 
@@ -806,10 +777,9 @@ public:
  * and height.
  *
  * Sample usages:
- * ~~~
- * oval->setSize(size);
- * oval->setSize(width, height);
- * ~~~
+ *
+ *     oval->setSize(size);
+ *     oval->setSize(width, height);
  */
    void setSize(double width, double height);
 
@@ -821,10 +791,9 @@ public:
  * rectangle specified by the argument(s).
  *
  * Sample usages:
- * ~~~
- * oval->setBounds(rect);
- * oval->setBounds(x, y, width, height);
- * ~~~
+ *
+ *     oval->setBounds(rect);
+ *     oval->setBounds(x, y, width, height);
  */
    void setBounds(double x, double y, double width, double height);
 
@@ -834,9 +803,8 @@ public:
  * outlined and <code>true</code> is filled.
  *
  * Sample usage:
- * ~~~
- * oval->setFilled(flag);
- * ~~~
+ *
+ *     oval->setFilled(flag);
  */
    void setFilled(bool flag);
 
@@ -845,9 +813,8 @@ public:
  * Returns <code>true</code> if this oval is filled.
  *
  * Sample usage:
- * ~~~
- * if (oval->isFilled()) ...
- * ~~~
+ *
+ *     if (oval->isFilled()) ...
  */
    bool isFilled() const;
 
@@ -857,10 +824,12 @@ public:
 /**
  * Sets the color used to display the filled region of this oval.
  *
+ * Colors may specified as strings or integers as described in the
+ * documentation for the \ref setColor method.
+ *
  * Sample usage:
- * ~~~
- * oval->setFillColor(color);
- * ~~~
+ *
+ *     oval->setFillColor(color);
  */
    void setFillColor(int rgb);
 
@@ -869,10 +838,12 @@ public:
  * Returns the color used to display the filled region of this oval.  If
  * none has been set, this method returns the empty string.
  *
+ * Please see \ref getColor for more information about the format of the string
+ * returned by this method.
+ *
  * Sample usage:
- * ~~~
- * string color = oval->getFillColor();
- * ~~~
+ *
+ *     string color = oval->getFillColor();
  */
    std::string getFillColor() const;
 
@@ -890,8 +861,8 @@ protected:
 
    double width;           /* The width of the bounding oval          */
    double height;          /* The height of the bounding oval         */
-   bool fillFlag;          /* Indicates whether the object is filled  */
-   std::string fillColor;  /* Color used to fill the object           */
+   bool fillFlag;          /* Indicates whether this object is filled  */
+   std::string fillColor;  /* Color used to fill this object           */
 
 /* Protected methods */
 
@@ -946,10 +917,9 @@ public:
  * are the coordinates of the center or the window.
  *
  * Sample usages:
- * ~~~
- * GArc *arc = new GArc(width, height, start, sweep);
- * GArc *arc = new GArc(x, y, width, height, start, sweep);
- * ~~~
+ *
+ *     GArc *arc = new GArc(width, height, start, sweep);
+ *     GArc *arc = new GArc(x, y, width, height, start, sweep);
  */
    GArc(double x, double y, double width, double height,
                             double start, double sweep);
@@ -959,9 +929,8 @@ public:
  * Sets the starting angle for this arc.
  *
  * Sample usage:
- * ~~~
- * arc->setStartAngle(start);
- * ~~~
+ *
+ *     arc->setStartAngle(start);
  */
    void setStartAngle(double start);
 
@@ -970,9 +939,8 @@ public:
  * Returns the starting angle for this arc.
  *
  * Sample usage:
- * ~~~
- * double angle = arc->getStartAngle();
- * ~~~
+ *
+ *     double angle = arc->getStartAngle();
  */
    double getStartAngle() const;
 
@@ -981,9 +949,8 @@ public:
  * Sets the sweep angle for this arc.
  *
  * Sample usage:
- * ~~~
- * arc->setSweepAngle(start);
- * ~~~
+ *
+ *     arc->setSweepAngle(start);
  */
    void setSweepAngle(double start);
 
@@ -992,9 +959,8 @@ public:
  * Returns the sweep angle for this arc.
  *
  * Sample usage:
- * ~~~
- * double angle = arc->getSweepAngle();
- * ~~~
+ *
+ *     double angle = arc->getSweepAngle();
  */
    double getSweepAngle() const;
 
@@ -1003,9 +969,8 @@ public:
  * Returns the point at which this arc starts.
  *
  * Sample usage:
- * ~~~
- * GPoint pt = arc->getStartPoint();
- * ~~~
+ *
+ *     GPoint pt = arc->getStartPoint();
  */
    GPoint getStartPoint() const;
 
@@ -1014,9 +979,8 @@ public:
  * Returns the point at which this arc ends.
  *
  * Sample usage:
- * ~~~
- * GPoint pt = arc->getEndPoint();
- * ~~~
+ *
+ *     GPoint pt = arc->getEndPoint();
  */
    GPoint getEndPoint() const;
 
@@ -1027,10 +991,9 @@ public:
  * Changes the rectangle used to frame this arc.
  *
  * Sample usages:
- * ~~~
- * arc->setFrameRectangle(rect);
- * arc->setFrameRectangle(x, y, width, height);
- * ~~~
+ *
+ *     arc->setFrameRectangle(rect);
+ *     arc->setFrameRectangle(x, y, width, height);
  */
    void setFrameRectangle(double x, double y, double width, double height);
 
@@ -1039,9 +1002,8 @@ public:
  * Returns the rectangle used to frame this arc.
  *
  * Sample usage:
- * ~~~
- * GRectangle rect = arc->getFrameRectangle();
- * ~~~
+ *
+ *     GRectangle rect = arc->getFrameRectangle();
  */
    GRectangle getFrameRectangle() const;
 
@@ -1076,9 +1038,8 @@ public:
  * </div>
  *
  * Sample usage:
- * ~~~
- * arc->setFilled(flag);
- * ~~~
+ *
+ *     arc->setFilled(flag);
  */
    void setFilled(bool flag);
 
@@ -1087,9 +1048,8 @@ public:
  * Returns \c true if this arc is filled.
  *
  * Sample usage:
- * ~~~
- * if (arc->isFilled()) ...
- * ~~~
+ *
+ *     if (arc->isFilled()) ...
  */
    bool isFilled() const;
 
@@ -1098,13 +1058,13 @@ public:
    void setFillColor(std::string color);
 /**
  * Sets the color used to display the filled region of this arc.
- * Colors are specified as strings or integers as described in the
+ *
+ * Colors may specified as strings or integers as described in the
  * documentation for the \ref setColor method.
  *
  * Sample usage:
- * ~~~
- * arc->setFillColor(color);
- * ~~~
+ *
+ *     arc->setFillColor(color);
  */
    void setFillColor(int rgb);
 
@@ -1113,10 +1073,12 @@ public:
  * Returns the color used to display the filled region of this arc.  If
  * none has been set, this method returns the empty string.
  *
+ * Please see \ref getColor for more information about the format of the string
+ * returned by this method.
+ *
  * Sample usage:
- * ~~~
- * string color = arc->getFillColor();
- * ~~~
+ *
+ *     string color = arc->getFillColor();
  */
    std::string getFillColor() const;
 
@@ -1163,9 +1125,8 @@ public:
  * Creates a GCompound object with no internal components.
  *
  * Sample usage:
- * ~~~
- * GCompound *comp = new GCompound();
- * ~~~
+ *
+ *     GCompound *comp = new GCompound();
  */
    GCompound();
 
@@ -1177,10 +1138,9 @@ public:
  * form moves the object to the point (\em x, \em y) first.
  *
  * Sample usages:
- * ~~~
- * comp->add(gobj);
- * comp->add(gobj, x, y);
- * ~~~
+ *
+ *     comp->add(gobj);
+ *     comp->add(gobj, x, y);
  */
    void add(GObject *gobj, double x, double y);
 
@@ -1189,9 +1149,8 @@ public:
  * Removes the specified object from this compound.
  *
  * Sample usage:
- * ~~~
- * comp->remove(gobj);
- * ~~~
+ *
+ *     comp->remove(gobj);
  */
    void remove(GObject *gobj);
 
@@ -1200,9 +1159,8 @@ public:
  * Removes all graphical objects from this compound.
  *
  * Sample usage:
- * ~~~
- * comp->removeAll();
- * ~~~
+ *
+ *     comp->removeAll();
  */
    void removeAll();
 
@@ -1212,21 +1170,19 @@ public:
  * compound.
  *
  * Sample usage:
- * ~~~
- * int n = comp->getElementCount();
- * ~~~
+ *
+ *     int n = comp->getElementCount();
  */
    int getElementCount();
 
 
 /**
  * Returns a pointer to the graphical object at the specified index in
- * this compound, numbering from back to front in the the \em z dimension.
+ * this compound, numbering from back to front in the \em z dimension.
  *
  * Sample usage:
- * ~~~
- * GObject *gobj = comp->getElement(index);
- * ~~~
+ *
+ *     GObject *gobj = comp->getElement(index);
  */
    GObject *getElement(int index);
 
@@ -1270,10 +1226,10 @@ private:
  *    int main() {
  *       GWindow gw;
  *       cout << "This program draws the Whittier College logo." << endl;
- *       GImage *tree = new GImage("WhittierLogo.png");
- *       double x = (gw.getWidth() - tree->getWidth()) / 2;
- *       double y = (gw.getHeight() - tree->getHeight()) / 2;
- *       gw.add(tree, x, y);
+ *       GImage *logo = new GImage("WhittierLogo.png");
+ *       double x = (gw.getWidth() - logo->getWidth()) / 2;
+ *       double y = (gw.getHeight() - logo->getHeight()) / 2;
+ *       gw.add(logo, x, y);
  *       return 0;
  *    }
  * ~~~
@@ -1291,11 +1247,21 @@ public:
  * appears at the origin; the second form automatically sets the location
  * to the point (\em x, \em y).
  *
+ * The file must have one of the following formats:
+ * <ul>
+ *  <li>Bitmap (BMP) format
+ *  <li>Graphics Interchange Format (GIF)
+ *  <li>Joint Photographic Experts Group (JPEG) format
+ *  <li>Portable Network Graphics (PNG) format
+ * </ul>
+ *
+ * This method throws an error if the file could not be found, could not be
+ * opened for reading, or is not a valid image file in one of the supported formats.
+ *
  * Sample usages:
- * ~~~
- * GImage *image = new GImage(filename);
- * GImage *image = new GImage(filename, x, y);
- * ~~~
+ *
+ *     GImage *image = new GImage(filename);
+ *     GImage *image = new GImage(filename, x, y);
  */
    GImage(std::string filename, double x, double y);
 
@@ -1364,16 +1330,15 @@ public:
 /** \_overload */
    GLabel(std::string str);
 /**
- * Creates a GLabel object containing the specified string.
+ * Creates a `%GLabel' object containing the specified string.
  * By default, the baseline of the first character appears at the origin;
  * the second form resets the location of the
- * GLabel to the point (\em x, \em y).
+ * label to the point (\em x, \em y).
  *
  * Sample usages:
- * ~~~
- * GLabel *label = new GLabel(str);
- * GLabel *label = new GLabel(str, x, y);
- * ~~~
+ *
+ *     GLabel *label = new GLabel(str);
+ *     GLabel *label = new GLabel(str, x, y);
  */
    GLabel(std::string str, double x, double y);
 
@@ -1382,17 +1347,16 @@ public:
  * Changes the font used to display this label as specified by
  * the string \em font, which has the following format:
  *
- *      family-style-size
+ *      `family-style-size`
  *
  * where both \em style and \em size are optional.
  * If any of these elements is missing or specified as an asterisk,
  * the current value is retained.
  *
  * Sample usages:
- * ~~~
- * label->setFont("Serif-Plain-18");
- * label->setFont("Monospaced-Bold-*);
- * ~~~
+ *
+ *     label->setFont("Serif-Plain-18");
+ *     label->setFont("Monospaced-Bold-*);
  */
    void setFont(std::string font);
 
@@ -1401,9 +1365,8 @@ public:
  * Returns the current font used for this label.
  *
  * Sample usage:
- * ~~~
- * string font = label->getFont();
- * ~~~
+ *
+ *     string font = label->getFont();
  */
    std::string getFont() const;
 
@@ -1413,9 +1376,8 @@ public:
  * a new text string appears on the display.
  *
  * Sample usage:
- * ~~~
- * label->setLabel(str);
- * ~~~
+ *
+ *     label->setLabel(str);
  */
    void setLabel(std::string str);
 
@@ -1424,9 +1386,8 @@ public:
  * Returns the string displayed by this label.
  *
  * Sample usage:
- * ~~~
- * string str = label->getLabel();
- * ~~~
+ *
+ *     string str = label->getLabel();
  */
    std::string getLabel() const;
 
@@ -1436,9 +1397,8 @@ public:
  * the baseline.
  *
  * Sample usage:
- * ~~~
- * double ascent = label->getFontAscent();
- * ~~~
+ *
+ *     double ascent = label->getFontAscent();
  */
    double getFontAscent() const;
 
@@ -1448,9 +1408,8 @@ public:
  * the baseline.
  *
  * Sample usage:
- * ~~~
- * double descent = label->getFontDescent();
- * ~~~
+ *
+ *     double descent = label->getFontDescent();
  */
    double getFontDescent() const;
 
@@ -1505,9 +1464,8 @@ public:
  * the end.
  *
  * Sample usage:
- * ~~~
- * GLine *gline = new GLine(x0, y0, x1, y1);
- * ~~~
+ *
+ *     GLine *gline = new GLine(x0, y0, x1, y1);
  */
    GLine(double x0, double y0, double x1, double y1);
 
@@ -1518,9 +1476,8 @@ public:
  * \ref setLocation, which moves both endpoints of the line segment.
  *
  * Sample usage:
- * ~~~
- * line->setStartPoint(x, y);
- * ~~~
+ *
+ *     line->setStartPoint(x, y);
  */
    void setStartPoint(double x, double y);
 
@@ -1529,22 +1486,20 @@ public:
  * Returns the point at which this line starts.
  *
  * Sample usage:
- * ~~~
- * GPoint pt = line->getStartPoint();
- * ~~~
+ *
+ *     GPoint pt = line->getStartPoint();
  */
    GPoint getStartPoint() const;
 
 
 /**
- * Sets the end point in this line to (\em x, \em y),
+ * Sets the end point of this line to (\em x, \em y),
  * leaving the start point unchanged.  This method is therefore different from
  * \ref setLocation, which moves both endpoints of the line segment.
  *
  * Sample usage:
- * ~~~
- * line->setEndPoint(x, y);
- * ~~~
+ *
+ *     line->setEndPoint(x, y);
  */
    void setEndPoint(double x, double y);
 
@@ -1553,9 +1508,8 @@ public:
  * Returns the point at which this line ends.
  *
  * Sample usage:
- * ~~~
- * GPoint pt = line->getEndPoint();
- * ~~~
+ *
+ *     GPoint pt = line->getEndPoint();
  */
    GPoint getEndPoint() const;
 
@@ -1580,12 +1534,17 @@ protected:
 /**
  * \class GPolygon
  *
- * This graphical object subclass represents a polygon bounded by
- * line segments.  The `%GPolygon` constructor creates an
- * empty polygon.  To complete the figure, you need to add vertices
- * to the polygon using the methods \ref addVertex, \ref addEdge,
- * and \ref addPolarEdge. As an example, the following code adds a
- * filled red octagon to the center of the window:
+ * This graphical object subclass represents a polygon.
+ *
+ * Conceptually, a polygon is a list of vertices, with line segments
+ * joining consecutive vertices. The `%GPolygon` constructor creates an
+ * empty polygon (i.e., a polygon having no vertices).
+ * You then need to add a sequence of vertices to the polygon using
+ * one or more of the methods \ref addVertex, \ref addEdge,
+ * and \ref addPolarEdge (the initial vertex must be added with \ref addVertex).
+ *
+ * As an example, the following code adds a filled red octagon to the center
+ * of the window:
  *
  * ~~~
  *    int main() {
@@ -1614,73 +1573,74 @@ class GPolygon : public GObject {
 public:
 
 /**
- * Constructs a new empty polygon at the origin.
+ * Constructs a new empty polygon based at the origin.
  *
  * Sample usage:
- * ~~~
- * GPolygon *poly = new GPolygon();
- * ~~~
+ *
+ *     GPolygon *poly = new GPolygon();
  */
    GPolygon();
 
 
 /**
- * Adds a vertex at (\em x, \em y) relative to the polygon
+ * Adds a vertex at (\em x, \em y) relative to this polygon's
  * origin.
  *
  * Sample usage:
- * ~~~
- * poly->addVertex(x, y);
- * ~~~
+ *
+ *     poly->addVertex(x, y);
  */
    void addVertex(double x, double y);
 
 
 /**
- * Adds an edge to this polygon whose components are given by the displacements
- * \em dx and \em dy from the last vertex.
+ * Adds an edge to this polygon. The new edge begins at the most recently added vertex
+ * and ends at displacement (\em dx, \em dy) relative to that vertex.
+ * In other words, if the most recently added vertex was (\em x, \em y), then the new
+ * edge begins at (\em x, \em y) and ends at (\em x + \em dx, \em y + \em dy).
+ *
+ * The endpoint of the new edge is appended to this polygon's list of vertices.
  *
  * Sample usage:
- * ~~~
- * poly->addEdge(dx, dy);
- * ~~~
+ *
+ *     poly->addEdge(dx, dy);
  */
    void addEdge(double dx, double dy);
 
 
 /**
- * Adds an edge specified in polar coordinates to this polygon. The length
- * of the edge is given by \em r, and the edge extends in
+ * Adds an edge specified in polar coordinates to this polygon.
+ * The new edge begins at the most recently added vertex. The length
+ * of the edge is given by \em r, and the edge extends in the
  * direction \em theta, measured in degrees counterclockwise
- * from the +\em x axis.
+ * from the positive <i>x</i>-axis.
+ *
+ * The endpoint of the new edge is appended to this polygon's list of vertices.
  *
  * Sample usage:
- * ~~~
- * poly->addPolarEdge(r, theta);
- * ~~~
+ *
+ *     poly->addPolarEdge(r, theta);
  */
    void addPolarEdge(double r, double theta);
 
 
 /**
- * Returns a vector of the points in this polygon.
+ * Returns the list of the vertices of this polygon.
  *
  * Sample usage:
- * ~~~
- * Vector<GPoint> vec = poly->getVertices();
- * ~~~
+ *
+ *     Vector<GPoint> vec = poly->getVertices();
  */
    Vector<GPoint> getVertices() const;
 
 
 /**
- * Sets the fill status for this polygon, where \c false is
- * outlined and \c true is filled.
+ * Sets the fill status for this polygon, where \c false means
+ * "not filled"  and \c true means "filled."
  *
  * Sample usage:
- * ~~~
- * poly->setFilled(flag);
- * ~~~
+ *
+ *     poly->setFilled(flag);
  */
    void setFilled(bool flag);
 
@@ -1689,9 +1649,8 @@ public:
  * Returns \c true if this polygon is filled.
  *
  * Sample usage:
- * ~~~
- * if (poly->isFilled()) ...
- * ~~~
+ *
+ *     if (poly->isFilled()) ...
  */
    bool isFilled() const;
 
@@ -1701,10 +1660,12 @@ public:
 /**
  * Sets the color used to display the filled region of this polygon.
  *
+ * Colors may specified as strings or integers as described in the
+ * documentation for the \ref setColor method.
+ *
  * Sample usage:
- * ~~~
- * poly->setFillColor(color);
- * ~~~
+ *
+ *     poly->setFillColor(color);
  */
    void setFillColor(int rgb);
 
@@ -1713,10 +1674,12 @@ public:
  * Returns the color used to display the filled region of this polygon.  If
  * none has been set, this method returns the empty string.
  *
+ * Please see \ref getColor for more information about the format of the string
+ * returned by this method.
+ *
  * Sample usage:
- * ~~~
- * string color = poly->getFillColor();
- * ~~~
+ *
+ *     string color = poly->getFillColor();
  */
    std::string getFillColor() const;
 

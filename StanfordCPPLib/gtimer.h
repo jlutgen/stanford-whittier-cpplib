@@ -1,6 +1,7 @@
 /**
  * @file gtimer.h
  *
+ * @brief
  * This file exports the GTimer class, which implements a
  * general-purpose interval timer.
  */
@@ -59,9 +60,8 @@ public:
  * for the GTimerEvent class.
  *
  * Sample usage:
- * ~~~
- * GTimer timer(milliseconds);
- * ~~~
+ *
+ *     GTimer timer(milliseconds);
  */
    GTimer(double milliseconds);
 
@@ -79,9 +79,8 @@ public:
  * handler.
  *
  * Sample usage:
- * ~~~
- * timer.start();
- * ~~~
+ *
+ *     timer.start();
  */
    void start();
 
@@ -90,9 +89,8 @@ public:
  * Stops this timer so that it stops generating events until it is restarted.
  *
  * Sample usage:
- * ~~~
- * timer.stop();
- * ~~~
+ *
+ *     timer.stop();
  */
    void stop();
 
@@ -101,9 +99,8 @@ public:
  * Checks whether two objects refer to the same timer.
  *
  * Sample usage:
- * ~~~
- * if (t1 == t2) ...
- * ~~~
+ *
+ *     if (t1 == t2) ...
 */
    bool operator==(GTimer t2);
 
@@ -112,9 +109,8 @@ public:
  * Checks whether two objects refer to different timers.
  *
  * Sample usage:
- * ~~~
- * if (t1 != t2) ...
- * ~~~
+ *
+ *     if (t1 != t2) ...
  */
    bool operator!=(GTimer t2);
 

@@ -1,0 +1,98 @@
+/** 
+
+@mainpage
+
+The <code>StanfordCPPLib</code> package defines a set of libraries that
+make it easier to write programs in C++.  The facilities provided by
+these libraries can be broken down into the following groups:
+
+<ol>
+<li><b><i>Function libraries.</i></b>
+Several of the interfaces
+(\ref console.h,
+\ref direction.h,
+\ref error.h,
+\ref filelib.h,
+\ref foreach.h,
+\ref gmath.h,
+\ref random.h,
+\ref simpio.h,
+\ref strlib.h,
+\ref thread.h) export collections
+of free functions instead of classes.
+
+<p><li><b><i>Collection classes.</i></b>
+Several of the classes
+(\ref Graph,
+\ref Grid,
+\ref HashMap,
+\ref HashSet,
+\ref Lexicon,
+\ref Map,
+\ref PriorityQueue,
+\ref Queue,
+\ref Set,
+\ref Stack,
+\ref Vector)
+represent collections of other objects.
+These collections work in much the same way as the similar classes in
+the Standard Template Library (STL).
+
+<p><li><b><i>Graphics classes.</i></b>
+Most of the classes in the <code>StanfordCPPLib</code> package are used
+to support graphics.  These classes can themselves be broken down into
+the following categories:
+
+<ul>
+<li>The \ref GWindow class,
+which represents a window that appears on the display screen
+
+<li>A collection of graphics objects, each of which is a subclass of
+\ref GObject
+(\ref GArc,
+\ref GCompound,
+\ref GImage,
+\ref GLabel,
+\ref GLine,
+\ref GOval,
+\ref GPolygon,
+\ref GRect,
+\ref G3DRect,
+\ref GRoundRect)
+
+<li>A set of onscreen interactors
+(\ref GCheckBox,
+\ref GChooser,
+\ref GSlider,
+\ref GTextField,
+\ref GButton)
+
+<li>A hierarchical set of classes for fielding events
+(\ref GEvent,
+\ref GActionEvent,
+\ref GKeyEvent,
+\ref GMouseEvent,
+\ref GTimerEvent,
+\ref GWindowEvent)
+
+<li>A set of classes to encapsulate geometric information
+(\ref GDimension,
+\ref GPoint,
+\ref GRectangle)
+</ul>
+
+<br><li><b><i>Utility classes.</i></b>
+The libraries also export several utility classes that don&rsquo;t
+fit easily into the other categories
+(\ref ErrorException,
+\ref Lock,
+\ref Point,
+\ref Sound,
+\ref Thread,
+\ref TokenScanner).
+</ol>
+
+<p>Additional documentation appears in the web pages for the individual
+classes, along with sample code.
+
+*/

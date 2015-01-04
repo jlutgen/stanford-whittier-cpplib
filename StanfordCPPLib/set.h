@@ -1,6 +1,7 @@
 /**
  * @file set.h
  *
+ * @brief
  * This file exports the Set class, which implements a
  * collection for storing a set of distinct elements.
  */
@@ -43,9 +44,8 @@ public:
  * Creates an empty set of the specified element type.
  *
  * Sample usage:
- * ~~~
- * Set<ValueType> set;
- * ~~~
+ *
+ *     Set<ValueType> set;
  */
    Set();
 
@@ -60,9 +60,8 @@ public:
  * Returns the number of elements in this set.
  *
  * Sample usage:
- * ~~~
- * count = set.size();
- * ~~~
+ *
+ *     count = set.size();
  */
    int size() const;
 
@@ -71,9 +70,8 @@ public:
  * Returns \c true if this set contains no elements.
  *
  * Sample usage:
- * ~~~
- * if (set.isEmpty()) ...
- * ~~~
+ *
+ *     if (set.isEmpty()) ...
  */
    bool isEmpty() const;
 
@@ -84,9 +82,8 @@ public:
  * is also exported as \ref insert.
  *
  * Sample usage:
- * ~~~
- * set.add(value);
- * ~~~
+ *
+ *     set.add(value);
  */
    void add(const ValueType & value);
 
@@ -96,9 +93,8 @@ public:
  * Included for compatibility with the STL <code>set</code> class.
  *
  * Sample usage:
- * ~~~
- * set.insert(value);
- * ~~~
+ *
+ *     set.insert(value);
  */
    void insert(const ValueType & value);
 
@@ -109,9 +105,8 @@ public:
  * remains unchanged.
  *
  * Sample usage:
- * ~~~
- * set.remove(value);
- * ~~~
+ *
+ *     set.remove(value);
  */
    void remove(const ValueType & value);
 
@@ -120,9 +115,8 @@ public:
  * Returns \true if the specified value is in this set.
  *
  * Sample usage:
- * ~~~
- * if (set.contains(value)) ...
- * ~~~
+ *
+ *     if (set.contains(value)) ...
  */
    bool contains(const ValueType & value) const;
 
@@ -133,9 +127,8 @@ public:
  * contained in \em set2.
  *
  * Sample usage:
- * ~~~
- * if (set.isSubsetOf(set2)) ...
- * ~~~
+ *
+ *     if (set.isSubsetOf(set2)) ...
  */
    bool isSubsetOf(const Set & set2) const;
 
@@ -144,9 +137,8 @@ public:
  * Removes all elements from this set.
  *
  * Sample usage:
- * ~~~
- * set.clear();
- * ~~~
+ *
+ *     set.clear();
  */
    void clear();
 
@@ -156,9 +148,8 @@ public:
  * contain the same elements.
  *
  * Sample usage:
- * ~~~
- * set1 == set2
- * ~~~
+ *
+ *     set1 == set2
  */
    bool operator==(const Set & set2) const;
 
@@ -168,9 +159,8 @@ public:
  * are different.
  *
  * Sample usage:
- * ~~~
- * set1 != set2
- * ~~~
+ *
+ *     set1 != set2
  */
    bool operator!=(const Set & set2) const;
 
@@ -183,10 +173,9 @@ public:
  * case this operator returns a new set formed by adding that element to \em set1.
  *
  * Sample usages:
- * ~~~
- * set1 + set2
- * set1 + element
- * ~~~
+ *
+ *     set1 + set2
+ *     set1 + element
  */
    Set operator+(const ValueType & element) const;
 
@@ -196,9 +185,8 @@ public:
  * which is the set of all elements that appear in both sets.
  *
  * Sample usage:
- * ~~~
- * set1 * set2
- * ~~~
+ *
+ *     set1 * set2
  */
    Set operator*(const Set & set2) const;
 
@@ -213,10 +201,9 @@ public:
  * set formed by removing that element from \em set1.
  *
  * Sample usages:
- * ~~~
- * set1 - set2
- * set1 - element
- * ~~~
+ *
+ *     set1 - set2
+ *     set1 - element
  */
    Set operator-(const ValueType & element) const;
 
@@ -235,10 +222,9 @@ public:
  * ~~~
  *
  * Sample usages:
- * ~~~
- * set1 += set2;
- * set1 += value;
- * ~~~
+ *
+ *     set1 += set2;
+ *     set1 += value;
  */
    Set & operator+=(const ValueType & value);
 
@@ -248,9 +234,8 @@ public:
  * \em set2.
  *
  * Sample usage:
- * ~~~
- * set1 *= set2;
- * ~~~
+ *
+ *     set1 *= set2;
  */
    Set & operator*=(const Set & set2);
 
@@ -272,10 +257,9 @@ public:
  * \c digits.
  *
  * Sample usages:
- * ~~~
- * set1 -= set2;
- * set1 -= value;
- * ~~~
+ *
+ *     set1 -= set2;
+ *     set1 -= value;
  */
    Set & operator-=(const ValueType & value);
 
@@ -287,9 +271,8 @@ public:
  * signals an error.
  *
  * Sample usage:
- * ~~~
- * ValueType value = set.first();
- * ~~~
+ *
+ *     ValueType value = set.first();
  */
    ValueType first() const;
 
@@ -298,9 +281,8 @@ public:
  * Returns a printable string representation of this set.
  *
  * Sample usage:
- * ~~~
- * string str = set.toString();
- * ~~~
+ *
+ *     string str = set.toString();
  */
    std::string toString();
 
@@ -311,9 +293,8 @@ public:
  * by the comparison function or the less-than operator for `ValueType`.
  *
  * Sample usage:
- * ~~~
- * set.mapAll(fn);
- * ~~~
+ *
+ *     set.mapAll(fn);
  */
    void mapAll(void (*fn)(ValueType)) const;
    void mapAll(void (*fn)(const ValueType &)) const;

@@ -1,6 +1,7 @@
 /**
  * @file stack.h
  *
+ * @brief
  * This file exports the Stack class, which implements
  * a collection that processes values in a last-in/first-out (LIFO) order.
  */
@@ -47,9 +48,8 @@ public:
  * Creates a new empty stack.
  *
  * Sample usage:
- * ~~~
- * Stack<ValueType> stack;
- * ~~~
+ *
+ *     Stack<ValueType> stack;
  */
    Stack();
 
@@ -64,9 +64,8 @@ public:
  * Returns the number of values in this stack.
  *
  * Sample usage:
- * ~~~
- * int n = stack.size();
- * ~~~
+ *
+ *     int n = stack.size();
  */
    int size() const;
 
@@ -75,9 +74,8 @@ public:
  * Returns \c true if this stack contains no elements.
  *
  * Sample usage:
- * ~~~
- * if (stack.isEmpty()) ...
- * ~~~
+ *
+ *     if (stack.isEmpty()) ...
  */
    bool isEmpty() const;
 
@@ -86,9 +84,8 @@ public:
  * Removes all elements from this stack.
  *
  * Sample usage:
- * ~~~
- * stack.clear();
- * ~~~
+ *
+ *     stack.clear();
  */
    void clear();
 
@@ -97,9 +94,8 @@ public:
  * Pushes the specified value onto this stack.
  *
  * Sample usage:
- * ~~~
- * stack.push(value);
- * ~~~
+ *
+ *     stack.push(value);
  */
    void push(ValueType value);
 
@@ -109,9 +105,8 @@ public:
  * method signals an error if this stack is empty.
  *
  * Sample usage:
- * ~~~
- * ValueType top = stack.pop();
- * ~~~
+ *
+ *     ValueType top = stack.pop();
  */
    ValueType pop();
 
@@ -124,9 +119,8 @@ public:
  * which returns the value by reference.
  *
  * Sample usage:
- * ~~~
- * ValueType top = stack.peek();
- * ~~~
+ *
+ *     ValueType top = stack.peek();
  */
    ValueType peek() const;
 
@@ -139,9 +133,8 @@ public:
  * removing it. This method signals an error if this stack is empty.
  *
  * Sample usage:
- * ~~~
- * ValueType top = stack.top();
- * ~~~
+ *
+ *     ValueType top = stack.top();
  */
    ValueType & top();
 
@@ -150,9 +143,8 @@ public:
  * Returns a printable string representation of this stack.
  *
  * Sample usage:
- * ~~~
- * string str = stack.toString();
- * ~~~
+ *
+ *     string str = stack.toString();
  */
    std::string toString();
 

@@ -1,6 +1,7 @@
 /**
  * @file strlib.h
  *
+ * @brief
  * This file exports several useful string functions that are not
  * included in the C++ string library.
  */
@@ -78,9 +79,8 @@ char stringToChar(const std::string& str);
  * the string <code>"2112"</code>.
  *
  * Sample usage:
- * ~~~
- * string s = integerToString(n);
- * ~~~
+ *
+ *     string s = integerToString(n);
  */
 std::string integerToString(int n);
 
@@ -91,9 +91,8 @@ std::string integerToString(int n);
  * this function signals an error.
  *
  * Sample usage:
- * ~~~
- * int n = stringToInteger(str);
- * ~~~
+ *
+ *     int n = stringToInteger(str);
  */
 int stringToInteger(std::string str);
 
@@ -104,9 +103,8 @@ int stringToInteger(std::string str);
  * the string <code>"-123"</code>.
  *
  * Sample usage:
- * ~~~
- * string s = longToString(n);
- * ~~~
+ *
+ *     string s = longToString(n);
  */
 std::string longToString(long n);
 
@@ -117,9 +115,8 @@ std::string longToString(long n);
  * this function signals an error.
  *
  * Sample usage:
- * ~~~
- * long n = stringToLong(str);
- * ~~~
+ *
+ *     long n = stringToLong(str);
  */
 long stringToLong(const std::string& str);
 
@@ -130,9 +127,8 @@ long stringToLong(const std::string& str);
  * the string <code>"23.45"</code>.
  *
  * Sample usage:
- * ~~~
+ *
  * string s = realToString(d);
- * ~~~
  */
 std::string realToString(double d);
 
@@ -144,9 +140,8 @@ std::string realToString(double d);
  * signals an error.
  *
  * Sample usage:
- * ~~~
- * double d = stringToReal(str);
- * ~~~
+ *
+ *     double d = stringToReal(str);
  */
 double stringToReal(std::string str);
 
@@ -154,7 +149,6 @@ double stringToReal(std::string str);
 /**
  * Returns \c true if the given string is either \c "true" or \c "false".
  */
-
 bool stringIsBool(const std::string& str);
 
 
@@ -207,10 +201,9 @@ bool stringIsDouble(const std::string& str);
  * returns a vector of size 3: <code>{"Lions,", "tigers,", "and bears!"}</code>
  *
  * Sample usages:
- * ~~~
- * Vector<string> v = split(str, delimiter);
- * Vector<string> v = split(str, delimiter, limit);
- * ~~~
+ *
+ *     Vector<string> v = split(str, delimiter);
+ *     Vector<string> v = split(str, delimiter, limit);
  */
 Vector<std::string> split(const std::string& str, const std::string& delimiter, int limit = -1);
 std::vector<std::string> stringSplit(const std::string& str, const std::string& delimiter, int limit = -1);
@@ -221,9 +214,8 @@ std::vector<std::string> stringSplit(const std::string& str, const std::string& 
  * into their uppercase equivalents.
  *
  * Sample usage:
- * ~~~
- * string s = toUpperCase(str);
- * ~~~
+ *
+ *     string s = toUpperCase(str);
  */
 std::string toUpperCase(std::string str);
 
@@ -233,9 +225,8 @@ std::string toUpperCase(std::string str);
  * into their lowercase equivalents.
  *
  * Sample usage:
- * ~~~
- * string s = toLowerCase(str);
- * ~~~
+ *
+ *     string s = toLowerCase(str);
  */
 std::string toLowerCase(std::string str);
 
@@ -246,9 +237,8 @@ std::string toLowerCase(std::string str);
  * <code>equalsIgnoreCase("bozo", "bOzO")</code> returns \c true.
  *
  * Sample usage:
- * ~~~
- * if (equalsIgnoreCase(s1, s2)) ...
- * ~~~
+ *
+ *     if (equalsIgnoreCase(s1, s2)) ...
  */
 bool equalsIgnoreCase(std::string s1, std::string s2);
 
@@ -260,9 +250,8 @@ bool startsWith(std::string str, char prefix);
  * the specified prefix, which may be either a string or a character.
  *
  * Sample usage:
- * ~~~
- * if (startsWith(str, prefix)) ...
- * ~~~
+ *
+ *     if (startsWith(str, prefix)) ...
  */
 bool startsWith(std::string str, std::string prefix);
 
@@ -274,9 +263,8 @@ bool endsWith(std::string str, char suffix);
  * \em suffix, which may be either a string or a character.
  *
  * Sample usage:
- * ~~~
- * if (endsWith(str, suffix)) ...
- * ~~~
+ *
+ *     if (endsWith(str, suffix)) ...
  */
 bool endsWith(std::string str, std::string suffix);
 
@@ -286,9 +274,8 @@ bool endsWith(std::string str, std::string suffix);
  * from the beginning and end of \em str.
  *
  * Sample usage:
- * ~~~
- * string trimmed = trim(str);
- * ~~~
+ *
+ *     string trimmed = trim(str);
  */
 std::string trim(std::string str);
 
@@ -304,10 +291,9 @@ std::string trim(std::string str);
  * index instead.
  *
  * Sample usages:
- * ~~~
- * int pos = stringIndexOf(str, substring);
- * int pos = stringIndexOf(str, substring, 3);
- * ~~~
+ *
+ *     int pos = stringIndexOf(str, substring);
+ *     int pos = stringIndexOf(str, substring, 3);
  */
 int stringIndexOf(const std::string& str, const std::string& substring, int startIndex = 0);
 
@@ -326,10 +312,9 @@ std::string stringReplace(const std::string& str, const std::string& old, const 
  * all occurrences are replaced.
  *
  * Sample usages:
- * ~~~
- * string newString = stringReplace(str, old, replacement, 1);
- * int numReplacements = stringReplaceInPlace(str, old, replacement);
- * ~~~
+ *
+ *     string newString = stringReplace(str, old, replacement, 1);
+ *     int numReplacements = stringReplaceInPlace(str, old, replacement);
  */
 int stringReplaceInPlace(std::string& str, const std::string& old, const std::string& replacement, int limit = -1);
 

@@ -31,7 +31,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Iterator;
 import javax.swing.JComponent;
-import edu.stanford.cs.java.spl.GInteractor;
+//import edu.stanford.cs.java.spl.GInteractor;
 
 /**
  * The <code>GCanvas</code> class is a lightweight component that also

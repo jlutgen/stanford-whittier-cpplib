@@ -24,7 +24,7 @@ package edu.stanford.cs.java.spl;
 
 import edu.stanford.cs.java.graphics.G3DRect;
 import edu.stanford.cs.java.graphics.GArc;
-import edu.stanford.cs.java.graphics.GCompound;
+//import edu.stanford.cs.java.graphics.GCompound;
 import edu.stanford.cs.java.graphics.GContainer;
 import edu.stanford.cs.java.graphics.GDimension;
 import edu.stanford.cs.java.graphics.GFillable;
@@ -39,17 +39,21 @@ import edu.stanford.cs.java.graphics.GRectangle;
 import edu.stanford.cs.java.graphics.GResizable;
 import edu.stanford.cs.java.graphics.GRoundRect;
 import edu.stanford.cs.java.tokenscanner.TokenScanner;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+//import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 public abstract class JBECommand {
@@ -184,7 +188,26 @@ public abstract class JBECommand {
 }
 
 class GWindow_create extends JBECommand {
-   public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+   class Runner implements Runnable {
+	   public Runner(String id, String top, int width, int height, JavaBackEnd jbe) {
+		   this.id = id;
+		   this.top = top;
+		   this.width = width;
+		   this.height = height;
+		   this.jbe = jbe;
+	   }
+	   public void run() {
+		   jbe.createWindow(id, width, height,
+                   (JBETopCompound) jbe.getGObject(top));
+	   }
+	   private String id;
+	   private String top;
+	   private int width;
+	   private int height;
+	   private JavaBackEnd jbe;
+   }
+   
+   public void execute(TokenScanner scanner, JavaBackEnd jbe) { 
       scanner.verifyToken("(");
       String id = nextString(scanner);
       scanner.verifyToken(",");
@@ -194,8 +217,12 @@ class GWindow_create extends JBECommand {
       scanner.verifyToken(",");
       String top = nextString(scanner);
       scanner.verifyToken(")");
-      jbe.createWindow(id, width, height,
-                       (JBETopCompound) jbe.getGObject(top));
+      try {
+    	  SwingUtilities.invokeAndWait(new Runner(id, top, width, height, jbe));
+      }
+      catch (Exception e) {
+    	  /* empty */
+      }
       jbe.println("result:ok");
    }
 }
@@ -210,116 +237,273 @@ class GWindow_delete extends JBECommand {
 }
 
 class GWindow_close extends JBECommand {
-   public void execute(TokenScanner scanner, JavaBackEnd jbe) {
-      scanner.verifyToken("(");
-      String id = nextString(scanner);
-      JBEWindow jw = jbe.getWindow(id);
-      scanner.verifyToken(")");
-      if (jw != null) jw.close();
-   }
-}
-
-class GWindow_addToRegion extends JBECommand {
-   public void execute(TokenScanner scanner, JavaBackEnd jbe) {
-      scanner.verifyToken("(");
-      String id1 = nextString(scanner);
-      scanner.verifyToken(",");
-      String id2 = nextString(scanner);
-      scanner.verifyToken(",");
-      String region = nextString(scanner);
-      scanner.verifyToken(")");
-      JBEWindow jw = jbe.getWindow(id1);
-      GObject gobj = jbe.getGObject(id2);
-      if (jw != null && gobj != null) {
-         jw.addToRegion(jbe.getInteractor(gobj), region);
-      }
-   }
-}
-
-class GWindow_removeFromRegion extends JBECommand {
-   public void execute(TokenScanner scanner, JavaBackEnd jbe) {
-      scanner.verifyToken("(");
-      String id1 = nextString(scanner);
-      scanner.verifyToken(",");
-      String id2 = nextString(scanner);
-      scanner.verifyToken(",");
-      String region = nextString(scanner);
-      scanner.verifyToken(")");
-      JBEWindow jw = jbe.getWindow(id1);
-      GObject gobj = jbe.getGObject(id2);
-      if (jw != null && gobj != null) {
-         jw.removeFromRegion(jbe.getInteractor(gobj), region);
-      }
-   }
-}
-
-class GWindow_clear extends JBECommand {
-   public void execute(TokenScanner scanner, JavaBackEnd jbe) {
-      scanner.verifyToken("(");
-      String id = nextString(scanner);
-      JBEWindow jw = jbe.getWindow(id);
-      scanner.verifyToken(")");
-      if (jw != null) jw.clear();
-   }
-}
-
-class GWindow_repaint extends JBECommand {
-   public void execute(TokenScanner scanner, JavaBackEnd jbe) {
-      scanner.verifyToken("(");
-      String id = nextString(scanner);
-      JBEWindow jw = jbe.getWindow(id);
-      scanner.verifyToken(")");
-      if (jw != null) jw.getCanvas().repaint();
-   }
-}
-
-class GWindow_requestFocus extends JBECommand {
+	class Runner implements Runnable {
+		   public Runner(JBEWindow jw) {
+			   this.jw = jw;
+		   }
+		   public void run() {
+			   jw.close();
+		   }
+		   private JBEWindow jw;
+	}
+	
    public void execute(TokenScanner scanner, JavaBackEnd jbe) {
       scanner.verifyToken("(");
       String id = nextString(scanner);
       JBEWindow jw = jbe.getWindow(id);
       scanner.verifyToken(")");
       if (jw != null) {
-         jw.toFront();
-         jw.getCanvas().requestFocus();
+    	  try {
+    		  SwingUtilities.invokeLater(new Runner(jw));
+    	  }
+    	  catch (Exception e) {
+    		  /* empty */
+    	  }
       }
    }
 }
 
-class GWindow_setResizable extends JBECommand {
+class GWindow_addToRegion extends JBECommand {
+	class Runner implements Runnable {
+		   public Runner(JBEWindow jw, GObject gobj, String region, JavaBackEnd jbe) {
+			   this.jw = jw;
+			   this.gobj = gobj;
+			   this.region = region;
+			   this.jbe = jbe;
+		   }
+		   public void run() {
+			   jw.addToRegion(jbe.getInteractor(gobj), region);
+		   }
+		   private JBEWindow jw;
+		   private GObject gobj;
+		   private String region;
+		   private JavaBackEnd jbe;
+	}
+   public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+      scanner.verifyToken("(");
+      String id1 = nextString(scanner);
+      scanner.verifyToken(",");
+      String id2 = nextString(scanner);
+      scanner.verifyToken(",");
+      String region = nextString(scanner);
+      scanner.verifyToken(")");
+      JBEWindow jw = jbe.getWindow(id1);
+      GObject gobj = jbe.getGObject(id2);
+      if (jw != null && gobj != null) {
+    	  try {
+    		  SwingUtilities.invokeLater(new Runner(jw, gobj, region, jbe));
+    	  }
+    	  catch (Exception e) {
+    		  /* empty */
+    	  }
+      }
+   }
+}
+
+class GWindow_removeFromRegion extends JBECommand {
+	class Runner implements Runnable {
+		   public Runner(JBEWindow jw, GObject gobj, String region, JavaBackEnd jbe) {
+			   this.jw = jw;
+			   this.gobj = gobj;
+			   this.region = region;
+			   this.jbe = jbe;
+		   }
+		   public void run() {
+			   jw.removeFromRegion(jbe.getInteractor(gobj), region);
+		   }
+		   private JBEWindow jw;
+		   private GObject gobj;
+		   private String region;
+		   private JavaBackEnd jbe;
+	}
+   public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+      scanner.verifyToken("(");
+      String id1 = nextString(scanner);
+      scanner.verifyToken(",");
+      String id2 = nextString(scanner);
+      scanner.verifyToken(",");
+      String region = nextString(scanner);
+      scanner.verifyToken(")");
+      JBEWindow jw = jbe.getWindow(id1);
+      GObject gobj = jbe.getGObject(id2);
+      if (jw != null && gobj != null) {
+    	  try {
+    		  SwingUtilities.invokeLater(new Runner(jw, gobj, region, jbe));
+    	  }
+    	  catch (Exception e) {
+    		  /* empty */
+    	  }
+      }
+   }
+}
+
+class GWindow_clear extends JBECommand {
+	class Runner implements Runnable {
+		   public Runner(JBEWindow jw) {
+			   this.jw = jw;
+		   }
+		   public void run() {
+			   jw.clear();
+		   }
+		   private JBEWindow jw;
+	}
    public void execute(TokenScanner scanner, JavaBackEnd jbe) {
       scanner.verifyToken("(");
       String id = nextString(scanner);
       JBEWindow jw = jbe.getWindow(id);
-      scanner.verifyToken(",");
-      boolean flag = scanner.nextToken().equals("true");
       scanner.verifyToken(")");
-      if (jw != null) jw.setResizable(flag);
+      if (jw != null) {
+    	  try {
+    		  SwingUtilities.invokeLater(new Runner(jw));
+    	  }
+    	  catch (Exception e) {
+    		  /* empty */
+    	  }
+      }
    }
+}
+
+class GWindow_repaint extends JBECommand {
+	class Runner implements Runnable {
+		public Runner(JBEWindow jw) {
+			this.jw = jw;
+		}
+		public void run() {
+			jw.getCanvas().repaint();
+		}
+		private JBEWindow jw;
+	}
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		String id = nextString(scanner);
+		JBEWindow jw = jbe.getWindow(id);
+		scanner.verifyToken(")");
+		if (jw != null) {
+			try {
+				SwingUtilities.invokeLater(new Runner(jw));
+			}
+			catch (Exception e) {
+				/* empty */
+			}
+		}
+	}
+}
+
+class GWindow_requestFocus extends JBECommand {
+	class Runner implements Runnable {
+		public Runner(JBEWindow jw) {
+			this.jw = jw;
+		}
+		public void run() {
+			jw.toFront();
+			jw.getCanvas().requestFocus();
+		}
+		private JBEWindow jw;
+	}
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		String id = nextString(scanner);
+		JBEWindow jw = jbe.getWindow(id);
+		scanner.verifyToken(")");
+		if (jw != null) {
+			try {
+				SwingUtilities.invokeLater(new Runner(jw));
+			}
+			catch (Exception e) {
+				/* empty */
+			} 
+		}
+	}
+}
+
+class GWindow_setResizable extends JBECommand {
+	class Runner implements Runnable {
+		public Runner(JBEWindow jw, boolean flag) {
+			this.jw = jw;
+			this.flag = flag;
+		}
+		public void run() {
+			jw.setResizable(flag);
+		}
+		private JBEWindow jw;
+		private boolean flag;
+	}
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		String id = nextString(scanner);
+		JBEWindow jw = jbe.getWindow(id);
+		scanner.verifyToken(",");
+		boolean flag = scanner.nextToken().equals("true");
+		scanner.verifyToken(")");
+		if (jw != null) {
+			try {
+				SwingUtilities.invokeLater(new Runner(jw, flag));
+			}
+			catch (Exception e) {
+				/* empty */
+			} 
+		}
+	}
 }
 
 class GWindow_setTitle extends JBECommand {
-   public void execute(TokenScanner scanner, JavaBackEnd jbe) {
-      scanner.verifyToken("(");
-      String id = nextString(scanner);
-      JBEWindow jw = jbe.getWindow(id);
-      scanner.verifyToken(",");
-      String title = nextString(scanner);
-      scanner.verifyToken(")");
-      if (jw != null) jw.setTitle(title);
-   }
+	class Runner implements Runnable {
+		public Runner(JBEWindow jw, String title) {
+			this.jw = jw;
+			this.title = title;
+		}
+		public void run() {
+			jw.setTitle(title);
+		}
+		private JBEWindow jw;
+		private String title;
+	}
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		String id = nextString(scanner);
+		JBEWindow jw = jbe.getWindow(id);
+		scanner.verifyToken(",");
+		String title = nextString(scanner);
+		scanner.verifyToken(")");
+		if (jw != null) {
+			try {
+				SwingUtilities.invokeLater(new Runner(jw, title));
+			}
+			catch (Exception e) {
+				/* empty */
+			} 
+		}
+	}
 }
 
 class GWindow_setVisible extends JBECommand {
-   public void execute(TokenScanner scanner, JavaBackEnd jbe) {
-      scanner.verifyToken("(");
-      String id = nextString(scanner);
-      JBEWindow jw = jbe.getWindow(id);
-      scanner.verifyToken(",");
-      boolean flag = scanner.nextToken().equals("true");
-      scanner.verifyToken(")");
-      if (jw != null) jw.setVisible(flag);
-   }
+	class Runner implements Runnable {
+		public Runner(JBEWindow jw, boolean flag) {
+			this.jw = jw;
+			this.flag = flag;
+		}
+		public void run() {
+			jw.setVisible(flag);
+		}
+		private JBEWindow jw;
+		private boolean flag;
+	}
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		String id = nextString(scanner);
+		JBEWindow jw = jbe.getWindow(id);
+		scanner.verifyToken(",");
+		boolean flag = scanner.nextToken().equals("true");
+		scanner.verifyToken(")");
+		if (jw != null)  {
+			try {
+				SwingUtilities.invokeLater(new Runner(jw, flag));
+			}
+			catch (Exception e) {
+				/* empty */
+			} 
+		}
+	}
 }
 
 class GTimer_pause extends JBECommand {
@@ -335,30 +519,65 @@ class GTimer_pause extends JBECommand {
       jbe.println("result:ok");
    }
 }
+
 class GWindow_getCanvasWidth extends JBECommand {
+	class Runner implements Runnable {
+		public Runner(JBEWindow jw) {
+			this.jw = jw;
+		}
+		public void run() {
+			result = jw.getCanvas().getWidth();
+		}
+		private JBEWindow jw;
+		public int result;
+	}
    public void execute(TokenScanner scanner, JavaBackEnd jbe) {
       scanner.verifyToken("(");
       String id = nextString(scanner);
       JBEWindow jw = jbe.getWindow(id);
       scanner.verifyToken(")");
       if (jw == null) {
-          jbe.println("error: null window");
+          jbe.println("error:null window");
       } else {
-          jbe.println("result:" + jw.getCanvas().getWidth());
+    	  Runner runner = new Runner(jw);
+    	  try {
+				SwingUtilities.invokeAndWait(runner);
+			}
+			catch (Exception e) {
+				/* empty */
+		  } 
+          jbe.println("result:" + runner.result);
       }
    }
 }
 
 class GWindow_getCanvasHeight extends JBECommand {
+	class Runner implements Runnable {
+		public Runner(JBEWindow jw) {
+			this.jw = jw;
+		}
+		public void run() {
+			result = jw.getCanvas().getHeight();
+		}
+		private JBEWindow jw;
+		public int result;
+	}
    public void execute(TokenScanner scanner, JavaBackEnd jbe) {
       scanner.verifyToken("(");
       String id = nextString(scanner);
       JBEWindow jw = jbe.getWindow(id);
       scanner.verifyToken(")");
       if (jw == null) {
-          jbe.println("error: null window");
+          jbe.println("error:null window");
       } else {
-          jbe.println("result:" + jw.getCanvas().getHeight());
+    	  Runner runner = new Runner(jw);
+    	  try {
+				SwingUtilities.invokeAndWait(runner);
+			}
+			catch (Exception e) {
+				/* empty */
+		  } 
+          jbe.println("result:" + runner.result);
       }
    }
 }
@@ -382,45 +601,112 @@ class GWindow_getScreenHeight extends JBECommand {
 }
 
 class JBEConsole_clear extends JBECommand {
-   public void execute(TokenScanner scanner, JavaBackEnd jbe) {
-      scanner.verifyToken("(");
-      scanner.verifyToken(")");
-      jbe.clearConsole();
-   }
+	class Runner implements Runnable {
+		public Runner(JavaBackEnd jbe) {
+			this.jbe = jbe;
+		}
+		public void run() {
+			jbe.clearConsole();
+		}
+		private JavaBackEnd jbe;
+	}
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		scanner.verifyToken(")");
+		try {
+			SwingUtilities.invokeLater(new Runner(jbe));
+		}
+		catch (Exception e) {
+			/* empty */
+		} 
+	}
 }
 
 class JBEConsole_setFont extends JBECommand {
-   public void execute(TokenScanner scanner, JavaBackEnd jbe) {
-      scanner.verifyToken("(");
-      String font = nextString(scanner);
-      scanner.verifyToken(")");
-      jbe.setConsoleFont(font);
-   }
+	class Runner implements Runnable {
+		public Runner(String font, JavaBackEnd jbe) {
+			this.font = font;
+			this.jbe = jbe;
+		}
+		public void run() {
+			jbe.setConsoleFont(font);
+		}
+		private String font;
+		private JavaBackEnd jbe;
+	}
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		String font = nextString(scanner);
+		scanner.verifyToken(")");
+		try {
+			SwingUtilities.invokeLater(new Runner(font, jbe));
+		}
+		catch (Exception e) {
+			/* empty */
+		} 
+	}
 }
 
 
 class JBEConsole_setLocation extends JBECommand {
-   public void execute(TokenScanner scanner, JavaBackEnd jbe) {
-      scanner.verifyToken("(");
-      int width = nextInt(scanner);
-      scanner.verifyToken(",");
-      int height = nextInt(scanner);
-      scanner.verifyToken(")");
-      jbe.setConsoleLocation(width, height);
-   }
+	class Runner implements Runnable {
+		public Runner(int x, int y, JavaBackEnd jbe) {
+			this.x = x;
+			this.y = y;
+			this.jbe = jbe;
+		}
+		public void run() {
+			jbe.setConsoleLocation(x, y);
+		}
+		private int x;
+		private int y;
+		private JavaBackEnd jbe;
+	}
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		int x = nextInt(scanner);
+		scanner.verifyToken(",");
+		int y = nextInt(scanner);
+		scanner.verifyToken(")");
+		try {
+			SwingUtilities.invokeLater(new Runner(x, y, jbe));
+		}
+		catch (Exception e) {
+			/* empty */
+		} 
+	}
 }
 
 class JBEConsole_setSize extends JBECommand {
+	class Runner implements Runnable {
+		public Runner(int width, int height, JavaBackEnd jbe) {
+			this.width = width;
+			this.height = height;
+			this.jbe = jbe;
+		}
+		public void run() {
+			jbe.setConsoleSize(width, height);
+		}
+		private int width;
+		private int height;
+		private JavaBackEnd jbe;
+	}
    public void execute(TokenScanner scanner, JavaBackEnd jbe) {
       scanner.verifyToken("(");
       int width = nextInt(scanner);
       scanner.verifyToken(",");
       int height = nextInt(scanner);
       scanner.verifyToken(")");
-      jbe.setConsoleSize(width, height);
+      try {
+			SwingUtilities.invokeLater(new Runner(width, height, jbe));
+		}
+		catch (Exception e) {
+			/* empty */
+		} 
    }
 }
 
+// OK not on Event Dispatch Thread
 class JBEConsole_getLine extends JBECommand {
    public void execute(TokenScanner scanner, JavaBackEnd jbe) {
       scanner.verifyToken("(");
@@ -430,6 +716,19 @@ class JBEConsole_getLine extends JBECommand {
 }
 
 class JBEConsole_print extends JBECommand {
+	class Runner implements Runnable {
+		public Runner(String str, boolean isStdErr, JavaBackEnd jbe) {
+			this.str = str;
+			this.isStdErr = isStdErr;
+			this.jbe = jbe;
+		}
+		public void run() {
+			jbe.putConsole(str, isStdErr);
+		}
+		private String str;
+		private boolean isStdErr;
+		private JavaBackEnd jbe;
+	}
    public void execute(TokenScanner scanner, JavaBackEnd jbe) {
       scanner.verifyToken("(");
       String str = nextString(scanner);
@@ -439,15 +738,35 @@ class JBEConsole_print extends JBECommand {
           isStdErr = nextBoolean(scanner);
       }
       //scanner.verifyToken(")");
-      jbe.putConsole(str, isStdErr);
+      try {
+			SwingUtilities.invokeLater(new Runner(str, isStdErr, jbe));
+		}
+		catch (Exception e) {
+			/* empty */
+		} 
    }
 }
 
 class JBEConsole_println extends JBECommand {
+	class Runner implements Runnable {
+		public Runner(JavaBackEnd jbe) {
+			this.jbe = jbe;
+		}
+		public void run() {
+			jbe.endLineConsole();
+		}
+		private JavaBackEnd jbe;
+	}
    public void execute(TokenScanner scanner, JavaBackEnd jbe) {
       scanner.verifyToken("(");
       scanner.verifyToken(")");
-      jbe.endLineConsole();
+      //jbe.endLineConsole();
+      try {
+			SwingUtilities.invokeLater(new Runner(jbe));
+		}
+		catch (Exception e) {
+			/* empty */
+		} 
    }
 }
 
@@ -542,6 +861,7 @@ class GTimer_stopTimer extends JBECommand {
    }
 }
 
+// Don't need to call Timer constructor from Event Dispatch Thread.
 class GTimer extends Timer {
    public GTimer(String id, double delay) {
       super((int) Math.round(delay), null);
@@ -693,12 +1013,10 @@ class GImage_create extends JBECommand {
       try {
          GImage gobj = new GImage(filename);
          jbe.defineGObject(id, gobj);
-         System.out.println("result:GDimension(" + gobj.getWidth() +
+         jbe.println("result:GDimension(" + gobj.getWidth() +
                             ", " + gobj.getHeight() + ")");
-         System.out.flush();
       } catch (Exception ex) {
-         System.out.println("result:" + ex.getMessage());
-         System.out.flush();
+         jbe.println("result:" + ex.getMessage());
       }
    }
 }
@@ -803,6 +1121,7 @@ class GCompound_create extends JBECommand {
 
 class GCompound_add extends JBECommand {
    public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+      //System.err.println("JBE DEBUG: add 1");
       scanner.verifyToken("(");
       String id = nextString(scanner);
       GObject gobj1 = jbe.getGObject(id);
@@ -810,10 +1129,16 @@ class GCompound_add extends JBECommand {
       id = nextString(scanner);
       GObject gobj2 = jbe.getGObject(id);
       scanner.verifyToken(")");
+      //System.err.println("JBE DEBUG: add 2");
+
       if (gobj1 != null && gobj2 != null) {
+         //System.err.println("JBE DEBUG: add 3");
          ((JBETopCompound) gobj1).add(gobj2);
+         jbe.println("result:ok");
+         //System.err.println("JBE DEBUG: add 4");
+      } else {
+      	 jbe.println("error:GCompound_add: an object was null");
       }
-      System.out.println("parent: " + gobj2.getParent()); // DELETE
    }
 }
 
@@ -848,8 +1173,7 @@ class GObject_contains extends JBECommand {
       double y = nextDouble(scanner);
       scanner.verifyToken(")");
       GObject gobj = jbe.getGObject(id);
-      System.out.println("result:" + (gobj != null && gobj.contains(x, y)));
-      System.out.flush();
+      jbe.println("result:" + (gobj != null && gobj.contains(x, y)));
    }
 }
 
@@ -862,14 +1186,13 @@ class GObject_getBounds extends JBECommand {
       scanner.verifyToken(")");
       GObject gobj = jbe.getGObject(id);
       if (gobj == null) {
-         System.out.println("error: NULL object");
+         jbe.println("error: NULL object");
       } else {
          GRectangle bounds = gobj.getBounds();
-         System.out.println("result:GRectangle(" + bounds.getX() + ", "
+         jbe.println("result:GRectangle(" + bounds.getX() + ", "
                             + bounds.getY() + ", " + bounds.getWidth() + ", "
                             + bounds.getHeight() + ")");
       }
-      System.out.flush();
    }
 }
 
@@ -879,16 +1202,12 @@ class GObject_remove extends JBECommand {
       String id = nextString(scanner);
       GObject gobj = jbe.getGObject(id);
       scanner.verifyToken(")");
-      System.out.println("here"); // DELETE
       if (gobj != null) {
-      	 System.out.println("here2"); // DELETE
          GContainer parent = gobj.getParent();
          if (parent != null) {
-            System.out.println("here3"); // DELETE
             parent.remove(gobj);
          }
       }
-     System.out.println("here4"); // DELETE 
    }
 }
 
@@ -1101,8 +1420,7 @@ class GLabel_getFontAscent extends JBECommand {
       String id = nextString(scanner);
       scanner.verifyToken(")");
       GLabel label = (GLabel) jbe.getGObject(id);
-      System.out.println("result:" + label.getAscent());
-      System.out.flush();
+      jbe.println("result:" + label.getAscent());
    }
 }
 
@@ -1112,8 +1430,7 @@ class GLabel_getFontDescent extends JBECommand {
       String id = nextString(scanner);
       scanner.verifyToken(")");
       GLabel label = (GLabel) jbe.getGObject(id);
-      System.out.println("result:" + label.getDescent());
-      System.out.flush();
+      jbe.println("result:" + label.getDescent());
    }
 }
 
@@ -1124,9 +1441,8 @@ class GLabel_getGLabelSize extends JBECommand {
       scanner.verifyToken(")");
       GLabel label = (GLabel) jbe.getGObject(id);
       GDimension size = label.getSize();
-      System.out.println("result:GDimension(" + size.getWidth()
+      jbe.println("result:GDimension(" + size.getWidth()
                        + ", " + size.getHeight() + ")");
-      System.out.flush();
    }
 }
 
@@ -1154,12 +1470,10 @@ class GInteractor_getSize extends JBECommand {
          JComponent jcomp = ((GInteractor) gobj).getInteractor();
          Dimension size = (jcomp.isShowing()) ? jcomp.getSize()
                                               : jcomp.getPreferredSize();
-         System.out.println("result:GDimension(" + size.width + ", "
+         jbe.println("result:GDimension(" + size.width + ", "
                                                  + size.height + ")");
-         System.out.flush();
       } else {
-         System.out.println("result:GDimension(0, 0)");
-         System.out.flush();
+         jbe.println("result:GDimension(0, 0)");
       }
    }
 }
@@ -1199,11 +1513,9 @@ class GCheckBox_isSelected extends JBECommand {
       GObject gobj = jbe.getGObject(id);
       if (gobj != null) {
          JCheckBox chkbox = (JCheckBox) ((GCheckBox) gobj).getInteractor();
-         System.out.println("result:" + chkbox.isSelected());
-         System.out.flush();
+         jbe.println("result:" + chkbox.isSelected());
       } else {
-         System.out.println("result:false");
-         System.out.flush();
+         jbe.println("result:false");
       }
    }
 }
@@ -1248,11 +1560,9 @@ class GSlider_getValue extends JBECommand {
       GObject gobj = jbe.getGObject(id);
       if (gobj != null) {
          JSlider slider = (JSlider) ((GSlider) gobj).getInteractor();
-         System.out.println("result:" + slider.getValue());
-         System.out.flush();
+         jbe.println("result:" + slider.getValue());
       } else {
-         System.out.println("result:0");
-         System.out.flush();
+         jbe.println("result:0");
       }
    }
 }
@@ -1293,11 +1603,9 @@ class GTextField_getText extends JBECommand {
       GObject gobj = jbe.getGObject(id);
       if (gobj != null) {
          JTextField field = (JTextField) ((GTextField) gobj).getInteractor();
-         System.out.println("result:" + field.getText());
-         System.out.flush();
+         jbe.println("result:" + field.getText());
       } else {
-         System.out.println("result:");
-         System.out.flush();
+         jbe.println("result:");
       }
    }
 }
@@ -1367,11 +1675,9 @@ class GChooser_getSelectedItem extends JBECommand {
       GObject gobj = jbe.getGObject(id);
       if (gobj != null) {
          JComboBox chooser = (JComboBox) ((GChooser) gobj).getInteractor();
-         System.out.println("result:" + chooser.getSelectedItem());
-         System.out.flush();
+         jbe.println("result:" + chooser.getSelectedItem());
       } else {
-         System.out.println("result:");
-         System.out.flush();
+         jbe.println("result:");
       }
    }
 }
@@ -1443,8 +1749,7 @@ class File_openFileDialog extends JBECommand {
       } catch (Exception e) {
         e.printStackTrace();
       }
-      System.out.println("result:" + result);
-      System.out.flush();
+      jbe.println("result:" + result);
    }
 
    public String result;
@@ -1455,7 +1760,7 @@ class File_openFileDialog extends JBECommand {
 
 class GBufferedImage_create extends JBECommand {
 	// gbufferedimage = new GBufferedImage(x, y, width, height);
-	public void execute(TokenScanner paramTokenScanner, JavaBackEnd paramJavaBackEnd) {
+	public void execute(TokenScanner paramTokenScanner, JavaBackEnd jbe) {
 		paramTokenScanner.verifyToken("(");
 		String id = nextString(paramTokenScanner);
 		paramTokenScanner.verifyToken(",");
@@ -1472,21 +1777,21 @@ class GBufferedImage_create extends JBECommand {
 		
 		GBufferedImage img = new GBufferedImage(w, h, rgb);
 		img.setLocation(x, y);
-		paramJavaBackEnd.defineGObject(id, img);
-		paramJavaBackEnd.defineSource(img.getInteractor(), id);
+		jbe.defineGObject(id, img);
+		jbe.defineSource(img.getInteractor(), id);
 	}
 }
 
 class GBufferedImage_fill extends JBECommand {
 	// gbufferedimage.setRGB(x, y, rgb);
-	public void execute(TokenScanner paramTokenScanner, JavaBackEnd paramJavaBackEnd) {
+	public void execute(TokenScanner paramTokenScanner, JavaBackEnd jbe) {
 		paramTokenScanner.verifyToken("(");
 		String id = nextString(paramTokenScanner);
 		paramTokenScanner.verifyToken(",");
 		int rgb = nextInt(paramTokenScanner);
 		paramTokenScanner.verifyToken(")");
 		
-		GObject gobj = paramJavaBackEnd.getGObject(id);
+		GObject gobj = jbe.getGObject(id);
 		if (gobj != null && gobj instanceof GBufferedImage) {
 			GBufferedImage img = (GBufferedImage) gobj;
 			img.fill(rgb);
@@ -1496,7 +1801,7 @@ class GBufferedImage_fill extends JBECommand {
 
 class GBufferedImage_fillRegion extends JBECommand {
 	// gbufferedimage.setRGB(x, y, rgb);
-	public void execute(TokenScanner paramTokenScanner, JavaBackEnd paramJavaBackEnd) {
+	public void execute(TokenScanner paramTokenScanner, JavaBackEnd jbe) {
 		paramTokenScanner.verifyToken("(");
 		String id = nextString(paramTokenScanner);
 		paramTokenScanner.verifyToken(",");
@@ -1511,7 +1816,7 @@ class GBufferedImage_fillRegion extends JBECommand {
 		int rgb = nextInt(paramTokenScanner);
 		paramTokenScanner.verifyToken(")");
 		
-		GObject gobj = paramJavaBackEnd.getGObject(id);
+		GObject gobj = jbe.getGObject(id);
 		if (gobj != null && gobj instanceof GBufferedImage) {
 			GBufferedImage img = (GBufferedImage) gobj;
 			img.fillRegion(x, y, w, h, rgb);
@@ -1521,24 +1826,30 @@ class GBufferedImage_fillRegion extends JBECommand {
 
 class GBufferedImage_load extends JBECommand {
 	// gbufferedimage.load("foobar.png");
-	public void execute(TokenScanner paramTokenScanner, JavaBackEnd paramJavaBackEnd) {
+	public void execute(TokenScanner paramTokenScanner, JavaBackEnd jbe) {
 		paramTokenScanner.verifyToken("(");
 		String id = nextString(paramTokenScanner);
 		paramTokenScanner.verifyToken(",");
 		String filename = nextString(paramTokenScanner);
 		paramTokenScanner.verifyToken(")");
 		
-		GObject gobj = paramJavaBackEnd.getGObject(id);
+		GObject gobj = jbe.getGObject(id);
+		System.err.println("JBE DEBUG: execute load: " + gobj); // DELETE
 		if (gobj != null && gobj instanceof GBufferedImage) {
 			GBufferedImage img = (GBufferedImage) gobj;
-			img.load(filename);
+			result = img.load(filename);
+			jbe.println("result:" + result);
+		} else {
+		    jbe.println("result:");
 		}
 	}
+	
+	public String result;
 }
 
 class GBufferedImage_resize extends JBECommand {
 	// gbufferedimage.setRGB(x, y, rgb);
-	public void execute(TokenScanner paramTokenScanner, JavaBackEnd paramJavaBackEnd) {
+	public void execute(TokenScanner paramTokenScanner, JavaBackEnd jbe) {
 		paramTokenScanner.verifyToken("(");
 		String id = nextString(paramTokenScanner);
 		paramTokenScanner.verifyToken(",");
@@ -1549,7 +1860,7 @@ class GBufferedImage_resize extends JBECommand {
 		String retain = nextString(paramTokenScanner);
 		paramTokenScanner.verifyToken(")");
 		
-		GObject gobj = paramJavaBackEnd.getGObject(id);
+		GObject gobj = jbe.getGObject(id);
 		if (gobj != null && gobj instanceof GBufferedImage) {
 			GBufferedImage img = (GBufferedImage) gobj;
 			img.resize(w, h, retain.equals("true"));
@@ -1559,24 +1870,27 @@ class GBufferedImage_resize extends JBECommand {
 
 class GBufferedImage_save extends JBECommand {
 	// gbufferedimage.save("foobar.png");
-	public void execute(TokenScanner paramTokenScanner, JavaBackEnd paramJavaBackEnd) {
+	public void execute(TokenScanner paramTokenScanner, JavaBackEnd jbe) {
 		paramTokenScanner.verifyToken("(");
 		String id = nextString(paramTokenScanner);
 		paramTokenScanner.verifyToken(",");
 		String filename = nextString(paramTokenScanner);
 		paramTokenScanner.verifyToken(")");
 		
-		GObject gobj = paramJavaBackEnd.getGObject(id);
+		GObject gobj = jbe.getGObject(id);
 		if (gobj != null && gobj instanceof GBufferedImage) {
 			GBufferedImage img = (GBufferedImage) gobj;
 			img.save(filename);
+			jbe.println("result:ok");
+		} else {
+			jbe.println("result:");
 		}
 	}
 }
 
 class GBufferedImage_setRGB extends JBECommand {
 	// gbufferedimage.setRGB(x, y, rgb);
-	public void execute(TokenScanner paramTokenScanner, JavaBackEnd paramJavaBackEnd) {
+	public void execute(TokenScanner paramTokenScanner, JavaBackEnd jbe) {
 		paramTokenScanner.verifyToken("(");
 		String id = nextString(paramTokenScanner);
 		paramTokenScanner.verifyToken(",");
@@ -1587,7 +1901,7 @@ class GBufferedImage_setRGB extends JBECommand {
 		int rgb = nextInt(paramTokenScanner);
 		paramTokenScanner.verifyToken(")");
 		
-		GObject gobj = paramJavaBackEnd.getGObject(id);
+		GObject gobj = jbe.getGObject(id);
 		if (gobj != null && gobj instanceof GBufferedImage) {
 			GBufferedImage img = (GBufferedImage) gobj;
 			img.setRGB(x, y, rgb);

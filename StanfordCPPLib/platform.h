@@ -154,7 +154,7 @@ public:
    void gbufferedimage_fillRegion(GObject* gobj, double x, double y, double width, double height, int rgb);
    std::string gbufferedimage_load(GObject* gobj, const std::string& filename);
    void gbufferedimage_resize(GObject* gobj, double width, double height, bool retain = true);
-   std::string gbufferedimage_save(const GObject* const gobj, const std::string& filename);
+   void gbufferedimage_save(const GObject* const gobj, const std::string& filename);
    void gbufferedimage_setRGB(GObject* gobj, double x, double y, int rgb);
 };
 

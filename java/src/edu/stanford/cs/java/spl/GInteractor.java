@@ -28,15 +28,15 @@ import edu.stanford.cs.java.graphics.GMath;
 import edu.stanford.cs.java.graphics.GObject;
 import edu.stanford.cs.java.graphics.GRectangle;
 import edu.stanford.cs.java.graphics.GResizable;
-import java.awt.BorderLayout;
+//import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Graphics;
 import java.awt.Point;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+//import javax.swing.JLabel;
+//import javax.swing.JPanel;
 
 public abstract class GInteractor extends GObject implements GResizable {
 

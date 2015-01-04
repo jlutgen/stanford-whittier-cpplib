@@ -1,9 +1,11 @@
 /**
- * @file: console.h
+ * @file console.h
  *
+ * @brief
  * This file redirects the `cin`, `cout`,
- * and `cerr` streams to use a console window.  This file
- * must be included in the source file that contains the `main`
+ * and `cerr` streams to use a graphical console window.
+ *
+ * This file must be included in the source file that contains the `main`
  * method, although it may be included in other source files as well.
  */
 
@@ -51,11 +53,11 @@ void clearConsole();
  * first available font on the system is used.
  *
  * Sample usages:
- *  ~~~
+ *
  *      setConsoleFont("Monospaced-14");
  *      setConsoleFont("SansSerif-Bold-*");
  *      setConsoleFont("Serif-*-12");
- *  ~~~
+ *
  */
 void setConsoleFont(const std::string & font);
 

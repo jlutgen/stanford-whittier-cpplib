@@ -665,6 +665,7 @@ void Platform::add(GObject *compound, GObject *gobj) {
    ostringstream os;
    os << "GCompound.add(\"" << compound << "\", \"" << gobj << "\")";
    putPipe(os.str());
+   getStatus(); // JL
 }
 
 void Platform::remove(GObject *gobj) {
@@ -1126,13 +1127,13 @@ void Platform::gbufferedimage_resize(GObject* gobj, double width, double height,
     putPipe(os.str());
 }
 
-std::string Platform::gbufferedimage_save(const GObject* const gobj, const std::string& filename) {
+void Platform::gbufferedimage_save(const GObject* const gobj, const std::string& filename) {
     std::ostringstream os;
     os << "GBufferedImage.save(\"" << gobj << "\", ";
     writeQuotedString(os, filename);
     os << ")";
     putPipe(os.str());
-    return getResult();
+    getStatus();
 }
 
 void Platform::gbufferedimage_setRGB(GObject* gobj, double x, double y,
@@ -1383,7 +1384,9 @@ static void initPipe() {
    if (tracePipe) {
 #ifdef __APPLE__
       string option = "-Xdock:name=" + programName;
-      execlp("java", "java", option.c_str(), "-Dstanfordspl.debug=true",
+      string debugger = "-Xdebug";
+      string debugger2 = "-Xrunjdwp:transport=dt_socket,address=8888,server=y,suspend=n";
+      execlp("java", "java", option.c_str(), debugger.c_str(), debugger2.c_str(), "-Dstanfordspl.debug=true",
              "-jar", "spl.jar",
               programName.c_str(), NULL);
 #else
@@ -1399,7 +1402,7 @@ static void initPipe() {
       execlp("java", "java", "-jar", "spl.jar", programName.c_str(), NULL);
 #endif
    }
-      throw new ErrorException("Could not exec spl.jar");
+      throw ErrorException("Could not exec spl.jar"); // BUGFIX (JL) was `throw new Error...`
    } else {
       pin = fromJBE[0];
       pout = toJBE[1];
@@ -1440,6 +1443,9 @@ static string getResult(bool consumeAcks) {
       }
       if (startsWith(line, "event:")) {
          eventQueue.enqueue(parseEvent(line.substr(6)));
+      }
+      if (startsWith(line, "error:")) {
+          error(string("Java backend: ") + line.substr(6));
       }
    }
 }

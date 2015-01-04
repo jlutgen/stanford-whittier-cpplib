@@ -1,6 +1,7 @@
 /**
  * @file hashmap.h
  *
+ * @brief
  * This file exports the HashMap class, which stores
  * a set of <i>key</i>-<i>value</i> pairs.
  */
@@ -61,9 +62,8 @@ public:
  * the C++ primitive types.
  *
  * Sample usage:
- * ~~~
- * HashMap<KeyType,ValueType> map;
- * ~~~
+ *
+ *     HashMap<KeyType,ValueType> map;
  */
    HashMap();
 
@@ -78,9 +78,8 @@ public:
  * Returns the number of entries in this map.
  *
  * Sample usage:
- * ~~~
- * int nEntries = map.size();
- * ~~~
+ *
+ *     int nEntries = map.size();
  */
    int size() const;
 
@@ -89,9 +88,8 @@ public:
  * Returns \c true if this map contains no entries.
  *
  * Sample usage:
- * ~~~
- * if (map.isEmpty()) ...
- * ~~~
+ *
+ *     if (map.isEmpty()) ...
  */
    bool isEmpty() const;
 
@@ -101,9 +99,8 @@ public:
  * by the new value.
  *
  * Sample usage:
- * ~~~
- * map.put(key, value);
- * ~~~
+ *
+ *     map.put(key, value);
  */
    void put(KeyType key, ValueType value);
 
@@ -114,9 +111,8 @@ public:
  * default value for \c ValueType.
  *
  * Sample usage:
- * ~~~
- * ValueType value = map.get(key);
- * ~~~
+ *
+ *     ValueType value = map.get(key);
  */
    ValueType get(KeyType key) const;
 
@@ -126,9 +122,8 @@ public:
  * in this map.
  *
  * Sample usage:
- * ~~~
- * if (map.containsKey(key)) ...
- * ~~~
+ *
+ *     if (map.containsKey(key)) ...
  */
    bool containsKey(KeyType key) const;
 
@@ -137,9 +132,8 @@ public:
  * Removes any entry for \em key from this map.
  *
  * Sample usage:
- * ~~~
- * map.remove(key);
- * ~~~
+ *
+ *     map.remove(key);
  */
    void remove(KeyType key);
 
@@ -148,9 +142,8 @@ public:
  * Removes all entries from this map.
  *
  * Sample usage:
- * ~~~
- * map.clear();
- * ~~~
+ *
+ *     map.clear();
  */
    void clear();
 
@@ -164,9 +157,8 @@ public:
  * whose value is set to the default for the value type.
  *
  * Sample usage:
- * ~~~
- * map[key]
- * ~~~
+ *
+ *     map[key]
  */
    ValueType & operator[](KeyType key);
    ValueType operator[](KeyType key) const;
@@ -176,9 +168,8 @@ public:
  * Returns a printable string representation of this map.
  *
  * Sample usage:
- * ~~~
- * string str = map.toString();
- * ~~~
+ *
+ *     string str = map.toString();
  */
    std::string toString();
 
@@ -188,9 +179,8 @@ public:
  * for each one.  The keys are processed in an unspecified order.
  *
  * Sample usage:
- * ~~~
- * map.mapAll(fn);
- * ~~~
+ *
+ *     map.mapAll(fn);
  */
    void mapAll(void (*fn)(KeyType, ValueType)) const;
    void mapAll(void (*fn)(const KeyType &, const ValueType &)) const;
