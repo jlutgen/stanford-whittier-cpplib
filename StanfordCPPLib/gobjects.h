@@ -1239,10 +1239,11 @@ class GImage : public GObject {
 public:
 
 /** \_overload */
-   GImage(std::string filename);
+   GImage(std::string filenameOrURL);
 /**
  * Constructs a new image by loading the image from the specified
- * file, which is either in the current directory or a subdirectory named
+ * file or URL. If \em filenameOrURL is a relative filename, the current directory
+ * is searched first, followed by any subdirectory named
  * <code>images</code>.  By default, the upper left corner of the image
  * appears at the origin; the second form automatically sets the location
  * to the point (\em x, \em y).
@@ -1536,8 +1537,12 @@ protected:
  *
  * This graphical object subclass represents a polygon.
  *
- * Conceptually, a polygon is a list of vertices, with line segments
- * joining consecutive vertices. The `%GPolygon` constructor creates an
+ * Conceptually, a polygon is a list of vertices, and represents a closed curve
+ * formed from line segments joining consecutive vertices in cyclical fashion.
+ * For example, a polygon with vertex list {\em A, \em B, <i>C</i>} has line
+ * segments \em AB, \em BC, and \em CA.
+ *
+ * The `%GPolygon` constructor creates an
  * empty polygon (i.e., a polygon having no vertices).
  * You then need to add a sequence of vertices to the polygon using
  * one or more of the methods \ref addVertex, \ref addEdge,
@@ -1586,6 +1591,10 @@ public:
  * Adds a vertex at (\em x, \em y) relative to this polygon's
  * origin.
  *
+ * The polygon is <b>not</b> automatically redrawn after every call to \c addVertex.
+ * Call the containing <code>GWindow</code>'s \link GWindow::repaint repaint \endlink method
+ * if you need the polygon to be immediately redrawn after calling this method.
+ *
  * Sample usage:
  *
  *     poly->addVertex(x, y);
@@ -1600,6 +1609,10 @@ public:
  * edge begins at (\em x, \em y) and ends at (\em x + \em dx, \em y + \em dy).
  *
  * The endpoint of the new edge is appended to this polygon's list of vertices.
+ *
+ * The polygon is <b>not</b> automatically redrawn after every call to \c addEdge.
+ * Call the containing <code>GWindow</code>'s \link GWindow::repaint repaint \endlink method
+ * if you need the polygon to be immediately redrawn after calling this method.
  *
  * Sample usage:
  *
@@ -1616,6 +1629,10 @@ public:
  * from the positive <i>x</i>-axis.
  *
  * The endpoint of the new edge is appended to this polygon's list of vertices.
+ *
+ * The polygon is <b>not</b> automatically redrawn after every call to \c addPolarEdge.
+ * Call the containing <code>GWindow</code>'s \link GWindow::repaint repaint \endlink method
+ * if you need the polygon to be immediately redrawn after calling this method.
  *
  * Sample usage:
  *

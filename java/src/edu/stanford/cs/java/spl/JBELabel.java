@@ -23,10 +23,13 @@
 package edu.stanford.cs.java.spl;
 
 import edu.stanford.cs.java.graphics.GLabel;
+
 import java.awt.Color;
 import java.awt.Font;
+
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
 public class JBELabel extends GLabel {
    public JBELabel(String label) {
@@ -43,14 +46,28 @@ public class JBELabel extends GLabel {
       return jlabel;
    }
 
+   // overrides GLabel
    public void setFont(Font font) {
-      super.setFont(font);
-      if (jlabel != null) jlabel.setFont(font);
+	   final Font ffont = font;
+	   SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	JBELabel.super.setFont(ffont);
+	            if (jlabel != null) jlabel.setFont(ffont);
+	        }
+	    });
+      
    }
 
+   // overrides GLabel
    public void setColor(Color color) {
-      super.setColor(color);
-      if (jlabel != null) jlabel.setForeground(color);
+	  final Color fcolor = color;
+	  SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	JBELabel.super.setColor(fcolor);
+	            if (jlabel != null) jlabel.setForeground(fcolor);
+	        }
+	    });
+      
    }
 
    private JLabel jlabel;

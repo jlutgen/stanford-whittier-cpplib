@@ -389,14 +389,4 @@ public class GArc extends GObject implements GFillable {
    private double arcSweep;
    private Color fillColor;
    private boolean isFilled;
-
-/* Serial version UID */
-/**
- * The serialization code for this class.  This value should be incremented
- * whenever you change the structure of this class in an incompatible way,
- * typically by adding a new instance variable.
- */
-
-   static final long serialVersionUID = 21L;
-
 }

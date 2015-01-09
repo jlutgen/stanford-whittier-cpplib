@@ -13,7 +13,6 @@ import javax.swing.*;
  * @version 2014/10/22
  */
 public class GBufferedImage extends GInteractor {
-	private static final long serialVersionUID = 1L;
 	
 	private BufferedImage bufferedImage;
 	private int imageWidth;
@@ -84,8 +83,8 @@ public class GBufferedImage extends GInteractor {
 			repaintImage();
 			//System.out.println("result:" + toStringBase64());   // this is a LONG string
 		    return toStringBase64();
-		} catch (Exception ex) {
-			throw (new RuntimeException(ex.getMessage()));
+		} catch (Exception e) {
+			throw (new RuntimeException(e.getMessage()));
 		}
 	}
 	
@@ -129,9 +128,12 @@ public class GBufferedImage extends GInteractor {
 	}
 	
 	private void repaintImage() {
-		label.setIcon(new ImageIcon(bufferedImage));
-		Dimension size = new Dimension(imageWidth, imageHeight);
-		label.setPreferredSize(size);
-		label.setSize(size);
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	label.setIcon(new ImageIcon(bufferedImage));
+	    		Dimension size = new Dimension(imageWidth, imageHeight);
+	    		label.setPreferredSize(size);
+	    		label.setSize(size);	        }
+	    });		
 	}
 }

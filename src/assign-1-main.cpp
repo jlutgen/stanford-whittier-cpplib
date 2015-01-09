@@ -183,7 +183,29 @@ int main()
   GButton *naked = new GButton("naked");
   gw.add(naked, 200, 110);
 
+  GEvent e = getNextEvent();
+  if (!e.isValid())
+      cout << "getNextEvent returned invalid event: " << e.toString() << endl;
+  else
+      cout << "getNextEvent returned valid event: " << e.toString() << endl;
+
+//    cout << "This program generates timer events." << endl;
+//    GTimer timer(2000);
+//    timer.start();
+//    int ticks = 0;
+//    while (true)
+//      {
+//        GEvent e = waitForEvent(CLICK_EVENT | TIMER_EVENT);
+//        if (e.getEventType() == MOUSE_CLICKED) break;
+//        cout << "Timer ticked: " << ticks++ << endl;
+//      }
+
+//    getLine("\n*** Execution finished. Press [Enter] to close the window(s)... ");
+//    closeConsoleAndExit();
+//    return 0;
+
   cout.setf(ios::fixed);
+  cout << dec;
   while (true)
     {
       GEvent e = waitForEvent();
@@ -226,6 +248,10 @@ int main()
           if (cmd == "texty")
             {
               cout << "\tText: " << textField->getText() << endl;
+            }
+          if (cmd == "gurgle")
+            {
+              cout << "\tSelected: " << boolToString(cb->isSelected()) << endl;
             }
           if (ae.getSource() == button)
             {
@@ -370,20 +396,6 @@ int main()
         }
     } // while
 
-
-//  cout << "This program generates timer events." << endl;
-//  GTimer timer(2000);
-//  timer.start();
-//  int ticks = 0;
-//  while (true)
-//    {
-//      GEvent e = waitForEvent(TIMER_EVENT);
-//      if (e.getEventType() == MOUSE_CLICKED) break;
-//      cout << "Timer ticked: " << ticks++ << endl;
-//    }
-
-//  getLine("\n*** Execution finished. Press [Enter] to close the window(s)... ");
-//  closeConsoleAndExit();
   return 0;
 
 } // main

@@ -37,6 +37,9 @@ using namespace std;
 
 int _mainFlags;
 
+/* Global pointers for saving stream buffers */
+streambuf *savein, *saveout, *saveerr;
+
 /* Stored arguments */
 
 int argcMain; // removed 'static' so can be seen in platform.cpp (JL)

@@ -255,7 +255,7 @@ static int child;
 static void initPipe();
 static void putPipe(string line);
 static string getPipe();
-static string getResult(bool consumeAcks = false);
+static string getResult(bool consumeAcks = true);
 static void getStatus();
 static GEvent parseEvent(string line);
 static GEvent parseMouseEvent(TokenScanner & scanner, EventType type);
@@ -559,10 +559,10 @@ void Platform::repaint(const GWindow & gw) {
 }
 
 void Platform::setVisible(const GWindow & gw, bool flag) {
-//   ostringstream os;
-//   os << boolalpha << "GWindow.setVisible(\"" << gw.gwd << "\", "
-//                   << flag << ")";
-//   putPipe(os.str());
+   ostringstream os;
+   os << boolalpha << "GWindow.setVisible(\"" << gw.gwd << "\", "
+                   << flag << ")";
+   putPipe(os.str());
 }
 
 void Platform::setWindowTitle(const GWindow & gw, string title) {
@@ -665,7 +665,6 @@ void Platform::add(GObject *compound, GObject *gobj) {
    ostringstream os;
    os << "GCompound.add(\"" << compound << "\", \"" << gobj << "\")";
    putPipe(os.str());
-   getStatus(); // JL
 }
 
 void Platform::remove(GObject *gobj) {
@@ -1149,7 +1148,7 @@ GEvent Platform::getNextEvent(int mask) {
    cout.flush();
    if (eventQueue.isEmpty()) {
       putPipe("GEvent.getNextEvent(" + integerToString(mask) + ")");
-      getResult();
+      getResult(false);
       if (eventQueue.isEmpty()) return GEvent();
    }
    return eventQueue.dequeue();
@@ -1159,7 +1158,7 @@ GEvent Platform::waitForEvent(int mask) {
    cout.flush();
    while (eventQueue.isEmpty()) {
       putPipe("GEvent.waitForEvent(" + integerToString(mask) + ")");
-      getResult();
+      getResult(false);
    }
    return eventQueue.dequeue();
 }
@@ -1493,6 +1492,8 @@ static GEvent parseEvent(string line) {
      // Java console window was closed; possibly exit the C++ program now
      extern bool getConsoleExitProgramOnClose();
      if (getConsoleExitProgramOnClose()) {
+         extern streambuf *saveerr;
+         cerr.rdbuf(saveerr);
          cerr << endl;
          cerr << "***" << endl;
          cerr << "*** STANFORD C++ LIBRARY" << endl;

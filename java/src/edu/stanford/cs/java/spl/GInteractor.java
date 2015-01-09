@@ -28,13 +28,18 @@ import edu.stanford.cs.java.graphics.GMath;
 import edu.stanford.cs.java.graphics.GObject;
 import edu.stanford.cs.java.graphics.GRectangle;
 import edu.stanford.cs.java.graphics.GResizable;
+
+
+import java.awt.Color;
 //import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Graphics;
 import java.awt.Point;
+
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 //import javax.swing.JLabel;
 //import javax.swing.JPanel;
 
@@ -88,11 +93,15 @@ public abstract class GInteractor extends GObject implements GResizable {
    }
 
    public void setSize(double width, double height) {
-      int iw = GMath.round(width);
-      int ih = GMath.round(height);
-      interactor.setPreferredSize(new Dimension(iw, ih));
-      interactor.setSize(iw, ih);
-      interactor.repaint();
+      final int iw = GMath.round(width);
+      final int ih = GMath.round(height);
+      SwingUtilities.invokeLater(new Runnable() {
+          public void run() {
+        	  interactor.setPreferredSize(new Dimension(iw, ih));
+              interactor.setSize(iw, ih);
+              interactor.repaint();          }
+      });
+      
    }
 
    public void setSize(GDimension size) {
@@ -113,6 +122,22 @@ public abstract class GInteractor extends GObject implements GResizable {
       actionCommand = cmd;
    }
 
+   // added by JL
+   public void setColor(Color c) {
+	   final Color fc = c;
+	   SwingUtilities.invokeLater(new Runnable() {
+		   public void run() {
+			   interactor.setForeground(fc);
+			   interactor.repaint();
+		   }
+	   });
+   }
+   
+   // added by JL (but it's never called)
+   public Color getColor() {
+	   return interactor.getForeground();
+   }
+   
    public String getActionCommand() {
       return actionCommand;
    }

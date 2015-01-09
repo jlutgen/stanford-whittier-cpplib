@@ -35,7 +35,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
-import java.io.Serializable;
 import java.lang.reflect.Method;
 
 /**
@@ -54,7 +53,7 @@ import java.lang.reflect.Method;
  * however, is saved only if the parent is a <code>GCompound</code>.
  */
 
-public abstract class GObject implements Cloneable, Serializable, GScalable {
+public abstract class GObject implements Cloneable, GScalable {
 
 /**
  * Constructs a new <code>GObject</code> and initializes its state.  This
@@ -854,14 +853,5 @@ public abstract class GObject implements Cloneable, Serializable, GScalable {
    private transient MouseMotionListener mouseMotionListener;
    private transient ActionListener actionListener;
    private transient GContainer transientParent;
-
-/* Serial version UID */
-/**
- * The serialization code for this class.  This value should be incremented
- * whenever you change the structure of this class in an incompatible way,
- * typically by adding a new instance variable.
- */
-
-   static final long serialVersionUID = 21L;
 
 }

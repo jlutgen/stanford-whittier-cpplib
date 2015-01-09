@@ -137,14 +137,4 @@ public class G3DRect extends GRect {
 /* Private instance variables */
 
    private boolean isRaised;
-
-/* Serial version UID */
-/**
- * The serialization code for this class.  This value should be incremented
- * whenever you change the structure of this class in an incompatible way,
- * typically by adding a new instance variable.
- */
-
-   static final long serialVersionUID = 21L;
-
 }

@@ -202,7 +202,7 @@ GMouseEvent::GMouseEvent(GEvent e) {
       eventTime = e.eventTime;
       x = e.x;
       y = e.y;
-      gwd = e.gwd; // JL added. Otherwise, doing
+      gwd = e.gwd; //  BUGFIX (JL) - Otherwise, doing
                    //   GMouseEvent me = waitForEvent(MOUSE_EVENT);
                    //   cout << me.getGWindow().getWindowTitle() << endl;
                    // causes a crash, since me.gwd is garbage.

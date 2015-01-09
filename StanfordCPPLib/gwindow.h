@@ -490,12 +490,13 @@ void add(GObject *gobj);
 
 
 /**
- * Sets the alignment used by the specified side region of this window
+ * Sets the alignment used by the specified side panel of this window
  * as specified by the string \em align.  The \em region parameter must be
  * one of the strings <code>"NORTH"</code>, <code>"EAST"</code>,
  * <code>"SOUTH"</code>, or <code>"WEST"</code> and the \em align
  * parameter must be <code>"LEFT"</code>, <code>"RIGHT"</code>, or
- * <code>"CENTER"</code>.  By default, side panels use
+ * <code>"CENTER"</code>.  This method has no effect if \em region is
+ * <code>"EAST"</code> or <code>"WEST"</code>; side panels always use
  * <code>CENTER</code> alignment.
  *
  * Sample usage:
@@ -556,20 +557,20 @@ private:
 
 /* Free functions */
 
-/**
- * Issues a request to update all graphics windows.  This function
- * is called automatically when the program pauses, waits for an
- * event, waits for user input on the console, or terminates.  As
- * a result, most clients never need to call <code>repaint</code>
- * explicitly.
- *
- * Sample usage:
- *
- *     repaint();
- *
- */
+// /**
+// * Issues a request to update all graphics windows.  This function
+// * is called automatically when the program pauses, waits for an
+// * event, waits for user input on the console, or terminates.  As
+// * a result, most clients never need to call <code>repaint</code>
+// * explicitly.
+// *
+// * Sample usage:
+// *
+// *     repaint();
+// *
+// */
 
-void repaint();
+//void repaint();
 
 
 /**

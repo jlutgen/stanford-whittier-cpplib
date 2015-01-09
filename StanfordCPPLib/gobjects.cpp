@@ -774,8 +774,8 @@ void GCompound::removeAt(int index) {
    gobj->parent = NULL;
 }
 
-GImage::GImage(string filename) {
-   create(filename);
+GImage::GImage(string filenameOrURL) {
+   create(filenameOrURL);
 }
 
 GImage::GImage(string filename, double x, double y) {

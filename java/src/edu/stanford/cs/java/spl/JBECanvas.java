@@ -23,6 +23,7 @@
 package edu.stanford.cs.java.spl;
 
 import edu.stanford.cs.java.graphics.GCanvas;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -35,133 +36,196 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.SwingUtilities;
+
 public class JBECanvas extends GCanvas {
 
-   public JBECanvas(String id, int width, int height) {
-      windowId = id;
-      setBackground(Color.WHITE);
-      setForeground(Color.BLACK);
-      setOpaque(false);
-      setLayout(null);
-      preferredWidth = width;
-      preferredHeight = height;
-   }
+	public JBECanvas(String id, int width, int height) {
+		windowId = id;
+		setBackground(Color.WHITE);
+		setForeground(Color.BLACK);
+		setOpaque(false);
+		setLayout(null);
+		preferredWidth = width;
+		preferredHeight = height;
+	}
 
-   protected Graphics2D getOSG() {
-      return osg;
-   }
+	protected Graphics2D getOSG() {
+		return osg;
+	}
 
-   protected void setTopCompound(JBETopCompound top) {
-      topCompound = top;
-      top.setCanvas(this);
-      top.setParent(this);
-   }
+	protected void setTopCompound(JBETopCompound top) {
+		topCompound = top;
+		top.setCanvas(this);
+		top.setParent(this);
+	}
 
-   protected JBETopCompound getTopCompound() {
-      return topCompound;
-   }
+	protected JBETopCompound getTopCompound() {
+		return topCompound;
+	}
 
-   protected void initOffscreenImage() {
-      Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-      offscreenImage = createImage(size.width, size.height);
-      osg = (Graphics2D) offscreenImage.getGraphics();
-      osg.setColor(getBackground());
-      osg.fillRect(0, 0, size.width, size.height);
-      osg.setColor(getForeground());
-   }
+	protected void initOffscreenImage() {
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+	    		offscreenImage = createImage(size.width, size.height);
+	    		osg = (Graphics2D) offscreenImage.getGraphics();
+	    		osg.setColor(getBackground());
+	    		osg.fillRect(0, 0, size.width, size.height);
+	    		osg.setColor(getForeground());
+	        }
+	    });
+	}
 
-   public String getWindowId() {
-      return windowId;
-   }
+	public String getWindowId() {
+		return windowId;
+	}
 
-   public Dimension getPreferredSize() {
-      return new Dimension(preferredWidth, preferredHeight);
-   }
+	public Dimension getPreferredSize() {
+		return new Dimension(preferredWidth, preferredHeight);
+	}
 
-   public void clear() {
-      Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-      osg.setColor(Color.WHITE);
-      osg.fillRect(0, 0, size.width, size.height);
-      osg.setColor(Color.BLACK);
-      repaint();
-   }
+	// called only by JBEWindow.clear
+	public void clear() {
+		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+		osg.setColor(Color.WHITE);
+		osg.fillRect(0, 0, size.width, size.height);
+		osg.setColor(Color.BLACK);
+		repaint();	 
+	}
 
-   public void draw(Shape shape) {
-      osg.draw(shape);
-      repaint();
-   }
+	// UNUSED
+	public void draw(Shape shape) {
+		final Shape fshape = shape;
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	osg.draw(fshape);
+	    		repaint();
+	        }
+	    });
+	}
 
-   public void fill(Shape shape) {
-      osg.fill(shape);
-      repaint();
-   }
+	// UNUSED
+	public void fill(Shape shape) {
+		final Shape fshape = shape;
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	osg.fill(fshape);
+	    		repaint();
+	        }
+	    });
+	}
 
-   public void drawRect(double x, double y, double width, double height) {
-      Rectangle2D r = new Rectangle2D.Double(x, y, width, height);
-      osg.draw(r);
-      repaint();
-   }
+	// UNUSED
+	public void drawRect(double x, double y, double width, double height) {
+		final Rectangle2D r = new Rectangle2D.Double(x, y, width, height);
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	osg.draw(r);
+	    		repaint();
+	        }
+	    });
+	}
 
-   public void fillRect(double x, double y, double width, double height) {
-      Rectangle2D r = new Rectangle2D.Double(x, y, width, height);
-      osg.fill(r);
-      osg.draw(r);
-      repaint();
-   }
+	// UNUSED
+	public void fillRect(double x, double y, double width, double height) {
+		final Rectangle2D r = new Rectangle2D.Double(x, y, width, height);
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	osg.fill(r);
+	    		osg.draw(r);
+	    		repaint();
+	        }
+	    });
+	}
 
-   public void drawOval(double x, double y, double width, double height) {
-      Ellipse2D e = new Ellipse2D.Double(x, y, width, height);
-      osg.draw(e);
-      repaint();
-   }
+	// UNUSED
+	public void drawOval(double x, double y, double width, double height) {
+		final Ellipse2D e = new Ellipse2D.Double(x, y, width, height);
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	osg.draw(e);
+	    		repaint();	        }
+	    });
+	}
 
-   public void fillOval(double x, double y, double width, double height) {
-      Ellipse2D e = new Ellipse2D.Double(x, y, width, height);
-      osg.fill(e);
-      osg.draw(e);
-      repaint();
-   }
+	// UNUSED
+	public void fillOval(double x, double y, double width, double height) {
+		final Ellipse2D e = new Ellipse2D.Double(x, y, width, height);
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	osg.fill(e);
+	    		osg.draw(e);
+	    		repaint();	        }
+	    });
+	}
 
-   public void drawArc(double x, double y, double width, double height,
-                                           double start, double sweep) {
-      Arc2D arc = new Arc2D.Double(x, y, width, height,
-                                   start, sweep, Arc2D.OPEN);
-      osg.draw(arc);
-      repaint();
-   }
+	// UNUSED
+	public void drawArc(double x, double y, double width, double height,
+			double start, double sweep) {
+		final Arc2D arc = new Arc2D.Double(x, y, width, height,
+				start, sweep, Arc2D.OPEN);
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	osg.draw(arc);
+	    		repaint();	        }
+	    });
+	}
 
-   public void fillArc(double x, double y, double width, double height,
-                                           double start, double sweep) {
-      Arc2D arc = new Arc2D.Double(x, y, width, height,
-                                   start, sweep, Arc2D.PIE);
-      osg.fill(arc);
-      osg.draw(arc);
-      repaint();
-   }
+	// UNUSED
+	public void fillArc(double x, double y, double width, double height,
+			double start, double sweep) {
+		final Arc2D arc = new Arc2D.Double(x, y, width, height,
+				start, sweep, Arc2D.PIE);
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	osg.fill(arc);
+	    		osg.draw(arc);
+	    		repaint();	        }
+	    });
+	}
 
-   public void drawLine(double x0, double y0, double x1, double y1) {
-      Line2D line = new Line2D.Double(x0, y0, x1, y1);
-      osg.draw(line);
-      repaint();
-   }
+	// UNUSED
+	public void drawLine(double x0, double y0, double x1, double y1) {
+		final Line2D line = new Line2D.Double(x0, y0, x1, y1);
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	osg.draw(line);
+	    		repaint();	        }
+	    });
+	}
 
-   public void setColor(int rgb) {
-      osg.setColor(new Color(rgb));
-   }
+	// UNUSED
+	public void setColor(int rgb) {
+		final int frgb = rgb;
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	    		osg.setColor(new Color(frgb));
+	        }
+	    });
+	}
 
-   public void paint(Graphics g) {
-      g.drawImage(offscreenImage, 0, 0, this);
-      topCompound.paint(g);
-      super.paint(g);
-   }
+	public void paint(Graphics g) {
+		g.drawImage(offscreenImage, 0, 0, this);
+		topCompound.paint(g);
+		super.paint(g);
+	}
 
-/* Instance variables */
+	/* Instance variables */
 
-   private String windowId;
-   private JBETopCompound topCompound;
-   private Graphics2D osg;
-   private Image offscreenImage;
-   private int preferredWidth;
-   private int preferredHeight;
+	private String windowId;
+	private JBETopCompound topCompound;
+	private Graphics2D osg;
+	private Image offscreenImage;
+	private int preferredWidth;
+	private int preferredHeight;
 
+	/* Serial version UID */
+	/**
+	 * The serialization code for this class.  This value should be incremented
+	 * whenever you change the structure of this class in an incompatible way,
+	 * typically by adding a new instance variable.
+	 */
+
+	static final long serialVersionUID = 21L;
 }

@@ -65,16 +65,97 @@ to get a pointer to it.
 JBE Hierarchy (partial)
 =============
 GObject (has get/setParent to be called by its parent, either a GCanvas or GCompound)
+	GArc
+	GImage
+	GLabel
+		JBELabel (has private JLabel jlabel)
+	GLine
+	GOval
+	GPolygon
+	GRect
+		G3DRect
+		GRoundRect
 	GInteractor (has JComponent `interactor`)
+		GBufferedImage
 		GButton
+		GCheckbox
+		GChooser
+		GSlider
+		GTextField
 	GCompound
+		JBETopCompound (this is the only sort of GCompound actually created)
+			has a private JBECanvas owner
 	
 GContainer (interface)
 	GCanvas
+		JBECanvas
 	GCompound
+		add(GObject gobj): sets gobj's parent to be this GCanvas/GCompound
+	These both have a private GObjectList contents.
+	
+GObjectList (has private GContainer parent)
 	
 JComponent
 	GCanvas
+		JBECanvas
+			has a private JBETopCompound top
+
+
+gw->add(GOval): sets GOval's parent to JBETopCompound. Parent of JBETopCompound
+is JBECanvas, whose parent is JPanel.
+
+CPP GObject
+===========
+GObject has protected GCompound *parent. Adding a GObject to GWindow really adds
+it to top-level GCompound (whose parent is NULL).
+
+JBE Threads and listeners
+=========================
+
+Best article on threads and Swing: 
+	http://www.informit.com/articles/article.aspx?p=26326&seqNum=9
+	
+Thread-safe Swing methods (don't need to be called from Event Dispatch Thread):
+some methods of JComponent: 
+	- repaint, revalidate, invalidate
+	- all addXXXListener and removeXXXListener methods
+	- all methods explicitly documented as thread-safe
+	- JTextComponent.setText
+	- JTextArea.insert
+	- JTextArea.append
+	- JTextArea.replaceRange
+	- JTextComponent: replaceSelection (overridden in JEditorPane, JTextPane)
+	- JTextComponent: setText (overridden in JEditorPane)
+	- JTextArea: insert, append, replaceRange
+	- JTextPane: insertComponent, insertIcon, setLogicalStyle, 
+	             setCharacterAttributes, setParagraphAttributes
+	- AbstractDocument: render, remove, insertString (overridden 
+	                    in PlainDocument, DefaultStyledDocument), createPosition
+	- DefaultStyledDocument: setLogicalStyle, setCharacterAttributes, 
+	                         setParagraphAttributes (overridden in HTMLDocument)
+	- StyleContext: several
+	
+GButton, GCheckBox, GChooser, GTextField, GTimer: the jbe is action listener
+
+GSlider: the jbe is change listener
+
+JFrame consoleFrame in JBE: jbe is window listener; 
+consoleFrame contains a JBEConsole (JScrollPane) that has a ConsoleTextPane ctp.
+The ctp is its own key listener.
+
+JBEWindow (JFrame) has a JBECanvas. The JBECanvas has a GCanvasListener, which is a
+mouse listener and mouse motion listener for the JBECanvas. It redispatches these
+events, with source being an appropriate GObject rather than the canvas.
+The jbe is a component listener, mouse listener, mouse motion
+listener, and key listener for the JBECanvas of a JBEWindow.
+The jbe is a window listener for a JBEWindow.
+
+GRect_create calls GRect constructor calls GObject::setLocation calls GObject::repaint
+calls GCanvas::conditionalRepaint, but parent is null so AWT repaint not called. In any
+case, AWT repaint is thread-safe.
+
+GCompound_add calls GCompound::add, which may call GObjectList::add
+
 
 ========== TODO LIST ========================================
 
@@ -280,7 +361,7 @@ DONE
 Test thread.h on both platforms.
 Fix serious bugs in thread library.
 See GTimer for possible way to handle refCount.
-TODO
+DONE - I think. See thread-test.cpp.
 
 
 Add red text div to css.
@@ -304,3 +385,33 @@ Script to change 'std::string' to 'string' in all doxygen-generated html?
 Or maybe delete 'std::' everywhere, since 'std::istream' and other such
 things also occur.
 DONE: see doxygen-run.sh
+
+
+Test sound library again.
+TODO
+
+
+Test GObject::sendForward, sendToBack, etc.
+DONE
+
+
+Rotating GLabel doesn't work
+TODO
+
+Asterisk in font string (setConsoleFont) doesn't work?
+TODO
+
+Press return to close window in mac terminal doesn't work
+TODO
+
+Add a consoleFocus command?
+TODO
+
+Write better docs for rotate and scale (gobjects.h). What these really
+do is to concatenate transformations with the transformation matrix
+of the object. The upshot is that a sequence of calls to rotate and scale
+must be given in the reverse of the order in which you want them applied.
+TODO
+
+Add a translate command and a rotateAbout(x, y) command for gobjects.
+TODO

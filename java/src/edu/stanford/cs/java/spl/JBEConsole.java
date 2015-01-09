@@ -27,13 +27,13 @@ import java.awt.Color;
 //import java.awt.Dimension;
 //import java.awt.Event;
 import java.awt.Font;
-import java.awt.Graphics;
+//import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+//import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JMenu;
@@ -44,7 +44,7 @@ import javax.swing.JTextPane;
 //import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.text.AttributeSet;
+//import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Document;
@@ -57,494 +57,550 @@ import javax.swing.text.StyleConstants;
 
 public class JBEConsole extends JScrollPane {
 
-/**
- * Creates a new <code>JBEConsole</code> object.
- */
+	/**
+	 * Creates a new <code>JBEConsole</code> object.
+	 */
 
-   public JBEConsole() {
-      listeners = new ArrayList<ActionListener>();
-      ctp = new ConsoleTextPane(this);
-      ctp.setFont(DEFAULT_FONT);
-      ctp.setBackground(Color.WHITE);
-      ctp.setInputColor(Color.BLUE);
-      ctp.setErrorColor(Color.RED);
-      setViewportView(ctp);
-      setMargin(DEFAULT_MARGIN);
-      setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-      setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-      setBorder(BorderFactory.createLineBorder(Color.BLACK));
-   }
+	public JBEConsole() {
+		//listeners = new ArrayList<ActionListener>();
+		ctp = new ConsoleTextPane(this);
+		ctp.setFont(DEFAULT_FONT);
+		ctp.setBackground(Color.WHITE);
+		ctp.setInputColor(Color.BLUE);
+		ctp.setErrorColor(Color.RED);
+		setViewportView(ctp);
+		setMargin(DEFAULT_MARGIN);
+		setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		setBorder(BorderFactory.createLineBorder(Color.BLACK));
+	}
 
-   public JMenuBar createMenuBar() {
-       return ctp.createMenuBar();
-   }
+	public JMenuBar createMenuBar() {
+		return ctp.createMenuBar();
+	}
 
-   public void setMargin(int pixels) {
-      setMargin(new Insets(pixels, pixels, pixels, pixels));
-   }
+	public void setMargin(int pixels) {
+		setMargin(new Insets(pixels, pixels, pixels, pixels));
+	}
 
-   public void setMargin(Insets insets) {
-      ctp.setMargin(insets);
-   }
+	public void setMargin(Insets insets) {
+		ctp.setMargin(insets);
+	}
 
-   public void clear() {
-      ctp.clear();
-   }
+	public void clear() {
+		ctp.clear();
+	}
 
-   public void print(Object x, boolean isStdErr) {
-    if (isStdErr) {
-        ctp.print(x.toString(), ConsoleTextPane.ERROR_STYLE);
-    } else {
-        ctp.print(x.toString(), ConsoleTextPane.OUTPUT_STYLE);
-    }
-   }
+	public void print(Object x, boolean isStdErr) {
+		if (isStdErr) {
+			ctp.print(x.toString(), ConsoleTextPane.ERROR_STYLE);
+		} else {
+			ctp.print(x.toString(), ConsoleTextPane.OUTPUT_STYLE);
+		}
+	}
 
-   public void println() {
-      ctp.print("\n", ConsoleTextPane.OUTPUT_STYLE);
-   }
+	public void println() {
+		ctp.print("\n", ConsoleTextPane.OUTPUT_STYLE);
+	}
 
-   public void println(Object x, boolean isStdErr) {
-      print(x, isStdErr);
-      println();
-   }
+	public void println(Object x, boolean isStdErr) {
+		print(x, isStdErr);
+		println();
+	}
 
-   public void printf(String format, Object... args) {
-      print(String.format(format, args), false);
-   }
+	public void printf(String format, Object... args) {
+		print(String.format(format, args), false);
+	}
 
-   public void setFont(String str) {
-      setFont(Font.decode(str));
-   }
+	public void setFont(String str) {
+		setFont(Font.decode(str));
+	}
 
-   public void setFont(Font font) {
-      super.setFont(font);
-      if (ctp != null) ctp.setFont(font);
-   }
+	public void setFont(final Font font) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				JBEConsole.super.setFont(font);
+				if (ctp != null)
+					ctp.setFont(font);
+			}
+		});
+	}
 
-   public String getLine() {
-      inputComplete = false;
-      synchronized (this) {
-         while (!inputComplete) {
-            try {
-               wait();
-            } catch (InterruptedException ex) {
-               /* Empty */
-            }
-         }
-      }
-      return inputLine;
-   }
+	public String getLine() {
+		inputComplete = false;
+		synchronized (this) {
+			while (!inputComplete) {
+				try {
+					wait();
+				} catch (InterruptedException ex) {
+					/* Empty */
+				}
+			}
+		}
+		return inputLine;
+	}
 
-   public void processLine(String str) {
-      synchronized (this) {
-         inputComplete = true;
-         inputLine = str;
-         notifyAll();
-      }
-   }
+	public void processLine(String str) {
+		synchronized (this) {
+			inputComplete = true;
+			inputLine = str;
+			notifyAll();
+		}
+	}
 
-/* Constants */
+	/* Constants */
 
-   public static final Font DEFAULT_FONT = Font.decode("Monospaced-12");
-   public static final int DEFAULT_MARGIN = 2;
+	public static final Font DEFAULT_FONT = Font.decode("Monospaced-12");
+	public static final int DEFAULT_MARGIN = 2;
 
-/* Private instance variables */
+	/* Private instance variables */
 
-   private ArrayList<ActionListener> listeners;
-   private ConsoleTextPane ctp;
-   private String inputLine;
-   private boolean inputComplete;
+	//private ArrayList<ActionListener> listeners;
+	private ConsoleTextPane ctp;
+	private String inputLine;
+	private boolean inputComplete;
 
+	/* Serial version UID */
+	/**
+	 * The serialization code for this class.  This value should be incremented
+	 * whenever you change the structure of this class in an incompatible way,
+	 * typically by adding a new instance variable.
+	 */
+
+	static final long serialVersionUID = 21L;
 }
 
 class ConsoleTextPane extends JTextPane implements KeyListener {
 
-   public ConsoleTextPane(JBEConsole console) {
-      this.console = console;
-      addKeyListener(this);
-      document = getDocument();
-      lineSeparator = System.getProperty("line.separator");
-      outputAttributes = new SimpleAttributeSet();
-      inputAttributes = new SimpleAttributeSet();
-      errorAttributes = new SimpleAttributeSet();
-      base = 0;
-      lastChar = -1;
-   }
+	public ConsoleTextPane(JBEConsole console) {
+		this.console = console;
+		addKeyListener(this);
+		document = getDocument(); // a DefaultStyledDocument
+		//lineSeparator = System.getProperty("line.separator");
+		outputAttributes = new SimpleAttributeSet();
+		inputAttributes = new SimpleAttributeSet();
+		errorAttributes = new SimpleAttributeSet();
+		base = 0;
+		lastChar = -1;
+	}
 
-    /**
-     * Create an Edit menu to support cut/copy/paste.
-     */
-   // Called from Event Dispatch Thread
-    public JMenuBar createMenuBar () {
-        JMenuItem menuItem = null;
-        JMenuBar menuBar = new JMenuBar();
-        JMenu mainMenu = new JMenu("Edit");
-        
-        menuItem = new JMenuItem(new cutAction());
-        menuItem.setText("Cut");
-        menuItem.setAccelerator(KeyStroke.getKeyStroke("control X"));
-        mainMenu.add(menuItem);
-        
-        menuItem = new JMenuItem(new copyAction());
-        menuItem.setText("Copy");
-        menuItem.setAccelerator(KeyStroke.getKeyStroke("control C"));
-        mainMenu.add(menuItem);
-        
-        menuItem = new JMenuItem(new pasteAction());
-        menuItem.setText("Paste");
-        menuItem.setAccelerator(KeyStroke.getKeyStroke("control V"));
-        mainMenu.add(menuItem);
-        
-        menuItem = new JMenuItem(new selectAllAction());
-        menuItem.setText("Select All");
-        menuItem.setAccelerator(KeyStroke.getKeyStroke("control A"));
-        mainMenu.add(menuItem);
+	/**
+	 * Create an Edit menu to support cut/copy/paste.
+	 */
+	// Called from Event Dispatch Thread
+	public JMenuBar createMenuBar () {
+		JMenuItem menuItem = null;
+		JMenuBar menuBar = new JMenuBar();
+		JMenu mainMenu = new JMenu("Edit");
 
-        menuBar.add(mainMenu);
-        return menuBar;
-    }
+		menuItem = new JMenuItem(new cutAction());
+		menuItem.setText("Cut");
+		menuItem.setAccelerator(KeyStroke.getKeyStroke("control X"));
+		mainMenu.add(menuItem);
 
-    class copyAction extends AbstractAction {
-        public copyAction() {
-            setEnabled(true);
-        }
- 
-        public void actionPerformed(ActionEvent e) {
-            copy();
-        }
-    }
+		menuItem = new JMenuItem(new copyAction());
+		menuItem.setText("Copy");
+		menuItem.setAccelerator(KeyStroke.getKeyStroke("control C"));
+		mainMenu.add(menuItem);
 
-    class cutAction extends AbstractAction {
-        public cutAction() {
-            setEnabled(true);
-        }
- 
-        public void actionPerformed(ActionEvent e) {
-            cut();
-        }
-    }
+		menuItem = new JMenuItem(new pasteAction());
+		menuItem.setText("Paste");
+		menuItem.setAccelerator(KeyStroke.getKeyStroke("control V"));
+		mainMenu.add(menuItem);
 
-    class pasteAction extends AbstractAction {
-        public pasteAction() {
-            setEnabled(true);
-        }
- 
-        public void actionPerformed(ActionEvent e) {
-            paste();
-        }
-    }
+		menuItem = new JMenuItem(new selectAllAction());
+		menuItem.setText("Select All");
+		menuItem.setAccelerator(KeyStroke.getKeyStroke("control A"));
+		mainMenu.add(menuItem);
 
-    class selectAllAction extends AbstractAction {
-        public selectAllAction() {
-            setEnabled(true);
-        }
- 
-        public void actionPerformed(ActionEvent e) {
-            selectAll();
-        }
-    }
-/**
- * Prints the string to the console.
- */
+		menuBar.add(mainMenu);
+		return menuBar;
+	}
 
-   public void print(String str, int style) {
-      insert(str, base, style);
-      base += str.length();
-      setCaretPosition(base);
-   }
+	class copyAction extends AbstractAction {
+		public copyAction() {
+			setEnabled(true);
+		}
 
-/**
- * Clears the console pane.
- */
+		public void actionPerformed(ActionEvent e) {
+			copy();
+		}
 
-   public void clear() {
-      setText("");
-      base = 0;
-   }
+		/* Serial version UID */
+		/**
+		 * The serialization code for this class.  This value should be incremented
+		 * whenever you change the structure of this class in an incompatible way,
+		 * typically by adding a new instance variable.
+		 */
 
-/**
- * Returns the text stored in the console model.
- */
+		static final long serialVersionUID = 21L;
+	}
 
-   public String getText() {
-      return getText();
-   }
+	class cutAction extends AbstractAction {
+		public cutAction() {
+			setEnabled(true);
+		}
 
-/**
- * Returns a substring from the text using endpoints defined as in
- * <code>substring</code> for strings.
- */
-   // Called from Event Dispatch Thread
-   public String getText(int start, int end) {
-      try {
-         return document.getText(start, end - start);
-      } catch (BadLocationException ex) {
-         throw new RuntimeException(ex);
-      }
-   }
+		public void actionPerformed(ActionEvent e) {
+			cut();
+		}
+		/* Serial version UID */
+		/**
+		 * The serialization code for this class.  This value should be incremented
+		 * whenever you change the structure of this class in an incompatible way,
+		 * typically by adding a new instance variable.
+		 */
 
-/**
- * Returns the length of the text stored in the console model.
- */
-   // Called from EDT
-   public int getLength() {
-      return document.getLength();
-   }
+		static final long serialVersionUID = 21L;
+	}
 
-/**
- * Implements the "cut" menu operation.
- */
+	class pasteAction extends AbstractAction {
+		public pasteAction() {
+			setEnabled(true);
+		}
 
-   @Override
-   public void cut() {
-      copy();
-      deleteSelection();
-   }
+		public void actionPerformed(ActionEvent e) {
+			paste();
+		}
+		/* Serial version UID */
+		/**
+		 * The serialization code for this class.  This value should be incremented
+		 * whenever you change the structure of this class in an incompatible way,
+		 * typically by adding a new instance variable.
+		 */
 
-/**
- * Implements the "paste" menu operation.
- */
+		static final long serialVersionUID = 21L;
+	}
 
-   @Override
-   public void paste() {
-      if (getSelectionEnd() != document.getLength()) return;
-      int start = deleteSelection();
-      setSelectionStart(start);
-      super.paste();
-      select(document.getLength(), document.getLength());
-      if (document instanceof DefaultStyledDocument) {
-         DefaultStyledDocument doc = (DefaultStyledDocument) document;
-         doc.setCharacterAttributes(start, getSelectionEnd() - start,
-                                    inputAttributes, true);
-      }
-   }
+	class selectAllAction extends AbstractAction {
+		public selectAllAction() {
+			setEnabled(true);
+		}
 
-/**
- * Returns true if the selection is a single point.
- */
+		public void actionPerformed(ActionEvent e) {
+			selectAll();
+		}
+		/* Serial version UID */
+		/**
+		 * The serialization code for this class.  This value should be incremented
+		 * whenever you change the structure of this class in an incompatible way,
+		 * typically by adding a new instance variable.
+		 */
 
-   public boolean isPointSelection() {
-      return getSelectionStart() == getSelectionEnd();
-   }
+		static final long serialVersionUID = 21L;
+	}
 
-/**
- * Sets the style parameters for console input.  The style parameter
- * is either <code>Font.PLAIN</code> or a sum of one or more of the attributes
- * <code>Font.BOLD</code> and <code>Font.ITALIC</code>.
- */
+	/**
+	 * Prints the string to the console.
+	 */
 
-   public void setInputStyle(int style) {
-      if (getLength() != 0) {
-         throw new RuntimeException("Console styles and colors cannot be " +
-                                  "changed after I/O has started.");
-      }
-      inputAttributes.addAttribute(StyleConstants.Bold,
-                                   new Boolean((style & Font.BOLD) != 0));
-      inputAttributes.addAttribute(StyleConstants.Italic,
-                                   new Boolean((style & Font.ITALIC) != 0));
-   }
+	public void print(String str, int style) {
+		final String fstr = str;
+		final int fstyle = style;
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				insert(fstr, base, fstyle);
+				base += fstr.length();
+				setCaretPosition(base);
+			}
+		});	
+	}
 
-/**
- * Sets the color used for console input.
- */
+	/**
+	 * Clears the console pane.
+	 */
 
-   public void setInputColor(Color color) {
-      if (getLength() != 0) {
-         throw new RuntimeException("Console styles and colors cannot be " +
-                                  "changed after I/O has started.");
-      }
-      inputAttributes.addAttribute(StyleConstants.Foreground, color);
-   }
+	public void clear() {
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	setText("");
+	        	base = 0;
+	        }
+	    });
+	}
 
-/**
- * Sets the style parameters for console error messages.  The style parameter
- * is either <code>Font.PLAIN</code> or a sum of one or more of the attributes
- * <code>Font.BOLD</code> and <code>Font.ITALIC</code>.
- */
-   public void setErrorStyle(int style) {
-      if (getLength() != 0) {
-         throw new RuntimeException("Console styles and colors cannot be " +
-                                  "changed after I/O has started.");
-      }
-      errorAttributes.addAttribute(StyleConstants.Bold,
-                                   new Boolean((style & Font.BOLD) != 0));
-      errorAttributes.addAttribute(StyleConstants.Italic,
-                                   new Boolean((style & Font.ITALIC) != 0));
-   }
+	/**
+	 * Returns the text stored in the console model.
+	 */
 
-/**
- * Sets the color used for console error messages.
- */
+	public String getText() {
+		return getText();
+	}
 
-   public void setErrorColor(Color color) {
-      if (getLength() != 0) {
-         throw new RuntimeException("Console styles and colors cannot be " +
-                                  "changed after I/O has started.");
-      }
-      errorAttributes.addAttribute(StyleConstants.Foreground, color);
-   }
+	/**
+	 * Returns a substring from the text using endpoints defined as in
+	 * <code>substring</code> for strings.
+	 */
+	// Called from Event Dispatch Thread
+	public String getText(int start, int end) {
+		try {
+			return document.getText(start, end - start);
+		} catch (BadLocationException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
 
-/* KeyListener */
+	/**
+	 * Returns the length of the text stored in the console model.
+	 */
+	// Called from EDT
+	public int getLength() {
+		return document.getLength();
+	}
 
-   @Override
-   public void keyTyped(KeyEvent e) {
-      if (!e.isMetaDown() && !e.isControlDown()) {
-         processChar(e.getKeyChar());
-         e.consume();
-      }
-   }
+	/**
+	 * Implements the "cut" menu operation.
+	 */
 
-   @Override
-   public void keyPressed(KeyEvent e) {
-      switch (e.getKeyCode()) {
-        case KeyEvent.VK_LEFT:
-         processChar('B' - '@');
-         e.consume();
-         break;
-        case KeyEvent.VK_RIGHT:
-         processChar('F' - '@');
-         e.consume();
-         break;
-        case KeyEvent.VK_X:
-        case KeyEvent.VK_C:
-        case KeyEvent.VK_V:
-        case KeyEvent.VK_A:
-         if (e.isControlDown()) {
-            // Pass menu accelerator keystrokes upward.
-            this.getParent().dispatchEvent(e);
-         }
-         else {
-             e.consume();
-         }
-         break;
-        default:
-         e.consume();
-      }
-   }
+	@Override
+	public void cut() {
+		copy();
+		deleteSelection();
+	}
 
-   @Override
-   public void keyReleased(KeyEvent e) {
-      e.consume();
-   }
+	/**
+	 * Implements the "paste" menu operation.
+	 */
 
-/**
- * Process a single input character.
- */
+	@Override
+	public void paste() {
+		if (getSelectionEnd() != document.getLength()) return;
+		int start = deleteSelection();
+		setSelectionStart(start);
+		super.paste();
+		select(document.getLength(), document.getLength());
+		if (document instanceof DefaultStyledDocument) {
+			DefaultStyledDocument doc = (DefaultStyledDocument) document;
+			doc.setCharacterAttributes(start, getSelectionEnd() - start,
+					inputAttributes, true);
+		}
+	}
 
-   private void processChar(int ch) {
-      if (ch == '\n') {
-         if (lastChar != '\r') signalEndOfLine();
-      } else if (ch == '\r') {
-         if (lastChar != '\n') signalEndOfLine();
-      } else {
-         if (getCaretPosition() < base) {
-            setCaretPosition(getLength());
-         }
-         int dot = getSelectionStart();
-         switch (ch) {
-           case '\b': case '\177':
-            if (dot == getSelectionEnd()) {
-               if (dot > base) {
-                  delete(dot - 1, dot);
-                  dot--;
-               }
-            } else {
-               dot = deleteSelection();
-            }
-            break;
-           case 'A'-'@':
-            selectAll();
-            dot = -1;
-            break;
-           case 'B'-'@':
-            dot = Math.max(getSelectionStart() - 1, base);
-            break;
-           case 'C'-'@':
-            copy();
-            dot = -1;
-            break;
-           case 'F'-'@':
-            dot = Math.min(getSelectionEnd() + 1, getLength());
-            break;
-           case 'V'-'@':
-            paste();
-            dot = -1;
-            break;
-           case 'X'-'@':
-            cut();
-            dot = -1;
-            break;
-           default:
-            if (dot != getSelectionEnd()) {
-               dot = deleteSelection();
-            }
-            insert("" + (char) ch, dot, INPUT_STYLE);
-            dot++;
-         }
-         if (dot != -1) {
-            select(dot, dot);
-            setCaretPosition(dot);
-         }
-      }
-      lastChar = ch;
-   }
+	/**
+	 * Returns true if the selection is a single point.
+	 */
 
-   private void signalEndOfLine() {
-      int len = getLength() - base;
-      String line = getText(base, base + len);
-      insert("\n", base + len, OUTPUT_STYLE);
-      base += len + 1;
-      console.processLine(line);
-   }
+	public boolean isPointSelection() {
+		return getSelectionStart() == getSelectionEnd();
+	}
 
-/**
- * Inserts a string into the text pane at the position specified by
- * <code>dot</code>, using the specified style.
- */
-   // Called from EDT when user types, but not when a print is requested
-   // via front-end command. Fixed command.
-   private void insert(String str, int dot, int style) {
-      try {
-         SimpleAttributeSet attributes = outputAttributes;
-         switch (style) {
-           case INPUT_STYLE: attributes = inputAttributes; break;
-           case ERROR_STYLE: attributes = errorAttributes; break;
-         }
-         document.insertString(dot, str, attributes);
-      } catch (BadLocationException ex) {
-         /* Empty */
-      }
-   }
+	/**
+	 * Sets the style parameters for console input.  The style parameter
+	 * is either <code>Font.PLAIN</code> or a sum of one or more of the attributes
+	 * <code>Font.BOLD</code> and <code>Font.ITALIC</code>.
+	 */
 
-/**
- * Deletes text from the text pane beginning at position <code>p1</code> and
- * continuing up to but not including <code>p2</code>.
- */
-   // Called from Event Dispatch Thread
-   private void delete(int p1, int p2) {
-      try {
-         document.remove(p1, p2 - p1);
-      } catch (BadLocationException ex) {
-         throw new RuntimeException(ex);
-      }
-   }
+	public void setInputStyle(int style) {
+		if (getLength() != 0) {
+			throw new RuntimeException("Console styles and colors cannot be " +
+					"changed after I/O has started.");
+		}
+		inputAttributes.addAttribute(StyleConstants.Bold,
+				new Boolean((style & Font.BOLD) != 0));
+		inputAttributes.addAttribute(StyleConstants.Italic,
+				new Boolean((style & Font.ITALIC) != 0));
+	}
 
-/**
- * Deletes the current selection and returns the index of the deletion point.
- */
+	/**
+	 * Sets the color used for console input.
+	 */
 
-   private int deleteSelection() {
-      int start = Math.max(base, getSelectionStart());
-      int end = getSelectionEnd();
-      if (end <= base) return getLength();
-      delete(start, end);
-      return start;
-   }
+	public void setInputColor(Color color) {
+		if (getLength() != 0) {
+			throw new RuntimeException("Console styles and colors cannot be " +
+					"changed after I/O has started.");
+		}
+		inputAttributes.addAttribute(StyleConstants.Foreground, color);
+	}
 
-/**
- * Sets the relevant components of the graphics context from the attribute set.
- */
-/*
+	/**
+	 * Sets the style parameters for console error messages.  The style parameter
+	 * is either <code>Font.PLAIN</code> or a sum of one or more of the attributes
+	 * <code>Font.BOLD</code> and <code>Font.ITALIC</code>.
+	 */
+	public void setErrorStyle(int style) {
+		if (getLength() != 0) {
+			throw new RuntimeException("Console styles and colors cannot be " +
+					"changed after I/O has started.");
+		}
+		errorAttributes.addAttribute(StyleConstants.Bold,
+				new Boolean((style & Font.BOLD) != 0));
+		errorAttributes.addAttribute(StyleConstants.Italic,
+				new Boolean((style & Font.ITALIC) != 0));
+	}
+
+	/**
+	 * Sets the color used for console error messages.
+	 */
+
+	public void setErrorColor(Color color) {
+		if (getLength() != 0) {
+			throw new RuntimeException("Console styles and colors cannot be " +
+					"changed after I/O has started.");
+		}
+		errorAttributes.addAttribute(StyleConstants.Foreground, color);
+	}
+
+	/* KeyListener */
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		if (!e.isMetaDown() && !e.isControlDown()) {
+			processChar(e.getKeyChar());
+			e.consume();
+		}
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_LEFT:
+			processChar('B' - '@');
+			e.consume();
+			break;
+		case KeyEvent.VK_RIGHT:
+			processChar('F' - '@');
+			e.consume();
+			break;
+		case KeyEvent.VK_X:
+		case KeyEvent.VK_C:
+		case KeyEvent.VK_V:
+		case KeyEvent.VK_A:
+			if (e.isControlDown()) {
+				// Pass menu accelerator keystrokes upward.
+				this.getParent().dispatchEvent(e);
+			}
+			else {
+				e.consume();
+			}
+			break;
+		default:
+			e.consume();
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		e.consume();
+	}
+
+	/**
+	 * Process a single input character.
+	 */
+
+	private void processChar(int ch) {
+		if (ch == '\n') {
+			if (lastChar != '\r') signalEndOfLine();
+		} else if (ch == '\r') {
+			if (lastChar != '\n') signalEndOfLine();
+		} else {
+			if (getCaretPosition() < base) {
+				setCaretPosition(getLength());
+			}
+			int dot = getSelectionStart();
+			switch (ch) {
+			case '\b': case '\177':
+				if (dot == getSelectionEnd()) {
+					if (dot > base) {
+						delete(dot - 1, dot);
+						dot--;
+					}
+				} else {
+					dot = deleteSelection();
+				}
+				break;
+			case 'A'-'@':
+				selectAll();
+				dot = -1;
+				break;
+			case 'B'-'@':
+				dot = Math.max(getSelectionStart() - 1, base);
+				break;
+			case 'C'-'@':
+				copy();
+				dot = -1;
+				break;
+			case 'F'-'@':
+				dot = Math.min(getSelectionEnd() + 1, getLength());
+				break;
+			case 'V'-'@':
+				paste();
+				dot = -1;
+				break;
+			case 'X'-'@':
+				cut();
+				dot = -1;
+				break;
+			default:
+				if (dot != getSelectionEnd()) {
+					dot = deleteSelection();
+				}
+				insert("" + (char) ch, dot, INPUT_STYLE);
+				dot++;
+			}
+			if (dot != -1) {
+				select(dot, dot);
+				setCaretPosition(dot);
+			}
+		}
+		lastChar = ch;
+	}
+
+	private void signalEndOfLine() {
+		int len = getLength() - base;
+		String line = getText(base, base + len);
+		insert("\n", base + len, OUTPUT_STYLE);
+		base += len + 1;
+		console.processLine(line);
+	}
+
+	/**
+	 * Inserts a string into the text pane at the position specified by
+	 * <code>dot</code>, using the specified style.
+	 */
+	
+	private void insert(String str, int dot, int style) {
+		try {
+			SimpleAttributeSet attributes = outputAttributes;
+			switch (style) {
+			case INPUT_STYLE: attributes = inputAttributes; break;
+			case ERROR_STYLE: attributes = errorAttributes; break;
+			}
+			document.insertString(dot, str, attributes);
+		} catch (BadLocationException ex) {
+			/* Empty */
+		}
+	}
+
+	/**
+	 * Deletes text from the text pane beginning at position <code>p1</code> and
+	 * continuing up to but not including <code>p2</code>.
+	 */
+	// Called from Event Dispatch Thread
+	private void delete(int p1, int p2) {
+		try {
+			document.remove(p1, p2 - p1);
+		} catch (BadLocationException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	/**
+	 * Deletes the current selection and returns the index of the deletion point.
+	 */
+
+	private int deleteSelection() {
+		int start = Math.max(base, getSelectionStart());
+		int end = getSelectionEnd();
+		if (end <= base) return getLength();
+		delete(start, end);
+		return start;
+	}
+
+	/**
+	 * Sets the relevant components of the graphics context from the attribute set.
+	 */
+	/*
    private void setStyleFromAttributes(Graphics g, AttributeSet attributes) {
       Font oldFont = getFont();
       int style = 0;
@@ -559,23 +615,31 @@ class ConsoleTextPane extends JTextPane implements KeyListener {
       if (color == null) color = getForeground();
       g.setColor(color);
    }
-*/
-/* Constants */
+	 */
+	/* Constants */
 
-   public static final int OUTPUT_STYLE = 0;
-   public static final int INPUT_STYLE = 1;
-   public static final int ERROR_STYLE = 2;
+	public static final int OUTPUT_STYLE = 0;
+	public static final int INPUT_STYLE = 1;
+	public static final int ERROR_STYLE = 2;
 
-/* Private instance variables */
+	/* Private instance variables */
 
-//   private ActionListener actionListener;
-   private Document document;
-   private JBEConsole console;
-   private SimpleAttributeSet errorAttributes;
-   private SimpleAttributeSet inputAttributes;
-   private SimpleAttributeSet outputAttributes;
-   private String lineSeparator;
-   private int base;
-   private int lastChar;
+	//   private ActionListener actionListener;
+	private Document document;
+	private JBEConsole console;
+	private SimpleAttributeSet errorAttributes;
+	private SimpleAttributeSet inputAttributes;
+	private SimpleAttributeSet outputAttributes;
+	//private String lineSeparator;
+	private int base;
+	private int lastChar;
 
+	/* Serial version UID */
+	/**
+	 * The serialization code for this class.  This value should be incremented
+	 * whenever you change the structure of this class in an incompatible way,
+	 * typically by adding a new instance variable.
+	 */
+
+	static final long serialVersionUID = 21L;
 }

@@ -4,6 +4,7 @@
 #include "gbufferedimage.h"
 #include "gevents.h"
 #include "simpio.h"
+#include "random.h"
 
 using namespace std;
 
@@ -32,29 +33,88 @@ void test_load() {
 }
 
 void test_diff() {
-    //gw->add(new GLabel("original"), 10, 30);
-    //gw->add(new GLabel("modified"), 140, 30);
-    //gw->add(new GLabel("diff"), 250, 30);
-    GBufferedImage *original = new GBufferedImage(100, 100, 0xff0000);
-    GBufferedImage *modified = new GBufferedImage(100, 100, 0xff0000);
+    gw->add(new GLabel("original"), 10, 30);
+    gw->add(new GLabel("modified"), 140, 30);
+    gw->add(new GLabel("diff"), 270, 30);
+    GBufferedImage *original = new GBufferedImage(100, 100);
+    GBufferedImage *modified = new GBufferedImage(100, 100);
+    modified->fillRegion(10, 10, 30, 30, "green");
+    modified->fillRegion(60, 60, 30, 30, "blue");
     GBufferedImage *diff = original->diff(*modified);
     gw->add(original, 10, 50);
-    //gw->add(new GLabel("fork1"), 140, 170);
     gw->add(modified, 140, 50);
-    //gw->add(new GLabel("fork2"), 150, 170);
-    gw->add(diff, 250, 50);
+    gw->add(diff, 270, 50);
+}
 
+void test_fill() {
+    GBufferedImage *bi = new GBufferedImage(600, 600);
+    gw->add(bi);
+    getLine("ENTER to fill");
+    bi->fill("red");
+    getLine("ENTER to fill region");
+    bi->fillRegion(20, 20, 600-40, 600-40, "green");
+}
 
+int randomColor() {
+    return randomInteger(0x0, 0xffffff);
+}
+
+void test_setRGB() {
+    GBufferedImage *bi = new GBufferedImage(600, 600);
+    gw->add(bi);
+    for (int i = 0; i < 600*600/2; i++) {
+        int x = randomInteger(0, 599);
+        int y = randomInteger(0, 599);
+        bi->setRGB(x, y, randomColor());
+    }
+    for (int i=0; i<500; i++)
+        bi->setRGB(i, 200, "white"); // horizontal line
 }
 
 int main() {
-    //setConsolePrintExceptions(true);
-    //cout << "message" << endl;
-    getLine("ENTER to continue");
-    gw = new GWindow(410, 410);
-    //test_save();
-    //test_load();
-    test_diff();
-    //while (true) {}
+    setConsolePrintExceptions(true);
+    setConsoleSize(getScreenWidth()-710-10, 300);
+    setConsoleLocation(720, 470);
+    cout << "Ready." << endl;
+    getLine("ENTER to go");
+    gw = new GWindow(710, 610);
+    gw->setVisible(false);
+    while (true) {
+        cout << "s) save" << endl;
+        cout << "l) load" << endl;
+        cout << "d) diff" << endl;
+        cout << "f) fill, fill region" << endl;
+        cout << "r) setRGB" << endl;
+
+        string cmd = getLine("Command (Enter to quit)?");
+        if (cmd.empty()) {
+            break;
+        } else if (cmd == "s") {
+            gw->setVisible(true);
+            gw->clear();
+            test_save();
+        } else if (cmd == "l") {
+            gw->setVisible(true);
+            gw->clear();
+            test_load();
+        } else if (cmd =="d") {
+            gw->setVisible(true);
+            gw->clear();
+            test_diff();
+        }
+        else if (cmd =="f") {
+            gw->setVisible(true);
+            gw->clear();
+            test_fill();
+        }
+        else if (cmd =="r") {
+            gw->setVisible(true);
+            gw->clear();
+            test_setRGB();
+        }
+    }
+
+    getLine("ENTER to exit");
+    exitGraphics();
     return 0;
 }

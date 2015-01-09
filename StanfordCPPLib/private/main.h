@@ -83,7 +83,7 @@
       extern int startupMain(int argc, char **argv); \
       extern int _mainFlags; \
       _mainFlags = GRAPHICS_FLAG + CONSOLE_FLAG + JBEMISC_FLAG; \
-      streambuf *savein, *saveout, *saveerr; \
+      extern streambuf *savein, *saveout, *saveerr; \
       savein = cin.rdbuf(); \
       saveout = cout.rdbuf(); \
       saveerr = cerr.rdbuf(); \
