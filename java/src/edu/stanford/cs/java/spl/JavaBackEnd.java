@@ -140,7 +140,10 @@ ChangeListener {
 	public static final int BUTTON1_DOWN = 1 << 5;
 	public static final int BUTTON2_DOWN = 1 << 6;
 	public static final int BUTTON3_DOWN = 1 << 7;
+	
 	public static boolean DEBUG;
+	public static boolean isMacOS;
+
 
 	/* Entry point */
 
@@ -149,6 +152,7 @@ ChangeListener {
 		{
 			String prop = System.getProperty("stanfordspl.debug");
 			DEBUG = (prop != null) && ((prop.startsWith("t")) || (prop.startsWith("1")));
+			isMacOS = System.getProperty("os.name").toLowerCase().startsWith("mac os x");
 		} catch (Exception localException) {
 			/* empty */
 		}
@@ -157,9 +161,12 @@ ChangeListener {
 
 	public void run(String[] args) {
 		if (DEBUG) printLog("starting");
+		// System.out.println("MacOS? " + isMacOS);
 		processArguments(args);
 		initSystemProperties();
-		addAppleQuitHandler();
+		if (isMacOS) {
+			addAppleQuitHandler();
+		}
 		cmdTable = JBECommand.createCommandTable();
 		imageTable = new HashMap<String,Image>();
 		windowTable = new HashMap<String,JBEWindow>();
@@ -205,7 +212,11 @@ ChangeListener {
 		JBEWindow window = new JBEWindow(this, id, appName, width, height);
 		windowTable.put(id, window);
 		consoleWidth = width;
-		consoleY = 50 + height;
+		if (isMacOS) {
+			consoleY = 66 + height; // take top menu bar into account
+		} else {
+			consoleY = 38 + height;
+		}
 		window.setLocation(DEFAULT_GRAPHICS_X, DEFAULT_GRAPHICS_Y);
 		activeWindowCount++;
 		window.setResizable(false);

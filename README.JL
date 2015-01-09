@@ -415,3 +415,9 @@ TODO
 
 Add a translate command and a rotateAbout(x, y) command for gobjects.
 TODO
+
+Add option to give console focus when something is printed?
+TODO
+
+Tweak console position under graphics window on mac.
+TODO
