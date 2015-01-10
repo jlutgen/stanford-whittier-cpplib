@@ -211,7 +211,7 @@ ChangeListener {
 		
 		JBEWindow window = new JBEWindow(this, id, appName, width, height);
 		windowTable.put(id, window);
-		consoleWidth = width;
+		//consoleWidth = width;
 		if (isMacOS) {
 			consoleY = 66 + height; // take top menu bar into account
 		} else {

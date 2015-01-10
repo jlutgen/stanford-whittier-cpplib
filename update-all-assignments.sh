@@ -10,3 +10,4 @@ $SCRIPT recursion-problems ../assign4-recursion-problems/assign4-recursion-probl
 $SCRIPT boggle ../assign5-boggle/assign5-boggle-qtc
 $SCRIPT priority-queue ../assign6-priority-queue/assign6-priority-queue-qtc
 $SCRIPT pathfinder ../assign7-pathfinder/assign7-pathfinder-qtc
+$SCRIPT steganography ../assignX-steganography/assignX-steganography-qtc

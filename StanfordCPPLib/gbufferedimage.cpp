@@ -234,7 +234,7 @@ void GBufferedImage::load(const std::string& filename) {
                 error("GBufferedImage::load: image data does not contain valid pixel (x="
                       + integerToString(x) + ", y=" + integerToString(y) + ")");
             }
-            int px = convertColorToRGB(line);
+            int px = convertColorToRGB(line) & 0x00FFFFFF; // JL added mask
             m_pixels[y][x] = px;
         }
     }
@@ -286,8 +286,8 @@ void GBufferedImage::checkIndex(std::string member, double x, double y) const {
               + ": (x=" + integerToString((int) x)
               + ", y=" + integerToString((int) y)
               + ") is out of valid range of (0, 0) through ("
-              + integerToString((int) m_width) + ", "
-              + integerToString((int) m_height) + ")");
+              + integerToString((int) m_width - 1) + ", "
+              + integerToString((int) m_height - 1) + ")");
     }
 }
 
@@ -327,6 +327,5 @@ static int stringToRGB(const std::string color) {
 }
 
 static std::string rgbToString(const int rgb) {
-    // strip out alpha component 00
     return std::string("#") + convertRGBToColor(rgb).substr(3);
 }

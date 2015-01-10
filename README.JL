@@ -346,8 +346,7 @@ DONE
 
 
 Check diffPixel thingy in GBufferedImage.
-TODO
-
+DONE
 
 openFileDialog doesn't appear on Mac. Happens unpredictably. Fixed by
 modifying JBECommand.java so file dialog stuff runs in "event dispatch thread".
@@ -420,4 +419,14 @@ Add option to give console focus when something is printed?
 TODO
 
 Tweak console position under graphics window on mac.
+TODO
+
+Java GBufferedImage.load: remove debug statements, look into weird bounds
+for GIF image load (256x256 reported as 55x16 or 60x16).
+TODO
+
+Stack traces on Mac aren't very helpful:
+ *** Stack trace (line numbers are approximate):
+ *** call_stack_gcc.cpp:275  main
+ *** exceptions.cpp:183      start
 TODO
