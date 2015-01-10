@@ -2017,3 +2017,27 @@ class GBufferedImage_setRGB extends JBECommand {
 	}
 }
 
+class GTextArea_create extends JBECommand {
+	// gbufferedimage = new GBufferedImage(x, y, width, height);
+	public void execute(TokenScanner paramTokenScanner, JavaBackEnd jbe) {
+		paramTokenScanner.verifyToken("(");
+		String id = nextString(paramTokenScanner);
+		paramTokenScanner.verifyToken(",");
+		int x = nextInt(paramTokenScanner);
+		paramTokenScanner.verifyToken(",");
+		int y = nextInt(paramTokenScanner);
+		paramTokenScanner.verifyToken(",");
+		int w = nextInt(paramTokenScanner);
+		paramTokenScanner.verifyToken(",");
+		int h = nextInt(paramTokenScanner);
+		paramTokenScanner.verifyToken(",");
+		int rgb = nextInt(paramTokenScanner);
+		paramTokenScanner.verifyToken(")");
+
+		GBufferedImage img = new GBufferedImage(w, h, rgb);
+		img.setLocation(x, y);
+		jbe.defineGObject(id, img);
+		jbe.defineSource(img.getInteractor(), id);
+	}
+}
+
