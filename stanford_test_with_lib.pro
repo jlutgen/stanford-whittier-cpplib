@@ -4,9 +4,9 @@ cache()
 #  Project-specific sources and headers
 #
 
-#SOURCES += $$PWD/src/gobject-tests.cpp
+SOURCES += $$PWD/src/gobject-tests.cpp
 #SOURCES += $$PWD/src/assign-1-main.cpp
-SOURCES += $$PWD/src/buffered-image-test.cpp
+#SOURCES += $$PWD/src/buffered-image-test.cpp
 
 
 #  unit tests

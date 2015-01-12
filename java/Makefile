@@ -45,6 +45,7 @@ CLASSES = \
     classes/edu/stanford/cs/java/spl/GChooser.class \
     classes/edu/stanford/cs/java/spl/GInteractor.class \
     classes/edu/stanford/cs/java/spl/GSlider.class \
+    classes/edu/stanford/cs/java/spl/GTextArea.class \
     classes/edu/stanford/cs/java/spl/GTextField.class \
     classes/edu/stanford/cs/java/spl/JBECanvas.class \
     classes/edu/stanford/cs/java/spl/JBECommand.class \
@@ -375,7 +376,20 @@ classes/edu/stanford/cs/java/spl/Base64.class: \
 
 classes/edu/stanford/cs/java/spl/GBufferedImage.class: \
           src/edu/stanford/cs/java/spl/GBufferedImage.java \
-          src/edu/stanford/cs/java/spl/GInteractor.java
+          src/edu/stanford/cs/java/graphics/GCanvas.java \
+          src/edu/stanford/cs/java/graphics/GCompound.java \
+          src/edu/stanford/cs/java/graphics/GContainer.java \
+          src/edu/stanford/cs/java/graphics/GDimension.java \
+          src/edu/stanford/cs/java/graphics/GFillable.java \
+          src/edu/stanford/cs/java/graphics/GMath.java \
+          src/edu/stanford/cs/java/graphics/GObject.java \
+          src/edu/stanford/cs/java/graphics/GPoint.java \
+          src/edu/stanford/cs/java/graphics/GRectangle.java \
+          src/edu/stanford/cs/java/graphics/GResizable.java \
+          src/edu/stanford/cs/java/graphics/GScalable.java \
+          src/edu/stanford/cs/java/spl/GInteractor.java \
+          src/edu/stanford/cs/java/spl/JBECanvas.java \
+          src/edu/stanford/cs/java/spl/JBETopCompound.java
 	@echo javac src/edu/stanford/cs/java/spl/GBufferedImage.java
 	@$(JAVAC) src/edu/stanford/cs/java/spl/GBufferedImage.java
 
@@ -472,6 +486,26 @@ classes/edu/stanford/cs/java/spl/GSlider.class: \
           src/edu/stanford/cs/java/spl/JBETopCompound.java
 	@echo javac src/edu/stanford/cs/java/spl/GSlider.java
 	@$(JAVAC) src/edu/stanford/cs/java/spl/GSlider.java
+
+classes/edu/stanford/cs/java/spl/GTextArea.class: \
+          src/edu/stanford/cs/java/spl/GTextArea.java \
+          src/edu/stanford/cs/java/graphics/GCanvas.java \
+          src/edu/stanford/cs/java/graphics/GCompound.java \
+          src/edu/stanford/cs/java/graphics/GContainer.java \
+          src/edu/stanford/cs/java/graphics/GDimension.java \
+          src/edu/stanford/cs/java/graphics/GFillable.java \
+          src/edu/stanford/cs/java/graphics/GMath.java \
+          src/edu/stanford/cs/java/graphics/GObject.java \
+          src/edu/stanford/cs/java/graphics/GPoint.java \
+          src/edu/stanford/cs/java/graphics/GRectangle.java \
+          src/edu/stanford/cs/java/graphics/GResizable.java \
+          src/edu/stanford/cs/java/graphics/GScalable.java \
+          src/edu/stanford/cs/java/spl/GInteractor.java \
+          src/edu/stanford/cs/java/spl/JBECanvas.java \
+          src/edu/stanford/cs/java/spl/JBETopCompound.java
+	@echo javac src/edu/stanford/cs/java/spl/GTextArea.java
+	@$(JAVAC) src/edu/stanford/cs/java/spl/GTextArea.java
+
 
 classes/edu/stanford/cs/java/spl/GTextField.class: \
           src/edu/stanford/cs/java/spl/GTextField.java \

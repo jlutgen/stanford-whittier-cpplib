@@ -1143,6 +1143,50 @@ void Platform::gbufferedimage_setRGB(GObject* gobj, double x, double y,
     putPipe(os.str());
 }
 
+void Platform::gtextarea_create(GObject* gobj, double width, double height) {
+    ostringstream os;
+    os << "GTextArea.create(\"" << gobj << "\", " << width << ", "
+                                               << height << ")";
+    putPipe(os.str());
+}
+
+void Platform::gtextarea_setText(GObject* gobj, std::string text) {
+    ostringstream os;
+    os << "GTextArea.setText(\"" << gobj << "\", ";
+    writeQuotedString(os, text);
+    os << ")";
+    putPipe(os.str());
+}
+
+std::string Platform::gtextarea_getText(const GObject* gobj) {
+    ostringstream os;
+    os << "GTextArea.getText(\"" << gobj << "\")";
+    putPipe(os.str());
+    return getResult();
+}
+
+void Platform::gtextarea_setFont(GObject* gobj, std::string font) {
+    ostringstream os;
+    os << "GTextArea.setFont(\"" << gobj << "\", ";
+    writeQuotedString(os, font);
+    os << ")";
+    putPipe(os.str());
+}
+
+void Platform::gtextarea_setEditable(GObject* gobj, bool isEditable) {
+    ostringstream os;
+    os << boolalpha << "GTextArea.setEditable(\"" << gobj << "\", "
+                                                         << isEditable << ")";
+    putPipe(os.str());
+}
+
+void Platform::gtextarea_setBackgroundColor(GObject* gobj, std::string rgb) {
+    ostringstream os;
+    os << "GTextArea.setBackgroundColor(\"" << gobj << "\", ";
+    writeQuotedString(os, rgb);
+    os << ")";
+    putPipe(os.str());
+}
 
 GEvent Platform::getNextEvent(int mask) {
    cout.flush();

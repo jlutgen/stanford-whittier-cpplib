@@ -399,6 +399,7 @@ Rotating GLabel doesn't work
 TODO
 
 Asterisk in font string (setConsoleFont) doesn't work?
+See Java Font.decode docs.
 TODO
 
 Press return to close window in mac terminal doesn't work
@@ -420,4 +421,7 @@ Add option to give console focus when something is printed?
 TODO
 
 Tweak console position under graphics window on mac.
+DONE
+
+Test creating/destroying windows repeatedly.
 TODO

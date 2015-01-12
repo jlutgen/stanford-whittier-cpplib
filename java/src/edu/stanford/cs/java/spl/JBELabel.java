@@ -67,8 +67,17 @@ public class JBELabel extends GLabel {
 	            if (jlabel != null) jlabel.setForeground(fcolor);
 	        }
 	    });
-      
    }
 
+   // overrides GLabel. Added by JL
+   public void setLabel(String label) {
+	  final String flabel = label;
+	  SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	JBELabel.super.setLabel(flabel);
+	            if (jlabel != null) jlabel.setText(flabel);
+	        }
+	    });
+   }
    private JLabel jlabel;
 }

@@ -122,6 +122,12 @@ public abstract class JBECommand {
 		cmdTable.put("GSlider.create", new GSlider_create());
 		cmdTable.put("GSlider.getValue", new GSlider_getValue());
 		cmdTable.put("GSlider.setValue", new GSlider_setValue());
+		cmdTable.put("GTextArea.create", new GTextArea_create());
+		cmdTable.put("GTextArea.getText", new GTextArea_getText());
+		cmdTable.put("GTextArea.setBackgroundColor", new GTextArea_setBackgroundColor());
+		cmdTable.put("GTextArea.setEditable", new GTextArea_setEditable());
+		cmdTable.put("GTextArea.setFont", new GTextArea_setFont());
+		cmdTable.put("GTextArea.setText", new GTextArea_setText());
 		cmdTable.put("GTextField.create", new GTextField_create());
 		cmdTable.put("GTextField.getText", new GTextField_getText());
 		cmdTable.put("GTextField.setText", new GTextField_setText());
@@ -997,13 +1003,12 @@ class TopCompound_create extends JBECommand {
 	}
 }
 
-// OK on main thread
 class GObject_delete extends JBECommand {
 	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
 		scanner.verifyToken("(");
 		String id = nextString(scanner);
 		scanner.verifyToken(")");
-		jbe.deleteGObject(id);
+		jbe.deleteGObject(id);   
 	}
 }
 
@@ -1050,20 +1055,17 @@ class GObject_remove extends JBECommand {
 		scanner.verifyToken("(");
 		final String id = nextString(scanner);
 		scanner.verifyToken(")");
-		final JavaBackEnd fjbe = jbe;
+		final GObject gobj = jbe.getGObject(id);
+		if (gobj == null)
+			throw (new RuntimeException("GObject_remove: null object: " + id));
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				GObject gobj = fjbe.getGObject(id);
-				if (gobj != null) {
 					GContainer parent = gobj.getParent();
 					if (parent != null) {
 						parent.remove(gobj);
 					} else {
 						System.out.println("error:GObject_remove: object's parent is null");
-					}
-				} else {
-					System.out.println("error:GObject_remove: object is null");
-				}		        
+					}	        
 			}
 		});		
 	}
@@ -1192,7 +1194,6 @@ class GObject_setColor extends JBECommand {
 	}
 }
 
-// OK on main thread
 class GObject_setLocation extends JBECommand {
 	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
 		scanner.verifyToken("(");
@@ -1206,23 +1207,23 @@ class GObject_setLocation extends JBECommand {
 		if (gobj != null) 
 			gobj.setLocation(x, y);
 		else
-			throw (new RuntimeException("GObject_setLocation: null object"));
+			throw (new RuntimeException("GObject_setLocation: null object:" + id));	        
 	}
 }
 
-// OK on main thread
+
 class GObject_setVisible extends JBECommand {
 	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
 		scanner.verifyToken("(");
 		String id = nextString(scanner);
-		GObject gobj = jbe.getGObject(id);
 		scanner.verifyToken(",");
 		boolean flag = nextBoolean(scanner);
 		scanner.verifyToken(")");
+		GObject gobj = jbe.getGObject(id);
 		if (gobj != null) 
 			gobj.setVisible(flag);
 		else
-			throw (new RuntimeException("GObject_setVisible: null object"));
+			throw (new RuntimeException("GObject_setVisible: null object:" + id));	        
 	}
 }
 
@@ -1503,10 +1504,9 @@ class GCheckBox_isSelected extends JBECommand {
 		scanner.verifyToken("(");
 		final String id = nextString(scanner);
 		scanner.verifyToken(")");
-		final JavaBackEnd fjbe = jbe;
+		final GObject gobj = jbe.getGObject(id);
 		class Runner implements Runnable {
 			public void run() {
-				GObject gobj = fjbe.getGObject(id);
 				if (gobj != null) {
 					wasNull = false;
 					JCheckBox chkbox = (JCheckBox) ((GCheckBox) gobj).getInteractor();
@@ -1539,10 +1539,9 @@ class GCheckBox_setSelected extends JBECommand {
 		scanner.verifyToken(",");
 		final boolean state = nextBoolean(scanner);
 		scanner.verifyToken(")");
-		final JavaBackEnd fjbe = jbe;
+    	final GObject gobj = jbe.getGObject(id);
 		SwingUtilities.invokeLater(new Runnable() {
 	        public void run() {
-	        	GObject gobj = fjbe.getGObject(id);
 	    		if (gobj != null) {
 	    			JCheckBox chkbox = (JCheckBox) ((GCheckBox) gobj).getInteractor();
 	    			chkbox.setSelected(state);
@@ -1576,11 +1575,10 @@ class GSlider_getValue extends JBECommand {
 		scanner.verifyToken("(");
 		final String id = nextString(scanner);
 		scanner.verifyToken(")");
-		final JavaBackEnd fjbe = jbe;
+		final GObject gobj = jbe.getGObject(id);
 		
 		class Runner implements Runnable {
 			public void run() {
-				GObject gobj = fjbe.getGObject(id);
 				if (gobj != null) {
 					wasNull = false;
 					JSlider slider = (JSlider) ((GSlider) gobj).getInteractor();
@@ -1614,10 +1612,9 @@ class GSlider_setValue extends JBECommand {
 		scanner.verifyToken(",");
 		final int value = nextInt(scanner);
 		scanner.verifyToken(")");
-		final JavaBackEnd fjbe = jbe;
+		final GObject gobj = jbe.getGObject(id);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				GObject gobj = fjbe.getGObject(id);
 				if (gobj != null) {
 					JSlider slider = (JSlider) ((GSlider) gobj).getInteractor();
 					slider.setValue(value);		        
@@ -1647,11 +1644,10 @@ class GTextField_getText extends JBECommand {
 		scanner.verifyToken("(");
 		final String id = nextString(scanner);
 		scanner.verifyToken(")");
-		final JavaBackEnd fjbe = jbe;
+		final GObject gobj = jbe.getGObject(id);
 		
 		class Runner implements Runnable {
 			public void run() {
-				GObject gobj = fjbe.getGObject(id);
 				if (gobj != null) {
 					wasNull = false;
 					JTextField field = (JTextField) ((GTextField) gobj).getInteractor();
@@ -1725,10 +1721,9 @@ class GChooser_addItem extends JBECommand {
 		scanner.verifyToken(",");
 		final String item = nextString(scanner);
 		scanner.verifyToken(")");
-		final JavaBackEnd fjbe = jbe;
+		final GObject gobj = jbe.getGObject(id);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				GObject gobj = fjbe.getGObject(id);
 				if (gobj != null) {
 					JComboBox chooser = (JComboBox) ((GChooser) gobj).getInteractor();
 					Class<?> c = chooser.getClass();
@@ -1749,18 +1744,15 @@ class GChooser_addItem extends JBECommand {
 }
 
 
-
 class GChooser_getSelectedItem extends JBECommand {
 	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
 		scanner.verifyToken("(");
 		final String id = nextString(scanner);
 		scanner.verifyToken(")");
 		final GObject gobj = jbe.getGObject(id);
-		final JavaBackEnd fjbe = jbe;
 
 		class Runner implements Runnable {
 			public void run() {
-				GObject gobj = fjbe.getGObject(id);
 				if (gobj != null) {
 					wasNull = false;
 					JComboBox chooser = (JComboBox) ((GChooser) gobj).getInteractor();
@@ -1793,10 +1785,9 @@ class GChooser_setSelectedItem extends JBECommand {
 		scanner.verifyToken(",");
 		final String item = nextString(scanner);
 		scanner.verifyToken(")");
-		final JavaBackEnd fjbe = jbe;
+		final GObject gobj = jbe.getGObject(id);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				GObject gobj = fjbe.getGObject(id);
 				if (gobj != null) {
 					JComboBox chooser = (JComboBox) ((GChooser) gobj).getInteractor();
 					chooser.setSelectedItem(item);
@@ -1818,10 +1809,9 @@ class GWindow_setRegionAlignment extends JBECommand {
 		scanner.verifyToken(",");
 		final String align = nextString(scanner);
 		scanner.verifyToken(")");
-		final JavaBackEnd fjbe = jbe;
+		final JBEWindow jw = jbe.getWindow(id);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JBEWindow jw = fjbe.getWindow(id);
 				if (jw != null) jw.setRegionAlignment(region, align);	
 				// else do nothing; window might have been clicked closed
 			}
@@ -2018,26 +2008,119 @@ class GBufferedImage_setRGB extends JBECommand {
 }
 
 class GTextArea_create extends JBECommand {
-	// gbufferedimage = new GBufferedImage(x, y, width, height);
+	// gTextArea = new GTextArea(width, height);
 	public void execute(TokenScanner paramTokenScanner, JavaBackEnd jbe) {
 		paramTokenScanner.verifyToken("(");
 		String id = nextString(paramTokenScanner);
 		paramTokenScanner.verifyToken(",");
-		int x = nextInt(paramTokenScanner);
+		int width = nextInt(paramTokenScanner);
 		paramTokenScanner.verifyToken(",");
-		int y = nextInt(paramTokenScanner);
-		paramTokenScanner.verifyToken(",");
-		int w = nextInt(paramTokenScanner);
-		paramTokenScanner.verifyToken(",");
-		int h = nextInt(paramTokenScanner);
-		paramTokenScanner.verifyToken(",");
-		int rgb = nextInt(paramTokenScanner);
+		int height = nextInt(paramTokenScanner);
 		paramTokenScanner.verifyToken(")");
-
-		GBufferedImage img = new GBufferedImage(w, h, rgb);
-		img.setLocation(x, y);
-		jbe.defineGObject(id, img);
-		jbe.defineSource(img.getInteractor(), id);
+		GTextArea area = new GTextArea(width, height);
+		jbe.defineGObject(id, area);	       
 	}
 }
 
+
+class GTextArea_setFont extends JBECommand {
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		final String id = nextString(scanner);
+		scanner.verifyToken(",");
+		final String font = nextString(scanner);
+		scanner.verifyToken(")");
+    	final GTextArea area = (GTextArea) jbe.getGObject(id);
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	    		if (area != null) 
+	    			area.setFont(font);
+	    		else
+	    			System.out.println("error:GTextArea_setFont: null text area");	        }
+	    });
+	}
+}
+
+class GTextArea_setText extends JBECommand {
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		final String id = nextString(scanner);
+		scanner.verifyToken(",");
+		final String text = nextString(scanner);
+		scanner.verifyToken(")");
+    	final GTextArea area = (GTextArea) jbe.getGObject(id);
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	    		if (area != null) 
+	    			area.setText(text);
+	    		else
+	    			System.out.println("error:GTextArea_setText: null text area");	        }
+	    });
+	}
+}
+
+class GTextArea_getText extends JBECommand {
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		final String id = nextString(scanner);
+		scanner.verifyToken(")");
+    	final GTextArea area = (GTextArea) jbe.getGObject(id);
+		try {
+			javax.swing.SwingUtilities.invokeAndWait(new Runnable() {
+				public void run() {
+		        	if (area != null) {
+		        		wasNull = false;
+		        		result = area.getText();
+		        	} else {
+		        		wasNull = true;
+		        	}		
+				}
+		}); 
+		} catch (Exception e) {
+			throw (new RuntimeException(e.getMessage()));
+		}
+		if (!wasNull)
+			jbe.println("result:" + result);
+		else
+			throw (new RuntimeException("GTextArea_getText: null text area"));
+	}
+	private boolean wasNull;
+	private String result;
+}
+
+class GTextArea_setBackgroundColor extends JBECommand {
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		final String id = nextString(scanner);
+		scanner.verifyToken(",");
+		final String color = nextString(scanner);
+		scanner.verifyToken(")");
+		final GTextArea area = (GTextArea) jbe.getGObject(id);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				if (area != null) {
+					Color c = color.equals("") ? null : JavaBackEnd.decodeColor(color);
+					area.setBackgroundColor(c);
+				} else
+					System.out.println("error:GTextArea_setText: null text area");	        }
+		});
+	}
+}
+
+class GTextArea_setEditable extends JBECommand {
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		final String id = nextString(scanner);
+		scanner.verifyToken(",");
+		final boolean flag = nextBoolean(scanner);
+		scanner.verifyToken(")");
+		final GTextArea area = (GTextArea) jbe.getGObject(id);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				if (area != null) 
+					area.setEditable(flag);
+				else
+					System.out.println("error:GTextArea_setEditable: null text area");	        }
+		});
+	}
+}

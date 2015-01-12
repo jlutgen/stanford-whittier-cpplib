@@ -22,59 +22,69 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*************************************************************************/
 
-package edu.stanford.cs.java.graphics;
+package edu.stanford.cs.java.spl;
 
-import java.awt.Component;
+import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.TextArea;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
+import java.awt.GraphicsEnvironment;
+
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+import edu.stanford.cs.java.spl.GInteractor;
 
 /**
  * The <code>GTextArea</code> class is a graphical object whose appearance
  * consists of a rectangular area that can display text.
  */
 
-public class GTextArea extends GObject {
+public class GTextArea extends GInteractor {
 
 	/**
 	 * The default font used to display text.  You can change the font by
 	 * invoking the <a href="#setFont(Font)"><code>setFont</code></a> method.
 	 */
 
-	public static final Font DEFAULT_FONT = new Font("Default", Font.PLAIN, 12);
-
-	/**
-	 * Creates a new <code>GLabel</code> object initialized to contain the
-	 * specified string.
-	 *
-	 * @param rows The number of rows displayed by this <code>GTextArea</code>
-	 * @param columns The number of columns displayed by this <code>GTextArea</code>
-	 */
-
-	public GTextArea(int rows, int columns) {
-		this(rows, columns, 0, 0);
-	}
+	public static final Font DEFAULT_FONT = new Font("Monospaced", Font.PLAIN, 11);
+	
+	public static final Color DEFAULT_BG_COLOR = new Color(240, 240, 240); 
 
 
 	/**
 	 * Creates a new <code>GTextArea</code> object with its anchor point at the
 	 * specified position.
 	 *
-	 * @param x The x-coordinate of the anchor point for this <code>GTextArea</code>
-	 * @param y The y-coordinate of the anchor point for this <code>GTextArea</code>
-	 * @param rows The number of rows displayed by this <code>GTextArea</code>
-	 * @param columns The number of columns displayed by this <code>GTextArea</code>
+	 * @param width The width of this <code>GTextArea</code> in pixels
+	 * @param height The height of this <code>GTextArea</code> in pixels
 	 */
 
-	public GTextArea(int rows, int columns, double x, double y) {
-		textArea = new TextArea(rows, columns);
+	public GTextArea(double width, double height) {
+		super (new JScrollPane());
+		textArea = new JTextArea();
+		scrollPane = (JScrollPane) getInteractor();
+		scrollPane.setViewportView(textArea);
 		setFont(DEFAULT_FONT);
-		setLocation(x, y);
+		setSize(width, height); 
+		
+		// DELETE
+//		setText("Text:\u2714");
+//		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//		String [] fonts = ge.getAvailableFontFamilyNames();
+//		for (int i=0; i<fonts.length; i++) {
+//			System.out.println(fonts[i]);
+//		}
 	}
 
+	/**
+	 * Sets the background color of this text area.
+	 *
+	 * @param color The background color to be used for this text area
+	 */
+
+	public void setBackgroundColor(Color color) {
+		textArea.setBackground(color);
+	}
+	   
 	/**
 	 * Changes the font used in the <code>GTextArea</code>.
 	 *
@@ -126,38 +136,25 @@ public class GTextArea extends GObject {
 	}
 
 	/**
-	 * Returns the text displayed by this object.
+	 * Returns the text displayed by this object, encoded in Base64.
 	 *
 	 * @return The text displayed by this object
 	 */
 
 	public String getText() {
-		return textArea.getText();
+		return Base64.encodeBytes(textArea.getText().getBytes());
 	}
 
 	/**
-	 * Implements the <code>paint2d</code> operation for this graphical object.
-	 * This method is not called directly by clients.
-	 * @noshow
-	 */
-
-	protected void paint2d(Graphics2D g) {
-		/* empty */
-	}
-
-	/**
-	 * Returns a <code>GRectangle</code> that specifies the bounding box for
-	 * the string.
+	 * Sets whether this text area is editable.
 	 *
-	 * @return The bounding box for this object
+	 * @param flag true for editable
 	 */
 
-	public GRectangle getBounds() {
-		Rectangle2D rect = textArea.getBounds();
-		return new GRectangle(getX() + rect.getX(), getY() + rect.getY(),
-				rect.getWidth(), rect.getHeight());
+	public void setEditable(boolean flag) {
+		textArea.setEditable(flag);
 	}
-
+	
 	/**
 	 * Checks to see whether a point is inside the object.
 	 *
@@ -167,13 +164,15 @@ public class GTextArea extends GObject {
 	 *         is inside the object, and <code>false</code> otherwise
 	 */
 
+	@Override
 	public boolean contains(double x, double y) {
 		return textArea.contains((int) (x - getX()), (int) (y - getY()));
 	}
 
 	/* Private instance variables */
-
-	private TextArea textArea;
+	
+	private JTextArea textArea;
+	private JScrollPane scrollPane;
 
 	/* Serial version UID */
 	/**
