@@ -9,6 +9,7 @@
 #include "strlib.h"
 #include "filelib.h"
 #include "gmath.h"
+#include "gtextarea.h"
 
 using namespace std;
 
@@ -135,20 +136,27 @@ void test_focus() {
         gw2->requestFocus();
         pause(1000);
     }
-    //gw2->close();
+    gw2->close();
 }
 
 void test_draw() {
     double width = gw->getWidth();
     double height = gw->getHeight();
-    gw->drawLine(0, height / 2, width / 2, 0);
-    gw->drawLine(width / 2, 0, width, height / 2);
-    gw->drawLine(width, height / 2, width / 2, height);
-    gw->drawLine(width / 2, height, 0, height / 2);
-    gw->setColor("BLUE");
-    gw->fillRect(width / 4, height / 4, width / 2, height / 2);
-    gw->setColor("GRAY");
-    gw->fillOval(width / 4, height / 4, width / 2, height / 2);
+    const int mod = 200;
+    int shift;
+    for (int i=0; i<1000; i++) {
+        gw->clear();
+        shift = i%mod - mod/2;
+        gw->drawLine(0 + shift, height / 2, width / 2 + shift, 0);
+        gw->drawLine(width / 2 + shift, 0, width + shift, height / 2);
+        gw->drawLine(width + shift, height / 2, width / 2 + shift, height);
+        gw->drawLine(width / 2 + shift, height, 0 + shift, height / 2);
+        gw->setColor("BLUE");
+        gw->fillRect(width / 4 + shift, height / 4, width / 2, height / 2);
+        gw->setColor("GRAY");
+        gw->fillOval(width / 4 + shift, height / 4, width / 2, height / 2);
+        pause(20);
+    }
 }
 
 void rotate_about_center(GObject *gobj, double deg) {
@@ -186,19 +194,33 @@ void test_rotate_scale() {
 }
 
 void test_label() {
-    GLabel *label1 = new GLabel("label 1");
+    GLabel *label1 = new GLabel("<html>Line 1<br/>Line 2</html>");
     label1->setFont("Serif-Bold-18");
     label1->setColor("blue");
     gw->addToRegion(label1, "south");
     pause(2000);
-    label1->setLabel("Grissy");
+    label1->setLabel("Grissy"); // doesn't work
     label1->setFont("Monospaced-Italic-36");
     label1->setColor("red");
+
     pause(2000);
-    label1->setVisible(false);
-    label1->rotate(20);
+    GLabel *label2 = new GLabel("<html>Line 1<br/>Line 2</html>");
+    label2->setFont("Monospaced-Plain-36");
+    label2->setColor("blue");
+    gw->add(label2, 200, 200);
     pause(2000);
-    label1->setVisible(true);
+    label2->setLabel("Grissy");
+    pause(2000);
+    label2->rotate(45);
+
+
+//    for (int i=0; i<1000; i++) {
+//        GLabel *lab = new GLabel("Accelerate");
+//        gw->add(lab, randomInteger(20, 50), randomInteger(20, 50));
+//        gw->remove(lab);
+//        delete lab;
+//    }
+
 }
 
 void test_add_remove_torture() {
@@ -295,6 +317,27 @@ void test_textfield_torture() {
     }
 }
 
+void test_textarea() {
+    for (int i = 0; i < 1000; i++) {
+        GTextArea *textArea = new GTextArea(10, 10, gw->getWidth()-20, gw->getHeight()-20);
+        gw->add(textArea);
+        textArea->setFont("Serif-Plain-24");
+        //textArea->setBackgroundColor("#9060c0");
+        string txt = "Here is\nsome text.";
+        textArea->setText(txt);
+        //textArea->setEditable(false);
+        string gotText = textArea->getText();
+        if (txt != gotText) {
+            cout << "oops" << endl;
+            cout << "    txt:" << txt << endl;
+            cout << "gotText:" << gotText << endl;
+            break;
+        }
+        gw->remove(textArea);
+        delete textArea;
+    }
+}
+
 void test_chooser_torture() {
     const int numItems = 100;
     GChooser *chooser = new GChooser();
@@ -337,6 +380,18 @@ void test_region_alignment() {
         pause(1);
         gw->setRegionAlignment("SOUTH", align[randomInteger(0, 2)]);
         pause(1);
+    }
+}
+
+void test_window_torture() {
+    for (int i=0; i<10; i++) {
+        GWindow *window = new GWindow(200, 200);
+        GOval oval(100, 100);
+        window->setColor("red");
+        window->drawOval(10, 10, 150, 80);
+        //pause(100);
+        window->close();
+        delete window;
     }
 }
 
@@ -411,10 +466,12 @@ int main() {
         cout << "c) checkbox" << endl;
         cout << "s) slider" << endl;
         cout << "t) text field" << endl;
+        cout << "T) text area" << endl;
         cout << "l) label" << endl;
         cout << "h) chooser" << endl;
         cout << "r) region alignment" << endl;
         cout << "D) file dialog" << endl;
+        cout << "w) window create/destroy" << endl;
         cout << "C) console" << endl;
         string cmd = getLine("Command (Enter to quit)?");
         if (cmd.empty()) {
@@ -459,6 +516,10 @@ int main() {
             gw->setVisible(true);
             gw->clear();
             test_textfield_torture();
+        } else if (cmd == "T") {
+            gw->setVisible(true);
+            gw->clear();
+            test_textarea();
         } else if (cmd == "h") {
             gw->setVisible(true);
             gw->clear();
@@ -470,6 +531,9 @@ int main() {
         } else if (cmd == "D") {
             gw->setVisible(false);
             test_file_dialog();
+        } else if (cmd == "w") {
+            gw->setVisible(false);
+            test_window_torture();
         } else if (cmd == "C") {
             gw->setVisible(false);
             test_console();

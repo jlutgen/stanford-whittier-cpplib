@@ -156,6 +156,12 @@ public:
    void gbufferedimage_resize(GObject* gobj, double width, double height, bool retain = true);
    void gbufferedimage_save(const GObject* const gobj, const std::string& filename);
    void gbufferedimage_setRGB(GObject* gobj, double x, double y, int rgb);
+   void gtextarea_create(GObject* gobj, double width, double height);
+   void gtextarea_setText(GObject* gobj, std::string text);
+   std::string gtextarea_getText(const GObject *gobj);
+   void gtextarea_setFont(GObject* gobj, std::string font);
+   void gtextarea_setEditable(GObject* gobj, bool isEditable);
+   void gtextarea_setBackgroundColor(GObject* gobj, std::string rgb);
 };
 
 Platform *getPlatform();

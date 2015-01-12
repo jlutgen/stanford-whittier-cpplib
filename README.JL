@@ -348,6 +348,7 @@ DONE
 Check diffPixel thingy in GBufferedImage.
 DONE
 
+
 openFileDialog doesn't appear on Mac. Happens unpredictably. Fixed by
 modifying JBECommand.java so file dialog stuff runs in "event dispatch thread".
 DONE
@@ -398,6 +399,7 @@ Rotating GLabel doesn't work
 TODO
 
 Asterisk in font string (setConsoleFont) doesn't work?
+See Java Font.decode docs.
 TODO
 
 Press return to close window in mac terminal doesn't work
@@ -429,4 +431,7 @@ Stack traces on Mac aren't very helpful:
  *** Stack trace (line numbers are approximate):
  *** call_stack_gcc.cpp:275  main
  *** exceptions.cpp:183      start
+DONE
+
+Test creating/destroying windows repeatedly.
 TODO
