@@ -127,6 +127,7 @@ public class JBEConsole extends JScrollPane {
 	}
 
 	public String getLine() {
+		ctp.requestFocusInWindow(); // JL added
 		inputComplete = false;
 		synchronized (this) {
 			while (!inputComplete) {

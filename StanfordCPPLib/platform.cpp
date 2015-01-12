@@ -1540,7 +1540,7 @@ static GEvent parseEvent(string line) {
          cerr.rdbuf(saveerr);
          cerr << endl;
          cerr << "***" << endl;
-         cerr << "*** STANFORD C++ LIBRARY" << endl;
+         cerr << "*** STANFORD C++ LIBRARY (WHITTIER VERSION)" << endl;
          cerr << "*** Prematurely exiting program because console window was closed." << endl;
          cerr << "***" << endl;
          cerr << endl;

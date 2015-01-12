@@ -698,7 +698,7 @@ GRectangle GCompound::getBounds() const {
       xMin = min(xMin, bounds.getX());
       yMin = min(yMin, bounds.getY());
       xMax = max(xMax, bounds.getX() + bounds.getWidth());
-      yMin = min(yMax, bounds.getY() + bounds.getHeight());
+      yMax = max(yMax, bounds.getY() + bounds.getHeight()); // BUGFIX (JL): was yMin = min(...)
    }
    return GRectangle(xMin, yMin, xMax - xMin, yMax - yMin);
 }

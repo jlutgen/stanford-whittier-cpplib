@@ -395,8 +395,11 @@ Test GObject::sendForward, sendToBack, etc.
 DONE
 
 
-Rotating GLabel doesn't work
-TODO
+Rotating GLabel doesn't work. 
+WON'T CHANGE. It does work if label is added to window canvas, but not
+if added to side panel as an "interactor". Back end uses custom-drawn
+string in former case (java GLabel) and uses a Swing JLabel (in JBELabel)
+in the latter case. 
 
 Asterisk in font string (setConsoleFont) doesn't work?
 See Java Font.decode docs.
@@ -417,11 +420,11 @@ TODO
 Add a translate command and a rotateAbout(x, y) command for gobjects.
 TODO
 
-Add option to give console focus when something is printed?
-TODO
+Give console focus when getting input.
+DONE
 
 Tweak console position under graphics window on mac.
-TODO
+DONE
 
 Java GBufferedImage.load: remove debug statements, look into weird bounds
 for GIF image load (256x256 reported as 55x16 or 60x16).
@@ -434,4 +437,4 @@ Stack traces on Mac aren't very helpful:
 DONE
 
 Test creating/destroying windows repeatedly.
-TODO
+DONE

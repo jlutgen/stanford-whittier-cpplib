@@ -74,6 +74,7 @@ static void signalHandlerDisable();
 static void signalHandlerEnable();
 static void stanfordCppLibSignalHandler(int sig);
 static void stanfordCppLibTerminateHandler();
+static void printErrorHint(std::ostream& out);
 
 std::string getProgramNameForStackTrace() {
     return PROGRAM_NAME;
@@ -300,12 +301,21 @@ void printStackTrace(std::ostream& out) {
                   << std::string(lineStrLength + 2 + funcNameLength, '=') << std::endl;
     }
     
-//    out << " ***" << std::endl;
-//    out << " *** NOTE:" << std::endl;
-//    out << " *** Any line numbers listed above are approximate." << std::endl;
-//    out << " *** To learn more about why the program crashed, we" << std::endl;
-//    out << " *** suggest running your program under the debugger." << std::endl;
+    out << " ***" << std::endl;
+    out << " *** NOTE:" << std::endl;
+    out << " *** Any line numbers listed above are approximate." << std::endl;
+    out << " *** To learn more about why the program crashed, we" << std::endl;
+    out << " *** suggest running your program under the debugger." << std::endl;
     
+    out << " ***" << std::endl;
+}
+
+static void printErrorHint(std::ostream& out) {
+    out << " *** Since your program crashed due to an ErrorException, " << std::endl;
+    out << " *** you should try setting a breakpoint at the error() function" << std::endl;
+    out << " *** and then obtain a backtrace when the debugger stops your" << std::endl;
+    out << " *** program there." << std::endl;
+
     out << " ***" << std::endl;
 }
 
@@ -323,6 +333,8 @@ void printStackTrace(std::ostream& out) {
     std::cout.flush(); \
     out << msg; \
     printStackTrace(out); \
+    if (std::string(kind) == "An ErrorException") \
+         printErrorHint(out); \
     ABORT(ex);
 
 static void signalHandlerDisable() {
@@ -416,7 +428,7 @@ static void stanfordCppLibSignalHandler(int sig) {
     
     std::cerr << std::endl;
     std::cerr << " ***" << std::endl;
-    std::cerr << " *** STANFORD C++ LIBRARY" << std::endl;
+    std::cerr << " *** STANFORD C++ LIBRARY (WHITTIER VERSION)" << std::endl;
     std::cerr << " *** " << SIGNAL_KIND << " occurred during program execution." << std::endl;
     std::cerr << " *** " << SIGNAL_DETAILS << std::endl;;
     std::cerr << " ***" << std::endl;;
@@ -445,7 +457,7 @@ static void stanfordCppLibTerminateHandler() {
     std::string msg;
     msg += "\n";
     msg += " ***\n";
-    msg += " *** STANFORD C++ LIBRARY \n";
+    msg += " *** STANFORD C++ LIBRARY (WHITTIER VERSION)\n";
     msg += " *** " + DEFAULT_EXCEPTION_KIND + " occurred during program execution: \n";
     msg += " *** " + DEFAULT_EXCEPTION_DETAILS + "\n";
     msg += " ***\n";

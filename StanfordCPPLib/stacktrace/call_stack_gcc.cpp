@@ -154,6 +154,7 @@ std::string addr2line_clean(std::string line) {
     }
     line = trim(line);
 #endif
+    //cout << "cleaned:" << line << endl; // DELETE
     return line;
 }
 
@@ -178,7 +179,7 @@ int addr2line_all(void** addrs, int length, std::string& output) {
     // have addr2line map the address to the relevant line in the code
 #if defined(__APPLE__)
     // Mac OS X
-    out << "atos -o " << exceptions::getProgramNameForStackTrace() << addrsStr;
+    out << "xcrun atos -o " << exceptions::getProgramNameForStackTrace() << addrsStr; // BUGFIX (JL) was "atos -o"
 #elif defined(_WIN32)
     // Windows
     out << "addr2line.exe -f -C -s -p -e " << exceptions::getProgramNameForStackTrace() << addrsStr;
@@ -187,9 +188,9 @@ int addr2line_all(void** addrs, int length, std::string& output) {
     out << "addr2line -f -C -s -p -e " << exceptions::getProgramNameForStackTrace() << addrsStr;
 #endif
     std::string command = out.str();
-    // std::cout << command << endl; // JL testing
+    //std::cout << command << endl; // JL testing
     int result = execAndCapture(command, output);
-    // std::cout << "\n addr2line returned:\n" << output << endl; // JL
+    //std::cout << "\n addr2line/atos returned:\n" << output << endl; // JL
     return result;
 }
 

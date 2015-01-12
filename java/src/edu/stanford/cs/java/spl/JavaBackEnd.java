@@ -345,6 +345,7 @@ ChangeListener {
 
 	protected String getConsole() {
 		if (consoleFrame == null) showConsole();
+		consoleFrame.requestFocus(); // JL added
 		return console.getLine();
 	}
 
