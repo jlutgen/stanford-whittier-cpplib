@@ -73,19 +73,21 @@ public abstract class GInteractor extends GObject implements GResizable {
       interactor.setVisible(visible);
       interactor.repaint();
    }
-
+   
+   // overrides GObject
    public void setParent(GContainer parent) {
+	  super.setParent(parent);
       if (parent == null) {
-         Container currParent = interactor.getParent();
-         if (currParent != null) {
-         	currParent.remove(interactor);
-         	currParent.validate();
+         Container interactorParent = interactor.getParent(); // JComponent's parent (a GCanvas)
+         if (interactorParent != null) {
+         	interactorParent.remove(interactor);
+         	interactorParent.validate();
         }
       } else if (parent instanceof JBETopCompound) {
          JBETopCompound top = (JBETopCompound) parent;
          JBECanvas jc = top.getCanvas();
          if (jc != null) {
-         	super.setParent(jc); // JL
+         	//super.setParent(jc); // JL, but probably bad for nested JBECompounds now
             jc.add(interactor);
             jc.validate();
          }
@@ -148,6 +150,7 @@ public abstract class GInteractor extends GObject implements GResizable {
 
    public void paint2d(Graphics2D g) {
       /* Empty */
+	   interactor.paintAll(g);
    }
 
    protected void paintObject(Graphics g) {

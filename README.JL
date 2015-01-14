@@ -64,7 +64,9 @@ to get a pointer to it.
 
 JBE Hierarchy (partial)
 =============
-GObject (has get/setParent to be called by its parent, either a GCanvas or GCompound)
+GObject (has get/setParent to be called by its transient/compound GContainer parent, either a GCanvas or GCompound, when it is added to a GContainer. When front end
+calls gwindow->add(gobject), the GObject is actually added to the window's canvas's
+JBETopCompound.
 	GArc
 	GImage
 	GLabel
@@ -91,7 +93,9 @@ GContainer (interface)
 		JBECanvas
 	GCompound
 		add(GObject gobj): sets gobj's parent to be this GCanvas/GCompound
-	These both have a private GObjectList contents.
+	These both have a private GObjectList contents. Front end never creates
+	a canvas directly. When front end creates a GWindow, a JBECanvas is created
+	as the GWindow's private 'canvas'.	
 	
 GObjectList (has private GContainer parent)
 	
@@ -100,9 +104,33 @@ JComponent
 		JBECanvas
 			has a private JBETopCompound top
 
+Frame
+	GWindow
+		JBEWindow
+			has 4 JPanels and a private JBECanvas canvas.
 
-gw->add(GOval): sets GOval's parent to JBETopCompound. Parent of JBETopCompound
-is JBECanvas, whose parent is JPanel.
+gw->add(GOval): sets GOval's t/c parent to JBETopCompound. T/c parent of JBETopCompound
+is JBECanvas, whose (Swing) parent is JPanel. A JBECanvas is not a GObject, so 
+does not have a transient/compound parent.
+
+So the root of any (visible) GContainer containment hierarchy is a JBECanvas.
+
+gw->addToRegion(jbelabel/ginteractor, ...) simply adds the label/interactor's private
+'interactor' (a JComponent like a JLabel or JButton) to one of the GWindow's private
+JPanels, so the JBELabel/GInteractor has null t/c parent and doesn't participate in
+any GContainer containment hierarchy.
+
+JBETopCompound is currently being abused, as every GCompound created by front end
+is really JBETopCompound. This doesn't seem right, since a JBETC has a JBECanvas
+'owner' field. One way to detect whether a compound is a top compound is to use JBETopCompound.getCanvas() and check for null, I suppose. Or I could just bite the bullet and use GCompound for non-top compounds, then check for JBETopCompound as necessary.
+Really, front-end users shouldn't be able to add interactors to a GCompound. I could live with that, though some sort of grouping mechanism for interactors (besides addToRegion)
+would be a nice feature. The problem now is that when interactors are added to a GCompound
+in the front end, things like sendToBack don't have the expected effect, since the 
+interactors are always drawn on top of other GObjects in the compound, no matter what
+the internal ordering. But his is true even when interactors are added directly to the 
+window, since they are really just added to the top compound.
+
+
 
 CPP GObject
 ===========
@@ -136,8 +164,10 @@ some methods of JComponent:
 	- StyleContext: several
 	
 GButton, GCheckBox, GChooser, GTextField, GTimer: the jbe is action listener
+Simply creating one of the first 4 of these (the interactors) sets the action
+listener to be the jbe. 
 
-GSlider: the jbe is change listener
+GSlider: the jbe is change listener; this is set upon creation.
 
 JFrame consoleFrame in JBE: jbe is window listener; 
 consoleFrame contains a JBEConsole (JScrollPane) that has a ConsoleTextPane ctp.
@@ -212,7 +242,7 @@ TODO
 
 
 Figure out how to regenerate CPPLib docs.
-DONE: they seem to have used a highly customized version of cppdoc. That
+DONE: they seem to have used a customized version of cppdoc. That
 program appears to be unmaintained. Switching to doxygen.
 
 
@@ -420,7 +450,7 @@ TODO
 Add a translate command and a rotateAbout(x, y) command for gobjects.
 TODO
 
-Give console focus when getting input.
+Give console the focus and keyboard focus when getting input.
 DONE
 
 Tweak console position under graphics window on mac.
@@ -434,6 +464,7 @@ Stack traces on Mac aren't very helpful:
  *** Stack trace (line numbers are approximate):
  *** call_stack_gcc.cpp:275  main
  *** exceptions.cpp:183      start
+Fixed: problem was new version of atos on Mac.
 DONE
 
 Test creating/destroying windows repeatedly.

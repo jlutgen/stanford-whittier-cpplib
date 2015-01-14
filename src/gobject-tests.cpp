@@ -228,6 +228,16 @@ void test_add_remove_torture() {
     int height = gw->getCanvasHeight();
     int numEachObj = 100;
 
+    GCompound *comp = new GCompound();
+    gw->add(comp);
+    GButton *button = new GButton("button");
+    comp->add(button);
+    comp->add(new GOval(100, 100), 200, 50);
+    pause(1000);
+    gw->remove(comp);
+    return;
+
+
     Vector<GObject *> objs;
     Vector<GObject *> added;
     for (int i = 0; i<numEachObj; i++) {

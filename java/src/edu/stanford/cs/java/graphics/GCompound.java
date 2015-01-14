@@ -235,6 +235,7 @@ for (int i = 0; i < contents.getElementCount(); i++) {
       contents.mapPaint(g);
    }
 
+   
 /**
  * Returns the bounding rectangle for this compound object, which consists of
  * the union of the bounding rectangles for each of the components.
