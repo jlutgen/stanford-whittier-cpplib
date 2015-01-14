@@ -983,9 +983,9 @@ class GCompound_add extends JBECommand {
 		if (gobj1 != null && gobj2 != null) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					if (gobj2 instanceof JBETopCompound) {
-						((JBETopCompound) gobj2).setCanvas(((JBETopCompound) gobj1).getCanvas());
-					}
+//					if (gobj2 instanceof JBETopCompound) {
+//						((JBETopCompound) gobj2).setCanvas(((JBETopCompound) gobj1).getCanvas());
+//					}
 					((JBETopCompound) gobj1).add(gobj2);		        
 				}
 			});			

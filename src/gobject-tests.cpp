@@ -229,11 +229,18 @@ void test_add_remove_torture() {
     int numEachObj = 100;
 
     GCompound *comp = new GCompound();
-    gw->add(comp);
+
     GButton *button = new GButton("button");
     comp->add(button);
     comp->add(new GOval(100, 100), 200, 50);
-    pause(1000);
+    gw->add(comp);
+    GCompound *comp2 = new GCompound();
+    GButton *button2 = new GButton("inner");
+    comp2->add(new GRect(100, 100));
+    comp2->add(button2, 105, 0);
+    pause(2000);
+    comp->add(comp2, comp->getWidth() + 10, comp->getHeight() + 10);
+    pause(2000);
     gw->remove(comp);
     return;
 
