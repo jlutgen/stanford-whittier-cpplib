@@ -22,9 +22,13 @@
 
 package edu.stanford.cs.java.spl;
 
+import javax.swing.JComponent;
+
 import edu.stanford.cs.java.graphics.GCompound;
+import edu.stanford.cs.java.graphics.GMath;
 import edu.stanford.cs.java.graphics.GObject;
 import edu.stanford.cs.java.graphics.GContainer;
+import edu.stanford.cs.java.graphics.GPoint;
 
 
 public class JBETopCompound extends GCompound {
@@ -65,9 +69,14 @@ public class JBETopCompound extends GCompound {
 		for (int i = 0; i < nElements; i++) {
 			GObject gobj = getElement(i);
 			if (gobj instanceof GInteractor) {
-				jc.add(((GInteractor) gobj).getInteractor());
+				JComponent interactor = ((GInteractor) gobj).getInteractor();
+				GPoint canvasLoc = getCanvasPoint(gobj.getLocation());
+				interactor.setLocation(GMath.round(canvasLoc.getX()), 
+						               GMath.round(canvasLoc.getY()));
+				jc.add(interactor);
 				jc.validate();
 			} else if (gobj instanceof JBETopCompound) {
+				((JBETopCompound) gobj).setCanvas(jc);
 				((JBETopCompound) gobj).mapAddInteractorsToCanvas(jc);
 			}
 		}
@@ -76,15 +85,42 @@ public class JBETopCompound extends GCompound {
    // JL
    public void mapRemoveInteractorsFromCanvas(JBECanvas jc) {
 	   int nElements = getElementCount();
-		for (int i = 0; i < nElements; i++) {
-			GObject gobj = getElement(i);
-			if (gobj instanceof GInteractor) {
-				jc.remove(((GInteractor) gobj).getInteractor());
-				jc.validate();
-			} else if (gobj instanceof JBETopCompound) {
-				((JBETopCompound) gobj).mapRemoveInteractorsFromCanvas(jc);
-			}
-		}
+	   for (int i = 0; i < nElements; i++) {
+		   GObject gobj = getElement(i);
+		   if (gobj instanceof GInteractor) {
+			   jc.remove(((GInteractor) gobj).getInteractor());
+			   jc.validate();
+		   } else if (gobj instanceof JBETopCompound) {
+			   ((JBETopCompound) gobj).setCanvas(null);
+			   ((JBETopCompound) gobj).mapRemoveInteractorsFromCanvas(jc);
+		   }
+	   }
+   }
+   
+   // JL
+   // @Override
+   public void setLocation(double x, double y) {
+	   super.setLocation(x, y);
+	   if (owner != null) {
+		   mapSetInteractorLocations();
+	   }
+   }
+   
+   // JL
+   public void mapSetInteractorLocations() {
+	   int nElements = getElementCount();
+	   for (int i = 0; i < nElements; i++) {
+		   GObject gobj = getElement(i);
+		   if (gobj instanceof GInteractor) {
+			   JComponent interactor = ((GInteractor) gobj).getInteractor();
+			   GPoint canvasLoc = getCanvasPoint(gobj.getLocation());
+			   interactor.setLocation(GMath.round(canvasLoc.getX()), 
+					   GMath.round(canvasLoc.getY()));
+			   owner.validate();
+		   } else if (gobj instanceof JBETopCompound) {
+			   ((JBETopCompound) gobj).mapSetInteractorLocations();
+		   }
+	   }
    }
    
    private JBECanvas owner;

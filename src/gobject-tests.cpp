@@ -227,24 +227,6 @@ void test_add_remove_torture() {
     int width = gw->getCanvasWidth();
     int height = gw->getCanvasHeight();
     int numEachObj = 100;
-
-    GCompound *comp = new GCompound();
-
-    GButton *button = new GButton("button");
-    comp->add(button);
-    comp->add(new GOval(100, 100), 200, 50);
-    gw->add(comp);
-    GCompound *comp2 = new GCompound();
-    GButton *button2 = new GButton("inner");
-    comp2->add(new GRect(100, 100));
-    comp2->add(button2, 105, 0);
-    pause(2000);
-    comp->add(comp2, comp->getWidth() + 10, comp->getHeight() + 10);
-    pause(2000);
-    gw->remove(comp);
-    return;
-
-
     Vector<GObject *> objs;
     Vector<GObject *> added;
     for (int i = 0; i<numEachObj; i++) {
@@ -437,6 +419,44 @@ void test_file_dialog() {
         cout << "Dialog result: " <<  result << endl;
 }
 
+void test_nested_compounds_with_interactors() {
+    GCompound *c1 = new GCompound();
+    GCompound *c11 = new GCompound();
+    GCompound *c12 = new GCompound();
+    GCompound *c111 = new GCompound();
+    GCompound *c112 = new GCompound();
+    GButton *b1 = new GButton("1");
+    GButton *b11 = new GButton("1-1");
+    GButton *b12 = new GButton("1-2");
+    GButton *b111 = new GButton("1-1-1");
+    GButton *b112 = new GButton("1-1-2");
+
+    c1->add(new GRect(500, 500));
+    c11->add(new GRect(240, 450), 5, 5);
+    c12->add(new GRect(240, 450), 5, 5);
+    c1->add(c11, 0, 40);
+    c1->add(c12, 250, 40);
+    c111->add(new GRect(230, 190), 5, 5);
+    c112->add(new GRect(230, 190), 5, 5);
+
+    c1->add(b1, 25, 2);
+    c11->add(b11, 25, 7);
+    c12->add(b12, 25, 7);
+    c111->add(b111, 25, 7);
+    c112->add(b112, 25, 7);
+
+    c11->add(c111, 5, 50);
+    c11->add(c112, 5, 245);
+    gw->add(c1, 50, 50);
+    pause(2000);
+    c12->move(0, -35);
+//    c11->remove(b11);
+//    pause(2000);
+//    c11->add(b11, 100, 7); // shifted right
+
+
+}
+
 void test_console() {
     int p = 100;
     clearConsole();
@@ -489,6 +509,7 @@ int main() {
         cout << "r) region alignment" << endl;
         cout << "D) file dialog" << endl;
         cout << "w) window create/destroy" << endl;
+        cout << "n) nested compounds with interactors" << endl;
         cout << "C) console" << endl;
         string cmd = getLine("Command (Enter to quit)?");
         if (cmd.empty()) {
@@ -551,6 +572,9 @@ int main() {
         } else if (cmd == "w") {
             gw->setVisible(false);
             test_window_torture();
+        } else if (cmd == "n") {
+            gw->setVisible(true);
+            test_nested_compounds_with_interactors();
         } else if (cmd == "C") {
             gw->setVisible(false);
             test_console();

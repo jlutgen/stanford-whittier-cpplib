@@ -623,8 +623,10 @@ public abstract class GObject implements Cloneable, GScalable {
    public void setParent(GContainer parent) {
       if (parent instanceof GCompound) {
          compoundParent = (GCompound) parent;
+         transientParent = null; // JL
       } else {
          transientParent = parent;
+         compoundParent = null;
       }
    }
 

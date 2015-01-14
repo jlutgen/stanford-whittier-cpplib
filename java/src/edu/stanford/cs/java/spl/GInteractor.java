@@ -22,15 +22,18 @@
 
 package edu.stanford.cs.java.spl;
 
+import edu.stanford.cs.java.graphics.GCanvas;
+import edu.stanford.cs.java.graphics.GCompound;
 import edu.stanford.cs.java.graphics.GContainer;
 import edu.stanford.cs.java.graphics.GDimension;
 import edu.stanford.cs.java.graphics.GMath;
 import edu.stanford.cs.java.graphics.GObject;
+import edu.stanford.cs.java.graphics.GPoint;
 import edu.stanford.cs.java.graphics.GRectangle;
 import edu.stanford.cs.java.graphics.GResizable;
 
-
 import java.awt.Color;
+import java.awt.Component;
 //import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -84,12 +87,10 @@ public abstract class GInteractor extends GObject implements GResizable {
          	interactorParent.validate();
         }
       } else if (parent instanceof JBETopCompound) {
-         JBETopCompound top = (JBETopCompound) parent;
-         JBECanvas jc = top.getCanvas();
-         if (jc != null) {
-         	//super.setParent(jc); // JL, but probably bad for nested JBECompounds now
-            jc.add(interactor);
-            jc.validate();
+         GCanvas gc = ((JBETopCompound) parent).getCanvas();
+         if (gc != null) {
+        	 gc.add(interactor);
+        	 gc.validate();
          }
       }
    }
@@ -149,8 +150,24 @@ public abstract class GInteractor extends GObject implements GResizable {
    }
 
    public void paint2d(Graphics2D g) {
-      /* Empty */
-	   interactor.paintAll(g);
+	   /* Empty */
+	   
+//	   GPoint compoundOffset = ((GCompound) getParent()).getOffset();
+//	   interactor.paintComponent(g);
+	   
+	   // Set the interactor's position to account for translations
+	   // and let the interactor's parent (canvas) deal with drawing
+//	   int x = (int) Math.round(g.getTransform().getTranslateX());
+//	   int y = (int) Math.round(g.getTransform().getTranslateY());
+//	   int curX = (int) Math.round(interactor.getX());
+//	   int curY = (int) Math.round(interactor.getY());
+//	   if (x != curX || y != curY) {
+//		   interactor.setLocation(x, y);
+//		   interactor.repaint();
+//		   Container c = interactor.getParent();
+//		   if (c != null)
+//			   c.validate();
+//	   }
    }
 
    protected void paintObject(Graphics g) {
