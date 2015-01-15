@@ -425,6 +425,7 @@ void test_nested_compounds_with_interactors() {
     GCompound *c12 = new GCompound();
     GCompound *c111 = new GCompound();
     GCompound *c112 = new GCompound();
+    GButton *b0 = new GButton("0");
     GButton *b1 = new GButton("1");
     GButton *b11 = new GButton("1-1");
     GButton *b12 = new GButton("1-2");
@@ -447,12 +448,27 @@ void test_nested_compounds_with_interactors() {
 
     c11->add(c111, 5, 50);
     c11->add(c112, 5, 245);
+
+    gw->add(b0, 2, 2);
     gw->add(c1, 50, 50);
+
     pause(2000);
     c12->move(0, -35);
-//    c11->remove(b11);
-//    pause(2000);
-//    c11->add(b11, 100, 7); // shifted right
+    pause(2000);
+    b12->move(0, 35);
+    pause(2000);
+    c11->remove(b11);
+    pause(2000);
+    c11->add(b11, 100, 7); // shifted right
+    pause(2000);
+    c11->remove(c112);
+    pause(2000);
+    c11->add(c112, 5, 245);
+    pause(2000);
+    for (int i=0; i<100; i++) {
+        c1->move(1, 0);
+        pause(40);
+    }
 
 
 }

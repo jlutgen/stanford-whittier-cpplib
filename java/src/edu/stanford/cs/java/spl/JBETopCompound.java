@@ -70,9 +70,10 @@ public class JBETopCompound extends GCompound {
 			GObject gobj = getElement(i);
 			if (gobj instanceof GInteractor) {
 				JComponent interactor = ((GInteractor) gobj).getInteractor();
-				GPoint canvasLoc = getCanvasPoint(gobj.getLocation());
-				interactor.setLocation(GMath.round(canvasLoc.getX()), 
-						               GMath.round(canvasLoc.getY()));
+//				GPoint canvasLoc = getCanvasPoint(gobj.getLocation());
+//				interactor.setLocation(GMath.round(canvasLoc.getX()), 
+//						               GMath.round(canvasLoc.getY()));
+				((GInteractor) gobj).updateCanvasLocation();
 				jc.add(interactor);
 				jc.validate();
 			} else if (gobj instanceof JBETopCompound) {
@@ -102,23 +103,19 @@ public class JBETopCompound extends GCompound {
    public void setLocation(double x, double y) {
 	   super.setLocation(x, y);
 	   if (owner != null) {
-		   mapSetInteractorLocations();
+		   mapUpdateCanvasLocations();
 	   }
    }
    
    // JL
-   public void mapSetInteractorLocations() {
+   public void mapUpdateCanvasLocations() {
 	   int nElements = getElementCount();
 	   for (int i = 0; i < nElements; i++) {
 		   GObject gobj = getElement(i);
 		   if (gobj instanceof GInteractor) {
-			   JComponent interactor = ((GInteractor) gobj).getInteractor();
-			   GPoint canvasLoc = getCanvasPoint(gobj.getLocation());
-			   interactor.setLocation(GMath.round(canvasLoc.getX()), 
-					   GMath.round(canvasLoc.getY()));
-			   owner.validate();
+			   ((GInteractor) gobj).updateCanvasLocation();
 		   } else if (gobj instanceof JBETopCompound) {
-			   ((JBETopCompound) gobj).mapSetInteractorLocations();
+			   ((JBETopCompound) gobj).mapUpdateCanvasLocations();
 		   }
 	   }
    }

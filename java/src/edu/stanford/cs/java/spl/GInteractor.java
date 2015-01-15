@@ -67,8 +67,20 @@ public abstract class GInteractor extends GObject implements GResizable {
 
    public void setLocation(double x, double y) {
       super.setLocation(x, y);
-      interactor.setLocation(GMath.round(x), GMath.round(y));
-      interactor.repaint();
+      updateCanvasLocation();
+   }
+
+   public void updateCanvasLocation() {
+	   GContainer parent = getParent();
+	   if (parent instanceof JBETopCompound) {
+		   GCanvas gc = ((JBETopCompound) parent).getCanvas();
+		   if (gc != null) {
+			   GPoint canvasLoc = ((JBETopCompound) parent).getCanvasPoint(getX(), getY());
+			   interactor.setLocation(GMath.round(canvasLoc.getX()), 
+					                  GMath.round(canvasLoc.getY()));
+			   interactor.repaint();
+		   }
+	   }
    }
 
    public void setVisible(boolean visible) {
@@ -89,6 +101,7 @@ public abstract class GInteractor extends GObject implements GResizable {
       } else if (parent instanceof JBETopCompound) {
          GCanvas gc = ((JBETopCompound) parent).getCanvas();
          if (gc != null) {
+        	 updateCanvasLocation();
         	 gc.add(interactor);
         	 gc.validate();
          }
@@ -151,23 +164,6 @@ public abstract class GInteractor extends GObject implements GResizable {
 
    public void paint2d(Graphics2D g) {
 	   /* Empty */
-	   
-//	   GPoint compoundOffset = ((GCompound) getParent()).getOffset();
-//	   interactor.paintComponent(g);
-	   
-	   // Set the interactor's position to account for translations
-	   // and let the interactor's parent (canvas) deal with drawing
-//	   int x = (int) Math.round(g.getTransform().getTranslateX());
-//	   int y = (int) Math.round(g.getTransform().getTranslateY());
-//	   int curX = (int) Math.round(interactor.getX());
-//	   int curY = (int) Math.round(interactor.getY());
-//	   if (x != curX || y != curY) {
-//		   interactor.setLocation(x, y);
-//		   interactor.repaint();
-//		   Container c = interactor.getParent();
-//		   if (c != null)
-//			   c.validate();
-//	   }
    }
 
    protected void paintObject(Graphics g) {
