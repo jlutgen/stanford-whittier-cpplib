@@ -109,6 +109,7 @@ public:
    void setActionCommand(GObject *gobj, std::string cmd);
    GDimension getSize(GObject *gobj);
    void createGButton(GObject *gobj, std::string label);
+   void gbutton_setEnabled(GObject *gobj, bool enabled);
    void createGCheckBox(GObject *gobj, std::string label);
    bool isSelected(GObject *gobj);
    void setSelected(GObject *gobj, bool state);

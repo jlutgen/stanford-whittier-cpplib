@@ -77,6 +77,7 @@ public abstract class JBECommand {
 		cmdTable.put("GBufferedImage.save", new GBufferedImage_save());
 		cmdTable.put("GBufferedImage.setRGB", new GBufferedImage_setRGB());
 		cmdTable.put("GButton.create", new GButton_create());
+		cmdTable.put("GButton.setEnabled", new GButton_setEnabled());
 		cmdTable.put("GCheckBox.create", new GCheckBox_create());
 		cmdTable.put("GCheckBox.isSelected", new GCheckBox_isSelected());
 		cmdTable.put("GCheckBox.setSelected", new GCheckBox_setSelected());
@@ -1486,6 +1487,21 @@ class GButton_create extends JBECommand {
 		gobj.setActionCommand(label);
 		jbe.defineGObject(id, gobj);
 		jbe.defineSource(gobj.getInteractor(), id);
+	}
+}
+
+class GButton_setEnabled extends JBECommand {
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		String id = nextString(scanner);
+		scanner.verifyToken(",");
+		boolean flag = nextBoolean(scanner);
+		scanner.verifyToken(")");
+		GObject gobj = jbe.getGObject(id);
+		if (gobj != null) 
+			((GButton) gobj).setEnabled(flag);
+		else
+			throw (new RuntimeException("GButton_setEnabled: null button:" + id));	        
 	}
 }
 

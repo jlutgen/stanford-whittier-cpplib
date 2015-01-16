@@ -79,5 +79,17 @@ public class JBELabel extends GLabel {
 	        }
 	    });
    }
+   
+   // overrides GLabel. Added by JL
+   public void setVisible(boolean visible) {
+	  final boolean fvisible = visible;
+	  SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	if (jlabel != null) jlabel.setVisible(fvisible);
+	        	JBELabel.super.setVisible(fvisible); 
+	        }
+	    });
+   }
+   
    private JLabel jlabel;
 }

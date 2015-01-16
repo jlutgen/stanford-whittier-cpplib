@@ -149,6 +149,17 @@ public:
    GButton(std::string label);
 
 
+/**
+ * Sets whether this `%GButton` is enabled. A button that is disabled
+ * has a grayed-out appearance and does not respond to mouse clicks.
+ *
+ * Sample usage:
+ *
+ *     button->setEnabled(enabled);
+ */
+   void setEnabled(bool enabled);
+
+
 /* Prototypes for the virtual methods */
 
    virtual std::string getType() const;

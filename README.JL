@@ -469,3 +469,22 @@ DONE
 
 Test creating/destroying windows repeatedly.
 DONE
+
+Calling glabel->setVisible(false) *before* adding label to region does not work.
+TODO
+
+Make GWindow::GWindow(w, h, visible) part of the documented interface and fix
+back end so initially invisible windows don't briefly pop up.
+TODO
+
+
+Named type for file dialog filter list (dialog says "Image files" instead of "*.bmp;*.gif...")
+TODO
+
+
+Buffered image scaling
+TODO
+
+
+Button disabling
+TODO

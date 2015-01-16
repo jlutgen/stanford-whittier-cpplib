@@ -700,7 +700,7 @@ GRectangle GCompound::getBounds() const {
       xMax = max(xMax, bounds.getX() + bounds.getWidth());
       yMax = max(yMax, bounds.getY() + bounds.getHeight()); // BUGFIX (JL): was yMin = min(...)
    }
-   return GRectangle(xMin, yMin, xMax - xMin, yMax - yMin);
+   return GRectangle(xMin, yMin, xMax - xMin, yMax - yMin); // (JL) shifted anchor point
 }
 
 bool GCompound::contains(double x, double y) const {

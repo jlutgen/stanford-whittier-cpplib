@@ -89,6 +89,12 @@ public abstract class GInteractor extends GObject implements GResizable {
       interactor.repaint();
    }
    
+   // JL
+   public void setEnabled(boolean enabled) {
+	   interactor.setEnabled(enabled);
+	   interactor.repaint();
+   }
+   
    // overrides GObject
    public void setParent(GContainer parent) {
 	  super.setParent(parent);

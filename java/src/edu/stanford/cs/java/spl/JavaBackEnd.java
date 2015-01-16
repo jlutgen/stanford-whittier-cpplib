@@ -162,6 +162,8 @@ ChangeListener {
 	public void run(String[] args) {
 		if (DEBUG) printLog("starting");
 		// System.out.println("MacOS? " + isMacOS);
+		// Default JPanel background color on Mac/Win is (238, 238, 238) = 0xffeeeeee
+		// System.out.println( UIManager.getColor("Panel.background") );
 		processArguments(args);
 		initSystemProperties();
 		if (isMacOS) {
@@ -242,10 +244,12 @@ ChangeListener {
 		if (name.equalsIgnoreCase("blue")) return Color.BLUE;
 		if (name.equalsIgnoreCase("cyan")) return Color.CYAN;
 		if (name.equalsIgnoreCase("darkGray")) return Color.DARK_GRAY;
+		if (name.equalsIgnoreCase("dark gray")) return Color.DARK_GRAY;
 		if (name.equalsIgnoreCase("DARK_GRAY")) return Color.DARK_GRAY;
 		if (name.equalsIgnoreCase("gray")) return Color.GRAY;
 		if (name.equalsIgnoreCase("green")) return Color.GREEN;
 		if (name.equalsIgnoreCase("lightGray")) return Color.LIGHT_GRAY;
+		if (name.equalsIgnoreCase("light gray")) return Color.LIGHT_GRAY;
 		if (name.equalsIgnoreCase("LIGHT_GRAY")) return Color.LIGHT_GRAY;
 		if (name.equalsIgnoreCase("magenta")) return Color.MAGENTA;
 		if (name.equalsIgnoreCase("orange")) return Color.ORANGE;

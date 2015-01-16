@@ -85,7 +85,7 @@ public:
         *
         *     textarea->setText();
         */
-        void setText(std::string font);
+        void setText(std::string text);
 
 
         /**

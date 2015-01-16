@@ -36,12 +36,11 @@ GTextArea::GTextArea(double width, double height) {
     this->width = width;
     this->height = height;
     pp->gtextarea_create(this, width, height);
-    GTextArea(width, height, 0, 0);
 }
 
 GTextArea::GTextArea(double x, double y, double width, double height) {
-    this->x = 0;
-    this->y = 0;
+    this->x = x;
+    this->y = y;
     this->width = width;
     this->height = height;
     pp->gtextarea_create(this, width, height);

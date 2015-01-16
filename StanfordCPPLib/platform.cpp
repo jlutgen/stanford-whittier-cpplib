@@ -940,6 +940,13 @@ void Platform::createGButton(GObject *gobj, string label) {
    putPipe(os.str());
 }
 
+void Platform::gbutton_setEnabled(GObject *gobj, bool enabled) {
+   ostringstream os;
+   os << boolalpha << "GButton.setEnabled(\"" << gobj << "\", "
+                                              << enabled << ")";
+   putPipe(os.str());
+}
+
 void Platform::createGCheckBox(GObject *gobj, string label) {
    ostringstream os;
    os << gobj;

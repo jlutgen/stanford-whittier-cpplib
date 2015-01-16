@@ -166,6 +166,10 @@ public:
  * \ref getBounds method, by contrast, returns a
  * rectangle that covers the entire window area occupied by the string.
  *
+ * The coordinates of the bounding box are given in local coordinates
+ * relative to the upper-left corner of the GCompound to which this
+ * object belongs.
+ *
  * Sample usage:
  *
  *     GRectangle rect = gobj->getBounds();

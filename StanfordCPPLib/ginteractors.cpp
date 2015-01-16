@@ -84,6 +84,10 @@ GButton::GButton(string label) {
    pp->createGButton(this, label);
 }
 
+void GButton::setEnabled(bool enabled) {
+    pp->gbutton_setEnabled(this, enabled);
+}
+
 string GButton::getType() const {
    return "GButton";
 }
