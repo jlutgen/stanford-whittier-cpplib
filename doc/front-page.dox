@@ -1,7 +1,14 @@
 /** 
 
 @mainpage
+The Stanford C++ libraries were originally developed by Stanford Professor Eric Roberts, 
+with the assistance of Julie Zelenski, Keith Schwarz, and other Stanford colleagues. 
+This documentation describes an unofficial modified version of the Stanford C++ libraries 
+that is currently being used in Whittier College's COSC 220 course. This version is 
+written and maintained by Jeff Lutgen, and incorporates some of 
+Stanford Lecturer Marty Stepp's modifications to the official libraries.
 
+<p>
 The <code>StanfordCPPLib</code> package defines a set of libraries that
 make it easier to write programs in C++.  The facilities provided by
 these libraries can be broken down into the following groups:
