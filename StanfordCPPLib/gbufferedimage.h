@@ -135,8 +135,8 @@ public:
     
 
     /**
-     * Generates a new image whose content is equal to that of this image but with
-     * any pixels that don't match those in given image colored in the given
+     * Generates a new image with the same size and background color as this image, but
+     * with any pixels that don't match those in given image colored in the given
      * color \em diffPixelColor (default purple) to highlight differences between the two.
      *
      * Sample usages:
@@ -276,6 +276,17 @@ public:
      */
     void resize(double width, double height, bool retain = true);
     
+
+    /**
+     * Returns a pointer to a new GBufferedImage that is a scaled version
+     * of this one, scaled to the given width and height.
+     *
+     * Sample usages:
+     *
+     *     GBufferedImage *scaledImage = im->scale(width, height);
+     */
+    GBufferedImage *scale(int width, int height) const;
+
 
     /**
      * Saves this image's contents to the given image file. The format

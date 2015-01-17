@@ -1142,6 +1142,14 @@ void Platform::gbufferedimage_save(const GObject* const gobj, const std::string&
     getStatus();
 }
 
+std::string Platform::gbufferedimage_scale(const GObject* const gobj, GObject* const gobj2, int w, int h) {
+    std::ostringstream os;
+    os << "GBufferedImage.scale(\"" << gobj << "\", \"" << gobj2 << "\", "
+       << w << ", " << h << ")";
+    putPipe(os.str());
+    return getResult();
+}
+
 void Platform::gbufferedimage_setRGB(GObject* gobj, double x, double y,
                                      int rgb) {
     std::ostringstream os;

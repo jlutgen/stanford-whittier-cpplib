@@ -73,11 +73,9 @@ public class GBufferedImage extends GInteractor {
 	
 	public String load(String filename) {
 		try {
-			System.err.println("JBE DEBUG: here"); // DELETE
 			bufferedImage = ImageIO.read(new File(filename));
 			if (bufferedImage == null)
 				throw (new RuntimeException("Could not load image file: unsupported file format"));
-			System.err.println("JBE DEBUG here2"); // DELETE
 			imageWidth = bufferedImage.getWidth();
 			imageHeight = bufferedImage.getHeight();
 			repaintImage();
@@ -136,4 +134,94 @@ public class GBufferedImage extends GInteractor {
 	    		label.setSize(size);	        }
 	    });		
 	}
+	
+	/**
+     * Creates a scaled instance of this {@code GBufferedImage}'s 
+     * image and stores it as targetImage's image. Returns Base64-encoded 
+     * string representation of targetImage.
+     *
+     * Adapted by Jeff Lutgen from 
+     * https://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html
+     *
+     * @param targetWidth the desired width of the scaled instance,
+     *    in pixels
+     * @param targetWidth the desired width of the scaled instance,
+     *    in pixels
+     * @param targetHeight the desired height of the scaled instance,
+     *    in pixels
+     * 
+     * hint: one of the rendering hints that corresponds to
+     *    {@code RenderingHints.KEY_INTERPOLATION} (e.g.
+     *    {@code RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR},
+     *    {@code RenderingHints.VALUE_INTERPOLATION_BILINEAR},
+     *    {@code RenderingHints.VALUE_INTERPOLATION_BICUBIC})
+     *    
+     * higherQuality: if true, this method will use a multi-step
+     *    scaling technique that provides higher quality than the usual
+     *    one-step technique (only useful in downscaling cases, where
+     *    {@code targetWidth} or {@code targetHeight} is
+     *    smaller than the original dimensions, and generally only when
+     *    the {@code BILINEAR} hint is specified)
+     *    
+     * @return a scaled version of the original {@code BufferedImage}
+     */
+    public String scale(GBufferedImage targetImage,
+    									   int targetWidth,
+                                           int targetHeight)
+    {
+    	boolean higherQuality;
+    	Object hint;
+    	if (targetWidth < imageWidth || targetHeight < imageHeight) {
+    		higherQuality = true;
+    		hint = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
+    	} else {
+    		higherQuality = false;
+    		hint = RenderingHints.VALUE_INTERPOLATION_BICUBIC;
+    	}
+        int type = BufferedImage.TYPE_INT_RGB;
+        BufferedImage ret = (BufferedImage) bufferedImage;
+        int w, h;
+        if (higherQuality) {
+            // Use multi-step technique: start with original size, then
+            // scale down in multiple passes with drawImage()
+            // until the target size is reached
+            w = bufferedImage.getWidth();
+            h = bufferedImage.getHeight();
+        } else {
+            // Use one-step technique: scale directly from original
+            // size to target size with a single drawImage() call
+            w = targetWidth;
+            h = targetHeight;
+        }
+        
+        do {
+            if (higherQuality && w > targetWidth) {
+                w /= 2;
+                if (w < targetWidth) {
+                    w = targetWidth;
+                }
+            }
+
+            if (higherQuality && h > targetHeight) {
+                h /= 2;
+                if (h < targetHeight) {
+                    h = targetHeight;
+                }
+            }
+
+            BufferedImage tmp = new BufferedImage(w, h, type);
+            Graphics2D g2 = tmp.createGraphics();
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, hint);
+            g2.drawImage(ret, 0, 0, w, h, null);
+            g2.dispose();
+
+            ret = tmp;
+        } while (w != targetWidth || h != targetHeight);
+        
+        targetImage.bufferedImage = ret;
+        targetImage.imageWidth = ret.getWidth();
+        targetImage.imageHeight = ret.getHeight();
+        targetImage.repaintImage();
+        return targetImage.toStringBase64();
+    }
 }

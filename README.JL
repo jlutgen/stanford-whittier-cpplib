@@ -483,8 +483,12 @@ TODO
 
 
 Buffered image scaling
-TODO
+DONE
 
 
 Button disabling
+DONE
+
+
+Option pane
 TODO

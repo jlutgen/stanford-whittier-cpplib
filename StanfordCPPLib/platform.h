@@ -156,6 +156,7 @@ public:
    std::string gbufferedimage_load(GObject* gobj, const std::string& filename);
    void gbufferedimage_resize(GObject* gobj, double width, double height, bool retain = true);
    void gbufferedimage_save(const GObject* const gobj, const std::string& filename);
+   std::string gbufferedimage_scale(const GObject* const gobj, GObject* const gobj2, int w, int h);
    void gbufferedimage_setRGB(GObject* gobj, double x, double y, int rgb);
    void gtextarea_create(GObject* gobj, double width, double height);
    void gtextarea_setText(GObject* gobj, std::string text);

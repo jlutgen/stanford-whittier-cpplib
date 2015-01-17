@@ -75,6 +75,7 @@ public abstract class JBECommand {
 		cmdTable.put("GBufferedImage.load", new GBufferedImage_load());
 		cmdTable.put("GBufferedImage.resize", new GBufferedImage_resize());
 		cmdTable.put("GBufferedImage.save", new GBufferedImage_save());
+		cmdTable.put("GBufferedImage.scale", new GBufferedImage_scale());
 		cmdTable.put("GBufferedImage.setRGB", new GBufferedImage_setRGB());
 		cmdTable.put("GButton.create", new GButton_create());
 		cmdTable.put("GButton.setEnabled", new GButton_setEnabled());
@@ -1951,7 +1952,6 @@ class GBufferedImage_load extends JBECommand {
 		paramTokenScanner.verifyToken(")");
 
 		GObject gobj = jbe.getGObject(id);
-		System.err.println("JBE DEBUG: execute load: " + gobj); // DELETE
 		if (gobj != null && gobj instanceof GBufferedImage) {
 			GBufferedImage img = (GBufferedImage) gobj;
 			result = img.load(filename);
@@ -2001,6 +2001,31 @@ class GBufferedImage_save extends JBECommand {
 			jbe.println("result:ok");
 		} else {
 			jbe.println("result:");
+		}
+	}
+}
+
+class GBufferedImage_scale extends JBECommand {
+	// gbufferedimage.scale(targetImage, w, h);
+	public void execute(TokenScanner paramTokenScanner, JavaBackEnd jbe) {
+		paramTokenScanner.verifyToken("(");
+		String id1 = nextString(paramTokenScanner);
+		paramTokenScanner.verifyToken(",");
+		String id2 = nextString(paramTokenScanner);
+		paramTokenScanner.verifyToken(",");
+		int w = nextInt(paramTokenScanner);
+		paramTokenScanner.verifyToken(",");
+		int h = nextInt(paramTokenScanner);
+		paramTokenScanner.verifyToken(")");
+
+		GObject gobj1 = jbe.getGObject(id1);
+		GObject gobj2 = jbe.getGObject(id2);
+		if (gobj1 != null && gobj1 instanceof GBufferedImage
+				&& gobj2 != null && gobj2 instanceof GBufferedImage) {
+			String result = ((GBufferedImage) gobj1).scale((GBufferedImage) gobj2, w, h);
+			jbe.println("result:" + result);
+		} else {
+			throw (new RuntimeException("GBufferedImage_scale: invalid GBufferedImage"));
 		}
 	}
 }
