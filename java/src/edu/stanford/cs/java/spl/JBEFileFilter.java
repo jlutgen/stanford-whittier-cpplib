@@ -37,27 +37,31 @@ public class JBEFileFilter extends FileFilter {
  * or <code>.htm</code>, you could use the following constructor call:
  *
  *<pre>
- *    new JBEFileFilter("*.html;*.htm")
+ *    new JBEFileFilter("*.html;*.htm", "HTML files")
  *</pre>
  *
+ * If description is null, a default description is used.
+ * 
  * @param pattern The filename pattern
+ * @param description The description to be displayed for the filter (e.g. "Image files")
  */
 
-   public JBEFileFilter(String path) {
-      pattern = getPatternPart(path);
-      description = (pattern.isEmpty() ? "All" : pattern) + " files";
-      int sp = Math.max(path.lastIndexOf("/"), path.lastIndexOf('\\'));
-      dir = (sp == -1) ? "" : path.substring(0, sp);
-      String last = path.substring(sp + 1);
+   public JBEFileFilter(String pathAndFilter, String description) {
+      pattern = getPatternPart(pathAndFilter);
+      if (description != null && !pattern.isEmpty())
+    	  this.description = description + " (" + pattern + ")";
+      else
+    	  this.description = (pattern.isEmpty() ? "All" : pattern) + " files";
+      int sp = Math.max(pathAndFilter.lastIndexOf("/"), pathAndFilter.lastIndexOf('\\'));
+      dir = (sp == -1) ? "" : pathAndFilter.substring(0, sp);
+      String last = pathAndFilter.substring(sp + 1);
       if (!isPattern(last)) {
          //if (dir.isEmpty()) dir += "/"; // JL commented out (BUGFIX)
          dir += last;
       }
       if (dir.isEmpty()) {
          dir = System.getProperty("user.dir"); // current directory
-      } /*else if (!dir.startsWith("/")  {                 // JL commented out `else if` block (BUGFIX)
-         dir = System.getProperty("user.dir") + "/" + dir;
-      }*/
+      } 
    }
 
 /**

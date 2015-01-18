@@ -111,7 +111,8 @@ std::string openFileDialog(std::ifstream & stream, std::string title);
 std::string openFileDialog(std::ofstream & stream, std::string title);
 /** \_overload */
 std::string openFileDialog(std::ifstream & stream, std::string title,
-                                                   std::string path);
+                                                   std::string path,
+                                                   std::string patternName = "");
 /**
  * Displays a dialog that allows the user to choose the file.  The
  * \em title parameter is displayed in the dialog title.
@@ -129,6 +130,13 @@ std::string openFileDialog(std::ifstream & stream, std::string title,
  * will initially show only those files in <code>/Users/jeff/images</code> whose names end in
  * <code>.png</code> or <code>.jpg</code>.
  *
+ * If \em path is used and contains a pattern list, the optional parameter \em patternName
+ * may be used to specify a description of the pattern. This description will be displayed
+ * in the file dialog. For example, the following call might be used to display a dialog
+ * for opening an HTML file:
+ *
+ *       string filename = openFileDialog(stream, title, "*.htm;*.html", "HTML files");
+ *
  * The `%openFileDialog` function calls <i>stream</i><code>.open</code> on the file selected
  * by the user via the dialog and, if successful, returns the full pathname of the selected file.
  * If the file could not be opened or the user cancels the dialog, this function returns
@@ -139,10 +147,12 @@ std::string openFileDialog(std::ifstream & stream, std::string title,
  *     string filename = openFileDialog(stream);
  *     string filename = openFileDialog(stream, title);
  *     string filename = openFileDialog(stream, title, path);
+ *     string filename = openFileDialog(stream, title, path, patternName);
  *
  */
 std::string openFileDialog(std::ofstream & stream, std::string title,
-                                                   std::string path);
+                                                   std::string path,
+                                                   std::string patternName = "");
 
 
 

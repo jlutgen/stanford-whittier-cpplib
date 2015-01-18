@@ -465,7 +465,7 @@ void Platform::listDirectory(string path, vector<string> & list) {
 
 
 
-string Platform::openFileDialog(string title, string mode, string path) {
+string Platform::openFileDialog(string title, string mode, string path, string patternName) {
    ostringstream os;
    os << "File.openFileDialog(";
    writeQuotedString(os, title);
@@ -478,9 +478,9 @@ string Platform::openFileDialog(string title, string mode, string path) {
        path += sep;
        path += " "; // BUGFIX (JL): hack to circumvent back-end bug when path ends with backslash
    }
-   //os << ", \"" << mode << "\", \"" << path << "\")";
    os << ", \"" << mode << "\", ";
    writeQuotedString(os, path); // BUGFIX (JL): path might contain backslashes
+   os << ", \"" << patternName << "\"";
    os << ")";
    putPipe(os.str());
    return getResult();

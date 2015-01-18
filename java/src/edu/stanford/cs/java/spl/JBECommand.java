@@ -992,9 +992,9 @@ class GCompound_add extends JBECommand {
 		if (gobj1 != null && gobj2 != null) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-//					if (gobj2 instanceof JBETopCompound) {
-//						((JBETopCompound) gobj2).setCanvas(((JBETopCompound) gobj1).getCanvas());
-//					}
+					//					if (gobj2 instanceof JBETopCompound) {
+					//						((JBETopCompound) gobj2).setCanvas(((JBETopCompound) gobj1).getCanvas());
+					//					}
 					((JBETopCompound) gobj1).add(gobj2);		        
 				}
 			});			
@@ -1072,12 +1072,12 @@ class GObject_remove extends JBECommand {
 			throw (new RuntimeException("GObject_remove: null object: " + id));
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-					GContainer parent = gobj.getParent();
-					if (parent != null) {
-						parent.remove(gobj);
-					} else {
-						System.out.println("error:GObject_remove: object's parent is null");
-					}	        
+				GContainer parent = gobj.getParent();
+				if (parent != null) {
+					parent.remove(gobj);
+				} else {
+					System.out.println("error:GObject_remove: object's parent is null");
+				}	        
 			}
 		});		
 	}
@@ -1461,7 +1461,7 @@ class GInteractor_getSize extends JBECommand {
 		final GObject gobj = jbe.getGObject(id);
 		if (gobj != null) {
 			final JComponent jcomp = ((GInteractor) gobj).getInteractor();
-			
+
 			class Runner implements Runnable {
 				public void run() {
 					size = (jcomp.isShowing()) ? jcomp.getSize()
@@ -1469,7 +1469,7 @@ class GInteractor_getSize extends JBECommand {
 				}
 				public Dimension size;
 			}
-			
+
 			Runner runner = new Runner();
 			try {
 				SwingUtilities.invokeAndWait(runner);
@@ -1566,17 +1566,17 @@ class GCheckBox_setSelected extends JBECommand {
 		scanner.verifyToken(",");
 		final boolean state = nextBoolean(scanner);
 		scanner.verifyToken(")");
-    	final GObject gobj = jbe.getGObject(id);
+		final GObject gobj = jbe.getGObject(id);
 		SwingUtilities.invokeLater(new Runnable() {
-	        public void run() {
-	    		if (gobj != null) {
-	    			JCheckBox chkbox = (JCheckBox) ((GCheckBox) gobj).getInteractor();
-	    			chkbox.setSelected(state);
-	    		}
-	    		else
-	    			System.out.println("error:GCheckBox_setSelected: null checkbox");
-	        }
-	    });
+			public void run() {
+				if (gobj != null) {
+					JCheckBox chkbox = (JCheckBox) ((GCheckBox) gobj).getInteractor();
+					chkbox.setSelected(state);
+				}
+				else
+					System.out.println("error:GCheckBox_setSelected: null checkbox");
+			}
+		});
 	}
 }
 
@@ -1603,7 +1603,7 @@ class GSlider_getValue extends JBECommand {
 		final String id = nextString(scanner);
 		scanner.verifyToken(")");
 		final GObject gobj = jbe.getGObject(id);
-		
+
 		class Runner implements Runnable {
 			public void run() {
 				if (gobj != null) {
@@ -1672,7 +1672,7 @@ class GTextField_getText extends JBECommand {
 		final String id = nextString(scanner);
 		scanner.verifyToken(")");
 		final GObject gobj = jbe.getGObject(id);
-		
+
 		class Runner implements Runnable {
 			public void run() {
 				if (gobj != null) {
@@ -1711,11 +1711,11 @@ class GTextField_setText extends JBECommand {
 		final GObject gobj = jbe.getGObject(id);
 		if (gobj != null) {
 			SwingUtilities.invokeLater(new Runnable() {
-		        public void run() {
-		        	JTextField field = (JTextField) ((GTextField) gobj).getInteractor();
+				public void run() {
+					JTextField field = (JTextField) ((GTextField) gobj).getInteractor();
 					field.setText(str);
-		        }
-		    });	
+				}
+			});	
 		} else {
 			throw (new RuntimeException("GTextField_setText: null text field"));
 		}
@@ -1821,7 +1821,7 @@ class GChooser_setSelectedItem extends JBECommand {
 				} else {
 					System.out.println("error:GChooser_setSelectedItem: null chooser");
 				}
-				
+
 			}
 		});
 	}
@@ -1864,16 +1864,19 @@ class File_openFileDialog extends JBECommand {
 		scanner.verifyToken(",");
 		final String mode = nextString(scanner);
 		scanner.verifyToken(",");
-		final String path = nextString(scanner).trim(); // JL added .trim(). Clients must add a space to end of real path since path can end with backslash,
+		final String pathAndFilter = nextString(scanner).trim(); // JL added .trim(). Clients must add a space to end of real path since path can end with backslash,
 		// so we must remove it to recover real path.
+		scanner.verifyToken(",");
+		final String filterDescription = nextString(scanner);
 		scanner.verifyToken(")");
 		final JavaBackEnd fjbe = jbe;
 		try {
 			javax.swing.SwingUtilities.invokeAndWait(new Runnable() {
 				public void run() {
-					result = fjbe.openFileDialog(title, mode, path);
+					String desc = filterDescription.isEmpty()  ? null : filterDescription;
+					result = fjbe.openFileDialog(title, mode, pathAndFilter, desc);
 				}
-		}); 
+			}); 
 		} catch (Exception e) {
 			throw (new RuntimeException(e.getMessage()));
 		}
@@ -1935,7 +1938,7 @@ class GBufferedImage_fillRegion extends JBECommand {
 		paramTokenScanner.verifyToken(",");
 		int y = nextInt(paramTokenScanner);
 		paramTokenScanner.verifyToken(",");
-	    int w = nextInt(paramTokenScanner);
+		int w = nextInt(paramTokenScanner);
 		paramTokenScanner.verifyToken(",");
 		int h = nextInt(paramTokenScanner);
 		paramTokenScanner.verifyToken(",");
@@ -2081,14 +2084,14 @@ class GTextArea_setFont extends JBECommand {
 		scanner.verifyToken(",");
 		final String font = nextString(scanner);
 		scanner.verifyToken(")");
-    	final GTextArea area = (GTextArea) jbe.getGObject(id);
+		final GTextArea area = (GTextArea) jbe.getGObject(id);
 		SwingUtilities.invokeLater(new Runnable() {
-	        public void run() {
-	    		if (area != null) 
-	    			area.setFont(font);
-	    		else
-	    			System.out.println("error:GTextArea_setFont: null text area");	        }
-	    });
+			public void run() {
+				if (area != null) 
+					area.setFont(font);
+				else
+					System.out.println("error:GTextArea_setFont: null text area");	        }
+		});
 	}
 }
 
@@ -2099,14 +2102,14 @@ class GTextArea_setText extends JBECommand {
 		scanner.verifyToken(",");
 		final String text = nextString(scanner);
 		scanner.verifyToken(")");
-    	final GTextArea area = (GTextArea) jbe.getGObject(id);
+		final GTextArea area = (GTextArea) jbe.getGObject(id);
 		SwingUtilities.invokeLater(new Runnable() {
-	        public void run() {
-	    		if (area != null) 
-	    			area.setText(text);
-	    		else
-	    			System.out.println("error:GTextArea_setText: null text area");	        }
-	    });
+			public void run() {
+				if (area != null) 
+					area.setText(text);
+				else
+					System.out.println("error:GTextArea_setText: null text area");	        }
+		});
 	}
 }
 
@@ -2115,18 +2118,18 @@ class GTextArea_getText extends JBECommand {
 		scanner.verifyToken("(");
 		final String id = nextString(scanner);
 		scanner.verifyToken(")");
-    	final GTextArea area = (GTextArea) jbe.getGObject(id);
+		final GTextArea area = (GTextArea) jbe.getGObject(id);
 		try {
 			javax.swing.SwingUtilities.invokeAndWait(new Runnable() {
 				public void run() {
-		        	if (area != null) {
-		        		wasNull = false;
-		        		result = area.getText();
-		        	} else {
-		        		wasNull = true;
-		        	}		
+					if (area != null) {
+						wasNull = false;
+						result = area.getText();
+					} else {
+						wasNull = true;
+					}		
 				}
-		}); 
+			}); 
 		} catch (Exception e) {
 			throw (new RuntimeException(e.getMessage()));
 		}
@@ -2206,7 +2209,7 @@ class GOptionPane_showMessageDialog extends JBECommand {
 		int type = nextInt(scanner);
 		scanner.verifyToken(")");
 		JOptionPane.showMessageDialog(jbe.getConsoleFrame(), message, title, type);
-		
+
 		// useless "ok" result for C++ lib to throw away, to make dialog modal
 		jbe.println("result:ok");
 	}
@@ -2241,7 +2244,7 @@ class GOptionPane_showOptionDialog extends JBECommand {
 		}
 		scanner.verifyToken(",");
 		scanner.verifyToken("{");
-		
+
 		List<String> options = new ArrayList<String>();
 		while (scanner.hasMoreTokens()) {
 			String token = nextString(scanner);
@@ -2259,7 +2262,7 @@ class GOptionPane_showOptionDialog extends JBECommand {
 			initiallySelected = null;   // tells JOptionPane not to select anything
 		}
 		scanner.verifyToken(")");
-		
+
 		int result = JOptionPane.showOptionDialog(
 				/* parent */ jbe.getConsoleFrame(),
 				message,
@@ -2269,7 +2272,7 @@ class GOptionPane_showOptionDialog extends JBECommand {
 				/* icon */ null,
 				/* Object[] options */ options.toArray(),
 				initiallySelected);
-		
+
 		jbe.println("result:" + result);
 	}
 }

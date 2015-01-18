@@ -57,7 +57,7 @@ public:
    std::string expandPathname(std::string filename);
    void listDirectory(std::string path, vector<std::string> & list);
    std::string openFileDialog(std::string title, std::string mode,
-                              std::string path);
+                              std::string path, string patternName);
    void createGWindow(const GWindow & gw, double width, double height,
                       GObject *topCompound);
    void deleteGWindow(const GWindow & gw);

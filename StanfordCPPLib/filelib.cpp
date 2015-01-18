@@ -92,8 +92,8 @@ string openFileDialog(ifstream & stream, string title) {
    return openFileDialog(stream, title, "");
 }
 
-string openFileDialog(ifstream & stream, string title, string path) {
-   string filename = pp->openFileDialog(title, "load", expandPathname(path));
+string openFileDialog(ifstream & stream, string title, string path, string patternName) {
+   string filename = pp->openFileDialog(title, "load", expandPathname(path), patternName);
    if (filename == "") return "";
    stream.open(filename.c_str());
    return (stream.fail()) ? "" : filename;
@@ -107,8 +107,8 @@ string openFileDialog(ofstream & stream, string title) {
    return openFileDialog(stream, title, "");
 }
 
-string openFileDialog(ofstream & stream, string title, string path) {
-   string filename = pp->openFileDialog(title, "save", expandPathname(path));
+string openFileDialog(ofstream & stream, string title, string path, string patternName) {
+   string filename = pp->openFileDialog(title, "save", expandPathname(path), patternName);
    if (filename == "") return "";
    stream.open(filename.c_str());
    return (stream.fail()) ? "" : filename;

@@ -501,8 +501,9 @@ ChangeListener {
 
 	/* File dialogs */
 
-	protected String openFileDialog(String title, String mode, String path) {
-		JBEFileFilter filter = new JBEFileFilter(path);
+	protected String openFileDialog(String title, String mode, 
+			String pathAndFilter, String filterDescription) {
+		JBEFileFilter filter = new JBEFileFilter(pathAndFilter, filterDescription);
 		JFileChooser chooser = new JFileChooser(filter.getDirectory());
 		chooser.setFileFilter(filter);
 		chooser.setDialogTitle(title);
