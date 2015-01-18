@@ -315,6 +315,10 @@ ChangeListener {
 		return windowTable.get(id);
 	}
 
+	public JFrame getConsoleFrame() {
+		return consoleFrame;
+	}
+	
 	protected void clearConsole() {
 		console.clear();
 	}

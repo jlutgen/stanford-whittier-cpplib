@@ -1158,6 +1158,68 @@ void Platform::gbufferedimage_setRGB(GObject* gobj, double x, double y,
     putPipe(os.str());
 }
 
+int Platform::goptionpane_showConfirmDialog(std::string message, std::string title, int type) {
+    std::ostringstream os;
+    os << "GOptionPane.showConfirmDialog(";
+    writeQuotedString(os, message);
+    os << ",";
+    writeQuotedString(os, title);
+    os << "," << type;
+    os << ")";
+    putPipe(os.str());
+    return stringToInteger(getResult());
+}
+
+std::string Platform::goptionpane_showInputDialog(std::string message, std::string title) {
+    std::ostringstream os;
+    os << "GOptionPane.showInputDialog(";
+    writeQuotedString(os, message);
+    os << ",";
+    writeQuotedString(os, title);
+    os << ")";
+    putPipe(os.str());
+    return getResult();
+}
+
+void Platform::goptionpane_showMessageDialog(std::string message, std::string title, int type) {
+    std::ostringstream os;
+    os << "GOptionPane.showMessageDialog(";
+    writeQuotedString(os, message);
+    os << ",";
+    writeQuotedString(os, title);
+    os << "," << type;
+    os << ")";
+    putPipe(os.str());
+    getResult();   // wait for dialog to close
+}
+
+int Platform::goptionpane_showOptionDialog(std::string message,
+                                           std::string title,
+                                           const Vector<std::string>& options,
+                                           std::string initiallySelected) {
+    std::ostringstream os;
+    os << "GOptionPane.showOptionDialog(";
+    writeQuotedString(os, message);
+    os << ",";
+    writeQuotedString(os, title);
+    os << ",";
+    os << "{";
+    if (!options.isEmpty()) {
+        writeQuotedString(os, options[0]);
+        for (int i = 1, sz = options.size(); i < sz; ++i) {
+            os << ", ";
+            writeQuotedString(os, options[i]);
+        }
+    }
+    os << "}";
+    os << ",";
+    writeQuotedString(os, initiallySelected);
+    os << ")";
+    putPipe(os.str());
+    std::string result = getResult();
+    return stringToInteger(result);
+}
+
 void Platform::gtextarea_create(GObject* gobj, double width, double height) {
     ostringstream os;
     os << "GTextArea.create(\"" << gobj << "\", " << width << ", "

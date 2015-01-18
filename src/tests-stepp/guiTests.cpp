@@ -9,7 +9,7 @@
 //#include "gfilechooser.h"
 #include "ginteractors.h"
 #include "gobjects.h"
-//#include "goptionpane.h"
+#include "goptionpane.h"
 #include "gtypes.h"
 #include "gwindow.h"
 #include "simpio.h"
@@ -24,11 +24,11 @@ using namespace std;
 void fileDialogTest() {
     // std::cout << "current dir should be \"" << getCurrentDirectory() << "\"" << std::endl;
     std::ifstream input;
-    std::string filename = openFileDialog(input, "booyahtitle", "/usr/lib/eclipse");
+    std::string filename = openFileDialog(input, "booyahtitle", "/usr/lib/pam");
     std::cout << "you chose \"" << filename << "\"" << std::endl;
 }
 
-/*
+
 void goptionpaneTest() {
     GOptionPane::showMessageDialog("Hello, world");
     GOptionPane::showMessageDialog("Here's one with title and type", "booyah", GOptionPane::ERROR);
@@ -51,7 +51,7 @@ void goptionpaneTest() {
     std::string option = GOptionPane::showOptionDialog("choose!", choices, "booyah", "ccc");
     std::cout << "you chose: \"" << option << "\"" << std::endl;
 }
-*/
+
 
 
 static void border(GBufferedImage* img) {

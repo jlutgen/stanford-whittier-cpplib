@@ -47,11 +47,14 @@ import java.awt.Toolkit;
 import java.lang.reflect.InvocationTargetException;
 //import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -116,6 +119,10 @@ public abstract class JBECommand {
 		cmdTable.put("GObject.setLocation", new GObject_setLocation());
 		cmdTable.put("GObject.setSize", new GObject_setSize());
 		cmdTable.put("GObject.setVisible", new GObject_setVisible());
+		cmdTable.put("GOptionPane.showMessageDialog", new GOptionPane_showMessageDialog());
+		cmdTable.put("GOptionPane.showConfirmDialog", new GOptionPane_showConfirmDialog());
+		cmdTable.put("GOptionPane.showInputDialog", new GOptionPane_showInputDialog());
+		cmdTable.put("GOptionPane.showOptionDialog", new GOptionPane_showOptionDialog());
 		cmdTable.put("GOval.create", new GOval_create());
 		cmdTable.put("GPolygon.addVertex", new GPolygon_addVertex());
 		cmdTable.put("GPolygon.create", new GPolygon_create());
@@ -2168,3 +2175,100 @@ class GTextArea_setEditable extends JBECommand {
 		});
 	}
 }
+
+class GOptionPane_showConfirmDialog extends JBECommand {
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		String message = nextString(scanner);
+		scanner.verifyToken(",");
+		String title = nextString(scanner);
+		if (title.isEmpty()) {
+			title = null;
+		}
+		scanner.verifyToken(",");
+		int type = nextInt(scanner);
+		scanner.verifyToken(")");
+		int choice = JOptionPane.showConfirmDialog(jbe.getConsoleFrame(), message, title, type);
+		jbe.println("result:" + choice);
+	}
+}
+
+class GOptionPane_showMessageDialog extends JBECommand {
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		String message = nextString(scanner);
+		scanner.verifyToken(",");
+		String title = nextString(scanner);
+		if (title.isEmpty()) {
+			title = null;
+		}
+		scanner.verifyToken(",");
+		int type = nextInt(scanner);
+		scanner.verifyToken(")");
+		JOptionPane.showMessageDialog(jbe.getConsoleFrame(), message, title, type);
+		
+		// useless "ok" result for C++ lib to throw away, to make dialog modal
+		jbe.println("result:ok");
+	}
+}
+
+class GOptionPane_showInputDialog extends JBECommand {
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		String message = nextString(scanner);
+		scanner.verifyToken(",");
+		String title = nextString(scanner);
+		if (title.isEmpty()) {
+			title = null;
+		}
+		scanner.verifyToken(")");
+		String input = JOptionPane.showInputDialog(jbe.getConsoleFrame(), message, title, 
+				JOptionPane.DEFAULT_OPTION);
+		jbe.println("result:" + input);
+	}
+}
+
+class GOptionPane_showOptionDialog extends JBECommand {
+	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
+		scanner.verifyToken("(");
+		String message = nextString(scanner);
+		scanner.verifyToken(",");
+		String title = nextString(scanner);
+		if (title.isEmpty()) {
+			title = null;
+		}
+		scanner.verifyToken(",");
+		scanner.verifyToken("{");
+		
+		List<String> options = new ArrayList<String>();
+		while (scanner.hasMoreTokens()) {
+			String token = nextString(scanner);
+			if (token.equals("}")) {
+				break;
+			} else if (token.equals(",")) {
+				continue;
+			} else {
+				options.add(token);
+			}
+		}
+		scanner.verifyToken(",");
+		String initiallySelected = nextString(scanner);
+		if (initiallySelected.isEmpty()) {
+			initiallySelected = null;   // tells JOptionPane not to select anything
+		}
+		scanner.verifyToken(")");
+		
+		int result = JOptionPane.showOptionDialog(
+				/* parent */ jbe.getConsoleFrame(),
+				message,
+				title,
+				/* optionType */ JOptionPane.DEFAULT_OPTION,
+				/* messageType */ JOptionPane.QUESTION_MESSAGE,
+				/* icon */ null,
+				/* Object[] options */ options.toArray(),
+				initiallySelected);
+		
+		jbe.println("result:" + result);
+	}
+}
+
