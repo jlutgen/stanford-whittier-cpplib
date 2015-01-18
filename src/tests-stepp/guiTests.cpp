@@ -22,34 +22,48 @@
 using namespace std;
 
 void fileDialogTest() {
-    // std::cout << "current dir should be \"" << getCurrentDirectory() << "\"" << std::endl;
-    std::ifstream input;
-    std::string filename = openFileDialog(input, "booyahtitle", "/usr/lib/pam");
-    std::cout << "you chose \"" << filename << "\"" << std::endl;
+    // cout << "current dir should be \"" << getCurrentDirectory() << "\"" << endl;
+    ifstream input;
+    string filename = openFileDialog(input, "booyahtitle", "/usr/lib/pam");
+    cout << "you chose \"" << filename << "\"" << endl;
 }
 
+string constToString(int enumVal) {
+    switch (enumVal) {
+        case -1:
+            return "CANCEL";
+        case 0:
+            return "NO";
+        case 2:
+            return "OK";
+        case 1:
+            return "YES";
+        default:
+            return "an impossible value";
+    }
+}
 
 void goptionpaneTest() {
     GOptionPane::showMessageDialog("Hello, world");
     GOptionPane::showMessageDialog("Here's one with title and type", "booyah", GOptionPane::ERROR);
     GOptionPane::showMessageDialog("special chars [*+*&}{] && || !)@(*&#)(&^%!{ \" \" \" \"}) C:\\Program Files\\Test ;,;:\", ';\"\\//\\// ( ) test 1 2 3 $a $b %a %b %1 %2 http://foo.com/! end");
     
-    bool result = GOptionPane::showConfirmDialog("Are you sure?");
-    std::cout << "you chose: " << std::boolalpha << result << std::endl;
+    int result = GOptionPane::showConfirmDialog("Are you sure?");
+    cout << "you chose: " << constToString(result) << endl;
     result = GOptionPane::showConfirmDialog("Here's one with title and type", "booyah", GOptionPane::OK_CANCEL);
-    std::cout << "you chose: " << std::boolalpha << result << std::endl;
+    cout << "you chose: " << constToString(result)  << endl;
     result = GOptionPane::showConfirmDialog("Here's a second one with title and type", "booyah", GOptionPane::YES_NO_CANCEL);
-    std::cout << "you chose: " << std::boolalpha << result << std::endl;
+    cout << "you chose: " << constToString(result) << endl;
     
-    std::string input = GOptionPane::showInputDialog("Type something:");
-    std::cout << "you typed: \"" << input << "\"" << std::endl;
+    string input = GOptionPane::showInputDialog("Type something:");
+    cout << "you typed: \"" << input << "\"" << endl;
     input = GOptionPane::showInputDialog("Here's one with a title", "booyah");
-    std::cout << "you typed: \"" << input << "\"" << std::endl;
+    cout << "you typed: \"" << input << "\"" << endl;
     
-    Vector<std::string> choices;
+    Vector<string> choices;
     choices += "a", "bb", "ccc", "dd";
-    std::string option = GOptionPane::showOptionDialog("choose!", choices, "booyah", "ccc");
-    std::cout << "you chose: \"" << option << "\"" << std::endl;
+    string option = GOptionPane::showOptionDialog("choose!", choices, "booyah", "ccc");
+    cout << "you chose: \"" << option << "\"" << endl;
 }
 
 
@@ -84,9 +98,9 @@ void gbufferedImageTest() {
     GLabel* label = new GLabel("test!");
     gw.add(label, 10, 60);
     
-    std::cout << "About to construct GBufferedImage." << std::endl;
+    cout << "About to construct GBufferedImage." << endl;
     GBufferedImage* img = new GBufferedImage(10, 80, 200, 250);
-    std::cout << "Done constructing GBufferedImage (black background)." << std::endl;
+    cout << "Done constructing GBufferedImage (black background)." << endl;
     gw.add(img, 50, 50);
     // gw.addToRegion(img, "SOUTH");
     gw.setVisible(true);
@@ -95,27 +109,27 @@ void gbufferedImageTest() {
     // fill
     img->fill(0xff00ff);  // purple
 
-    std::cout << "About to setRGB (yellow) on GBufferedImage (inset 5)." << std::endl;
+    cout << "About to setRGB (yellow) on GBufferedImage (inset 5)." << endl;
     for (int y = 5; y < img->getHeight() - 5; y++) {
         for (int x = 5; x <= img->getWidth() - 5; x++) {
             img->setRGB(x, y, "yellow");
         }
     }
-    std::cout << "Done setting RGB (yellow) on GBufferedImage." << std::endl;
+    cout << "Done setting RGB (yellow) on GBufferedImage." << endl;
     border(img);
     getLine("Enter to continue");
     
-    std::cout << "About to resize (100, 50) on GBufferedImage." << std::endl;
+    cout << "About to resize (100, 50) on GBufferedImage." << endl;
     img->resize(100, 50);
     border(img);
     getLine("Enter to continue");
 
-    std::cout << "About to resize (200, 80) on GBufferedImage." << std::endl;
+    cout << "About to resize (200, 80) on GBufferedImage." << endl;
     img->resize(200, 80);
     border(img);
     getLine("Enter to continue");
 
-    std::cout << "About to setRGB (green) on GBufferedImage (inset 10)" << std::endl;
+    cout << "About to setRGB (green) on GBufferedImage (inset 10)" << endl;
     for (int y = 10; y < img->getHeight() - 10; y++) {
         for (int x = 10; x <= img->getWidth() - 10; x++) {
             img->setRGB(x, y, "green");
@@ -124,18 +138,18 @@ void gbufferedImageTest() {
     border(img);
     getLine("Enter to continue");
 
-    std::cout << "About to remove other shit." << std::endl;
+    cout << "About to remove other shit." << endl;
     getLine("Enter to continue");
     gw.remove(button1);
     gw.remove(label);
     //gw.removeFromRegion(button2, "NORTH");
     
-    std::cout << "About to remove GBufferedImage." << std::endl;
+    cout << "About to remove GBufferedImage." << endl;
     getLine("Enter to continue");
     gw.remove(img);
     // gw.removeFromRegion(img, "SOUTH");
     getLine("Enter to continue");
-    std::cout << "Test complete." << std::endl;
-    std::cout << std::endl;
+    cout << "Test complete." << endl;
+    cout << endl;
 }
 

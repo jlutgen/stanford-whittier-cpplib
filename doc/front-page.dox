@@ -70,6 +70,7 @@ which represents a window that appears on the display screen
 <li>A set of onscreen interactors
 (\ref GCheckBox,
 \ref GChooser,
+\ref GOptionPane,
 \ref GSlider,
 \ref GTextField,
 \ref GButton)

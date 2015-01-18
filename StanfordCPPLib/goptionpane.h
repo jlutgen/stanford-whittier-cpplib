@@ -93,6 +93,12 @@ public:
      * Once the user clicks a button to close the box, one of the
      * \ref GOptionPaneResult enumeration constants is returned.
      * The caller can supply an optional window title; if none is passed, a default is used.
+     *
+     * Sample usages:
+     *
+     *     int result = GOptionPane::showConfirmDialog(message);
+     *     int result = GOptionPane::showConfirmDialog(message, title);
+     *     int result = GOptionPane::showConfirmDialog(message, title, type);
      */
     static ConfirmResult showConfirmDialog(std::string message, std::string title = "",
                                            ConfirmType type = YES_NO);
@@ -102,6 +108,11 @@ public:
      * response, which is returned.
      * The caller can supply an optional window title; if none is passed, a default is used.
      * If the user cancels the box, an empty string is returned.
+     *
+     * Sample usages:
+     *
+     *     string response = GOptionPane::showInputDialog(message);
+     *     string response = GOptionPane::showInputDialog(message, title);
      */
     static std::string showInputDialog(std::string message, std::string title = "");
     
@@ -112,6 +123,12 @@ public:
      * The optional 'type' parameter must be one of \ref ERROR, \ref INFORMATION, \ref PLAIN,
      * \ref QUESTION, or \ref WARNING; this slightly affects the dialog's
      * appearance.  The default is \ref PLAIN.
+     *
+     * Sample usages:
+     *
+     *     GOptionPane::showMessageDialog(message);
+     *     GOptionPane::showMessageDialog(message, title);
+     *     GOptionPane::showMessageDialog(message, title, type);
      */
     static void showMessageDialog(std::string message, std::string title = "",
                                   MessageType type = PLAIN);
@@ -123,6 +140,13 @@ public:
      * If the user cancels the box, an empty string is returned.
      * The caller can supply an optional window title; if none is passed, a default is used.
      * The caller can supply an optional initially selected value from the list.
+     *
+     * Sample usages:
+     *
+     *     string choice = GOptionPane::showInputDialog(message);
+     *     string choice = GOptionPane::showInputDialog(message, options);
+     *     string choice = GOptionPane::showInputDialog(message, options, title);
+     *     string choice = GOptionPane::showInputDialog(message, options, title, initiallySelected);
      */
     static std::string showOptionDialog(std::string message, const Vector<std::string>& options,
                                         std::string title = "", std::string initiallySelected = "");

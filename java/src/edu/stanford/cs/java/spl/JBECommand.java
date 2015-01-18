@@ -2224,6 +2224,8 @@ class GOptionPane_showInputDialog extends JBECommand {
 		scanner.verifyToken(")");
 		String input = JOptionPane.showInputDialog(jbe.getConsoleFrame(), message, title, 
 				JOptionPane.DEFAULT_OPTION);
+		if (input == null)
+			input = ""; // Otherwise the front end gets "result:null"
 		jbe.println("result:" + input);
 	}
 }
