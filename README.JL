@@ -492,3 +492,8 @@ DONE
 
 Option pane
 DONE
+
+Stepp's menus
+TODO
+
+Option to set parent window for GOptionPane

@@ -84,34 +84,28 @@ string promptUserForFile(ofstream & stream, string prompt) {
    }
 }
 
-string openFileDialog(ifstream & stream) {
-   return openFileDialog(stream, "Open File", "");
+string openFileDialog() {
+   return openFileDialog("Open File", "");
 }
 
-string openFileDialog(ifstream & stream, string title) {
-   return openFileDialog(stream, title, "");
+string openFileDialog(string title) {
+   return openFileDialog(title, "");
 }
 
-string openFileDialog(ifstream & stream, string title, string path, string patternName) {
-   string filename = pp->openFileDialog(title, "load", expandPathname(path), patternName);
-   if (filename == "") return "";
-   stream.open(filename.c_str());
-   return (stream.fail()) ? "" : filename;
+string openFileDialog(string title, string path, string patternName) {
+   return pp->openFileDialog(title, "load", expandPathname(path), patternName);
 }
 
-string openFileDialog(ofstream & stream) {
-   return openFileDialog(stream, "Open File", "");
+string openFileDialog() {
+   return openFileDialog("Open File", "");
 }
 
-string openFileDialog(ofstream & stream, string title) {
-   return openFileDialog(stream, title, "");
+string openFileDialog(string title) {
+   return openFileDialog(title, "");
 }
 
-string openFileDialog(ofstream & stream, string title, string path, string patternName) {
-   string filename = pp->openFileDialog(title, "save", expandPathname(path), patternName);
-   if (filename == "") return "";
-   stream.open(filename.c_str());
-   return (stream.fail()) ? "" : filename;
+string saveFileDialog(string title, string path, string patternName) {
+   return pp->openFileDialog(title, "save", expandPathname(path), patternName);
 }
 
 void readEntireFile(istream & is, Vector<string> & lines) {
