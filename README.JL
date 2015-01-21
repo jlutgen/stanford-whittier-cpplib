@@ -497,3 +497,8 @@ Stepp's menus
 TODO
 
 Option to set parent window for GOptionPane
+TODO
+
+
+GRect--setFillColor(0x0) doesn't work but setFillColor("black") does??
+TODO

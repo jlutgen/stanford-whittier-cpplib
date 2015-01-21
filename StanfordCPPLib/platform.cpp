@@ -1158,36 +1158,48 @@ void Platform::gbufferedimage_setRGB(GObject* gobj, double x, double y,
     putPipe(os.str());
 }
 
-int Platform::goptionpane_showConfirmDialog(std::string message, std::string title, int type) {
+int Platform::goptionpane_showConfirmDialog(std::string message, std::string title, int type, GWindow *parent) {
     std::ostringstream os;
     os << "GOptionPane.showConfirmDialog(";
     writeQuotedString(os, message);
     os << ",";
     writeQuotedString(os, title);
     os << "," << type;
+    if (parent == NULL)
+        os << "," << "\"\""; // empty string
+    else
+        os << "," << "\"" << parent->gwd << "\"";
     os << ")";
     putPipe(os.str());
     return stringToInteger(getResult());
 }
 
-std::string Platform::goptionpane_showInputDialog(std::string message, std::string title) {
+std::string Platform::goptionpane_showInputDialog(std::string message, std::string title, GWindow *parent) {
     std::ostringstream os;
     os << "GOptionPane.showInputDialog(";
     writeQuotedString(os, message);
     os << ",";
     writeQuotedString(os, title);
+    if (parent == NULL)
+        os << "," << "\"\""; // empty string
+    else
+        os << "," << "\"" << parent->gwd << "\"";
     os << ")";
     putPipe(os.str());
     return getResult();
 }
 
-void Platform::goptionpane_showMessageDialog(std::string message, std::string title, int type) {
+void Platform::goptionpane_showMessageDialog(std::string message, std::string title, int type, GWindow *parent) {
     std::ostringstream os;
     os << "GOptionPane.showMessageDialog(";
     writeQuotedString(os, message);
     os << ",";
     writeQuotedString(os, title);
     os << "," << type;
+    if (parent == NULL)
+        os << "," << "\"\""; // empty string
+    else
+        os << "," << "\"" << parent->gwd << "\"";
     os << ")";
     putPipe(os.str());
     getResult();   // wait for dialog to close
@@ -1196,7 +1208,8 @@ void Platform::goptionpane_showMessageDialog(std::string message, std::string ti
 int Platform::goptionpane_showOptionDialog(std::string message,
                                            std::string title,
                                            const Vector<std::string>& options,
-                                           std::string initiallySelected) {
+                                           std::string initiallySelected,
+                                           GWindow *parent) {
     std::ostringstream os;
     os << "GOptionPane.showOptionDialog(";
     writeQuotedString(os, message);
@@ -1214,6 +1227,10 @@ int Platform::goptionpane_showOptionDialog(std::string message,
     os << "}";
     os << ",";
     writeQuotedString(os, initiallySelected);
+    if (parent == NULL)
+        os << "," << "\"\""; // empty string
+    else
+        os << "," << "\"" << parent->gwd << "\"";
     os << ")";
     putPipe(os.str());
     std::string result = getResult();

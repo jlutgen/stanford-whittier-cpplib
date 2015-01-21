@@ -1150,7 +1150,8 @@ public:
 
 
 /**
- * Removes the specified object from this compound.
+ * Removes the specified object from this compound. Has no effect if \em gobj
+ * does not belong to this compound.
  *
  * Sample usage:
  *

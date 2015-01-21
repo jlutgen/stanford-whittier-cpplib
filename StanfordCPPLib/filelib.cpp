@@ -96,12 +96,12 @@ string openFileDialog(string title, string path, string patternName) {
    return pp->openFileDialog(title, "load", expandPathname(path), patternName);
 }
 
-string openFileDialog() {
-   return openFileDialog("Open File", "");
+string saveFileDialog() {
+   return saveFileDialog("Save file", "");
 }
 
-string openFileDialog(string title) {
-   return openFileDialog(title, "");
+string saveFileDialog(string title) {
+   return saveFileDialog(title, "");
 }
 
 string saveFileDialog(string title, string path, string patternName) {

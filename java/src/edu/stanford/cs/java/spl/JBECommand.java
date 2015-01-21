@@ -41,6 +41,7 @@ import edu.stanford.cs.java.graphics.GRoundRect;
 import edu.stanford.cs.java.tokenscanner.TokenScanner;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -1073,11 +1074,11 @@ class GObject_remove extends JBECommand {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				GContainer parent = gobj.getParent();
-				if (parent != null) {
+				if (parent != null)
 					parent.remove(gobj);
-				} else {
-					System.out.println("error:GObject_remove: object's parent is null");
-				}	        
+				// Do nothing otherwise, since gobj doesn't belong to a container
+				else 
+					System.out.println("null parent for gobj " + id);
 			}
 		});		
 	}
@@ -2190,8 +2191,19 @@ class GOptionPane_showConfirmDialog extends JBECommand {
 		}
 		scanner.verifyToken(",");
 		int type = nextInt(scanner);
+		scanner.verifyToken(",");
+		String id = nextString(scanner);
 		scanner.verifyToken(")");
-		int choice = JOptionPane.showConfirmDialog(jbe.getConsoleFrame(), message, title, type);
+		Component parent;
+		if (id.isEmpty()) 
+			parent = jbe.getConsoleFrame();
+		else {
+			JBEWindow jw = jbe.getWindow(id);
+			if (jw == null)
+				throw (new RuntimeException("GOptionPane_showConfirmDialog: null parent window"));
+			parent = jw;
+		}
+		int choice = JOptionPane.showConfirmDialog(parent, message, title, type);
 		jbe.println("result:" + choice);
 	}
 }
@@ -2207,8 +2219,19 @@ class GOptionPane_showMessageDialog extends JBECommand {
 		}
 		scanner.verifyToken(",");
 		int type = nextInt(scanner);
+		scanner.verifyToken(",");
+		String id = nextString(scanner);
 		scanner.verifyToken(")");
-		JOptionPane.showMessageDialog(jbe.getConsoleFrame(), message, title, type);
+		Component parent;
+		if (id.isEmpty()) 
+			parent = jbe.getConsoleFrame();
+		else {
+			JBEWindow jw = jbe.getWindow(id);
+			if (jw == null)
+				throw (new RuntimeException("GOptionPane_showMessageDialog: null parent window"));
+			parent = jw;
+		}
+		JOptionPane.showMessageDialog(parent, message, title, type);
 
 		// useless "ok" result for C++ lib to throw away, to make dialog modal
 		jbe.println("result:ok");
@@ -2224,8 +2247,19 @@ class GOptionPane_showInputDialog extends JBECommand {
 		if (title.isEmpty()) {
 			title = null;
 		}
+		scanner.verifyToken(",");
+		String id = nextString(scanner);
 		scanner.verifyToken(")");
-		String input = JOptionPane.showInputDialog(jbe.getConsoleFrame(), message, title, 
+		Component parent;
+		if (id.isEmpty()) 
+			parent = jbe.getConsoleFrame();
+		else {
+			JBEWindow jw = jbe.getWindow(id);
+			if (jw == null)
+				throw (new RuntimeException("GOptionPane_showInputDialog: null parent window"));
+			parent = jw;
+		}
+		String input = JOptionPane.showInputDialog(parent, message, title, 
 				JOptionPane.DEFAULT_OPTION);
 		if (input == null)
 			input = ""; // Otherwise the front end gets "result:null"
@@ -2261,10 +2295,20 @@ class GOptionPane_showOptionDialog extends JBECommand {
 		if (initiallySelected.isEmpty()) {
 			initiallySelected = null;   // tells JOptionPane not to select anything
 		}
+		scanner.verifyToken(",");
+		String id = nextString(scanner);
 		scanner.verifyToken(")");
-
+		Component parent;
+		if (id.isEmpty()) 
+			parent = jbe.getConsoleFrame();
+		else {
+			JBEWindow jw = jbe.getWindow(id);
+			if (jw == null)
+				throw (new RuntimeException("GOptionPane_showOptionDialog: null parent window"));
+			parent = jw;
+		}
 		int result = JOptionPane.showOptionDialog(
-				/* parent */ jbe.getConsoleFrame(),
+				/* parent */ parent,
 				message,
 				title,
 				/* optionType */ JOptionPane.DEFAULT_OPTION,

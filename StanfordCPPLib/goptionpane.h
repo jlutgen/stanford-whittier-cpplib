@@ -46,6 +46,7 @@
 
 #include <string>
 #include "vector.h"
+#include "gwindow.h"
 
 /**
  * \class GOptionPane
@@ -101,7 +102,7 @@ public:
      *     int result = GOptionPane::showConfirmDialog(message, title, type);
      */
     static ConfirmResult showConfirmDialog(std::string message, std::string title = "",
-                                           ConfirmType type = YES_NO);
+                                           ConfirmType type = YES_NO, GWindow *parent = NULL);
     
     /**
      * Pops up an input box with a text field where the user can type a
@@ -114,7 +115,7 @@ public:
      *     string response = GOptionPane::showInputDialog(message);
      *     string response = GOptionPane::showInputDialog(message, title);
      */
-    static std::string showInputDialog(std::string message, std::string title = "");
+    static std::string showInputDialog(std::string message, std::string title = "", GWindow *parent = NULL);
     
     /**
      * Displays an output message dialog to the user.
@@ -131,7 +132,7 @@ public:
      *     GOptionPane::showMessageDialog(message, title, type);
      */
     static void showMessageDialog(std::string message, std::string title = "",
-                                  MessageType type = PLAIN);
+                                  MessageType type = PLAIN, GWindow *parent = NULL);
     
     /**
      * Shows a general input box with a set of buttons from which the user may
@@ -149,7 +150,8 @@ public:
      *     string choice = GOptionPane::showInputDialog(message, options, title, initiallySelected);
      */
     static std::string showOptionDialog(std::string message, const Vector<std::string>& options,
-                                        std::string title = "", std::string initiallySelected = "");
+                                        std::string title = "", std::string initiallySelected = "",
+                                        GWindow *parent = NULL);
 
 
 private:

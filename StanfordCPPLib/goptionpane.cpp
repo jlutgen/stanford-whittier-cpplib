@@ -44,7 +44,7 @@ GOptionPane::GOptionPane() {
 }
 
 GOptionPane::ConfirmResult GOptionPane::showConfirmDialog(std::string message, std::string title,
-                                                          ConfirmType type) {
+                                                          ConfirmType type, GWindow *parent) {
     if (type != GOptionPane::ConfirmType::YES_NO
             && type != GOptionPane::ConfirmType::YES_NO_CANCEL
             && type != GOptionPane::ConfirmType::OK_CANCEL) {
@@ -54,7 +54,7 @@ GOptionPane::ConfirmResult GOptionPane::showConfirmDialog(std::string message, s
         title = "Select an option";
     }
     
-    int result = pp->goptionpane_showConfirmDialog(message, title, type);
+    int result = pp->goptionpane_showConfirmDialog(message, title, type, parent);
     if (result == OK_OPTION || result == YES_OPTION) {
         // this is weird code because JOptionPane thinks of OK and Yes as the same,
         // and differentiates based on context of whether this is an OK/Cancel or Yes/No dialog
@@ -67,11 +67,11 @@ GOptionPane::ConfirmResult GOptionPane::showConfirmDialog(std::string message, s
     }
 }
 
-std::string GOptionPane::showInputDialog(std::string message, std::string title) {
-    return pp->goptionpane_showInputDialog(message, title);
+std::string GOptionPane::showInputDialog(std::string message, std::string title, GWindow *parent) {
+    return pp->goptionpane_showInputDialog(message, title, parent);
 }
 
-void GOptionPane::showMessageDialog(std::string message, std::string title, MessageType type) {
+void GOptionPane::showMessageDialog(std::string message, std::string title, MessageType type, GWindow *parent) {
     if (type != GOptionPane::MessageType::PLAIN
             && type != GOptionPane::MessageType::INFORMATION
             && type != GOptionPane::MessageType::ERROR
@@ -82,15 +82,15 @@ void GOptionPane::showMessageDialog(std::string message, std::string title, Mess
     if (title.empty()) {
         title = "Message";
     }
-    pp->goptionpane_showMessageDialog(message, title, type);
+    pp->goptionpane_showMessageDialog(message, title, type, parent);
 }
 
 std::string GOptionPane::showOptionDialog(std::string message, const Vector<std::string>& options,
-                                          std::string title, std::string initiallySelected) {
+                                          std::string title, std::string initiallySelected, GWindow *parent) {
     if (title.empty()) {
         title = "Select an option";
     }
-    int index = pp->goptionpane_showOptionDialog(message, title, options, initiallySelected);
+    int index = pp->goptionpane_showOptionDialog(message, title, options, initiallySelected, parent);
     if (index == GOptionPane::InternalResult::CLOSED_OPTION
             || index < 0 || index >= options.size()) {
         return "";
