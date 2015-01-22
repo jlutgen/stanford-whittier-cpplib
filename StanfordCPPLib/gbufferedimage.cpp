@@ -258,8 +258,8 @@ void GBufferedImage::resize(double width, double height, bool retain) {
     }
 }
 
-GBufferedImage *GBufferedImage::scale(int width, int height) const {
-    checkSize("scale", width, height);
+GBufferedImage *GBufferedImage::rescale(int width, int height) const {
+    checkSize("rescale", width, height);
     GBufferedImage *scaledImage = new GBufferedImage(1, 1);
     std::string result = pp->gbufferedimage_scale(this, scaledImage, width, height);
 
@@ -267,11 +267,11 @@ GBufferedImage *GBufferedImage::scale(int width, int height) const {
     std::istringstream input(result);
     std::string line;
     if (!getline(input, line)) {
-        error("GBufferedImage::scale: image data does not contain valid width");
+        error("GBufferedImage::rescale: image data does not contain valid width");
     }
     scaledImage->m_width = stringToInteger(line);
     if (!getline(input, line)) {
-        error("GBufferedImage::scale: image data does not contain valid height");
+        error("GBufferedImage::rescale: image data does not contain valid height");
     }
     scaledImage->m_height = stringToInteger(line);
 
@@ -281,7 +281,7 @@ GBufferedImage *GBufferedImage::scale(int width, int height) const {
     for (int y = 0; y < scaledImage->m_height; y++) {
         for (int x = 0; x < scaledImage->m_width; x++) {
             if (!getline(input, line)) {
-                error("GBufferedImage::scale: image data does not contain valid pixel (x="
+                error("GBufferedImage::rescale: image data does not contain valid pixel (x="
                       + integerToString(x) + ", y=" + integerToString(y) + ")");
             }
             int px = convertColorToRGB(line) & 0x00FFFFFF; // JL added mask

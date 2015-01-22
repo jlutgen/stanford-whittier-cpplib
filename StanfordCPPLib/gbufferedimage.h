@@ -285,7 +285,7 @@ public:
      *
      *     GBufferedImage *scaledImage = im->scale(width, height);
      */
-    GBufferedImage *scale(int width, int height) const;
+    GBufferedImage *rescale(int width, int height) const;
 
 
     /**
