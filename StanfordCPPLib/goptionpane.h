@@ -95,14 +95,18 @@ public:
      * \ref GOptionPaneResult enumeration constants is returned.
      * The caller can supply an optional window title; if none is passed, a default is used.
      *
+     * The parameter \em parent specifies the GWindow in front of which the dialog box will
+     * pop up. If \em parent is \code NULL, the dialog will pop up in front of the graphical
+     * console window.
+     *
      * Sample usages:
      *
-     *     int result = GOptionPane::showConfirmDialog(message);
-     *     int result = GOptionPane::showConfirmDialog(message, title);
-     *     int result = GOptionPane::showConfirmDialog(message, title, type);
+     *     int result = GOptionPane::showConfirmDialog(parent, message);
+     *     int result = GOptionPane::showConfirmDialog(parent, message, title);
+     *     int result = GOptionPane::showConfirmDialog(parent, message, title, type);
      */
-    static ConfirmResult showConfirmDialog(std::string message, std::string title = "",
-                                           ConfirmType type = YES_NO, GWindow *parent = NULL);
+    static ConfirmResult showConfirmDialog(GWindow *parent, std::string message, std::string title = "",
+                                           ConfirmType type = YES_NO);
     
     /**
      * Pops up an input box with a text field where the user can type a
@@ -110,12 +114,16 @@ public:
      * The caller can supply an optional window title; if none is passed, a default is used.
      * If the user cancels the box, an empty string is returned.
      *
+     * The parameter \em parent specifies the GWindow in front of which the dialog box will
+     * pop up. If \em parent is \code NULL, the dialog will pop up in front of the graphical
+     * console window.
+     *
      * Sample usages:
      *
-     *     string response = GOptionPane::showInputDialog(message);
-     *     string response = GOptionPane::showInputDialog(message, title);
+     *     string response = GOptionPane::showInputDialog(parent, message);
+     *     string response = GOptionPane::showInputDialog(parent, message, title);
      */
-    static std::string showInputDialog(std::string message, std::string title = "", GWindow *parent = NULL);
+    static std::string showInputDialog(GWindow *parent, std::string message, std::string title = "");
     
     /**
      * Displays an output message dialog to the user.
@@ -125,14 +133,18 @@ public:
      * \ref QUESTION, or \ref WARNING; this slightly affects the dialog's
      * appearance.  The default is \ref PLAIN.
      *
+     * The parameter \em parent specifies the GWindow in front of which the dialog box will
+     * pop up. If \em parent is \code NULL, the dialog will pop up in front of the graphical
+     * console window.
+     *
      * Sample usages:
      *
-     *     GOptionPane::showMessageDialog(message);
-     *     GOptionPane::showMessageDialog(message, title);
-     *     GOptionPane::showMessageDialog(message, title, type);
+     *     GOptionPane::showMessageDialog(parent, message);
+     *     GOptionPane::showMessageDialog(parent, message, title);
+     *     GOptionPane::showMessageDialog(parent, message, title, type);
      */
-    static void showMessageDialog(std::string message, std::string title = "",
-                                  MessageType type = PLAIN, GWindow *parent = NULL);
+    static void showMessageDialog(GWindow *parent, std::string message, std::string title = "",
+                                  MessageType type = PLAIN);
     
     /**
      * Shows a general input box with a set of buttons from which the user may
@@ -142,16 +154,19 @@ public:
      * The caller can supply an optional window title; if none is passed, a default is used.
      * The caller can supply an optional initially selected value from the list.
      *
+     * The parameter \em parent specifies the GWindow in front of which the dialog box will
+     * pop up. If \em parent is \code NULL, the dialog will pop up in front of the graphical
+     * console window.
+     *
      * Sample usages:
      *
-     *     string choice = GOptionPane::showInputDialog(message);
-     *     string choice = GOptionPane::showInputDialog(message, options);
-     *     string choice = GOptionPane::showInputDialog(message, options, title);
-     *     string choice = GOptionPane::showInputDialog(message, options, title, initiallySelected);
+     *     string choice = GOptionPane::showInputDialog(parent, message);
+     *     string choice = GOptionPane::showInputDialog(parent, message, options);
+     *     string choice = GOptionPane::showInputDialog(parent, message, options, title);
+     *     string choice = GOptionPane::showInputDialog(parent, message, options, title, initiallySelected);
      */
-    static std::string showOptionDialog(std::string message, const Vector<std::string>& options,
-                                        std::string title = "", std::string initiallySelected = "",
-                                        GWindow *parent = NULL);
+    static std::string showOptionDialog(GWindow *parent, std::string message, const Vector<std::string>& options,
+                                        std::string title = "", std::string initiallySelected = "");
 
 
 private:

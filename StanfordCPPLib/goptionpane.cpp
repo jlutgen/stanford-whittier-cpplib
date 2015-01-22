@@ -43,8 +43,8 @@ GOptionPane::GOptionPane() {
     // empty
 }
 
-GOptionPane::ConfirmResult GOptionPane::showConfirmDialog(std::string message, std::string title,
-                                                          ConfirmType type, GWindow *parent) {
+GOptionPane::ConfirmResult GOptionPane::showConfirmDialog(GWindow *parent, std::string message, std::string title,
+                                                          ConfirmType type) {
     if (type != GOptionPane::ConfirmType::YES_NO
             && type != GOptionPane::ConfirmType::YES_NO_CANCEL
             && type != GOptionPane::ConfirmType::OK_CANCEL) {
@@ -67,11 +67,11 @@ GOptionPane::ConfirmResult GOptionPane::showConfirmDialog(std::string message, s
     }
 }
 
-std::string GOptionPane::showInputDialog(std::string message, std::string title, GWindow *parent) {
+std::string GOptionPane::showInputDialog(GWindow *parent, std::string message, std::string title) {
     return pp->goptionpane_showInputDialog(message, title, parent);
 }
 
-void GOptionPane::showMessageDialog(std::string message, std::string title, MessageType type, GWindow *parent) {
+void GOptionPane::showMessageDialog(GWindow *parent, std::string message, std::string title, MessageType type) {
     if (type != GOptionPane::MessageType::PLAIN
             && type != GOptionPane::MessageType::INFORMATION
             && type != GOptionPane::MessageType::ERROR
@@ -85,8 +85,8 @@ void GOptionPane::showMessageDialog(std::string message, std::string title, Mess
     pp->goptionpane_showMessageDialog(message, title, type, parent);
 }
 
-std::string GOptionPane::showOptionDialog(std::string message, const Vector<std::string>& options,
-                                          std::string title, std::string initiallySelected, GWindow *parent) {
+std::string GOptionPane::showOptionDialog(GWindow *parent, std::string message, const Vector<std::string>& options,
+                                          std::string title, std::string initiallySelected) {
     if (title.empty()) {
         title = "Select an option";
     }
