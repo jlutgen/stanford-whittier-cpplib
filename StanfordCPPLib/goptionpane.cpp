@@ -72,11 +72,11 @@ std::string GOptionPane::showInputDialog(GWindow *parent, std::string message, s
 }
 
 void GOptionPane::showMessageDialog(GWindow *parent, std::string message, std::string title, MessageType type) {
-    if (type != GOptionPane::MessageType::PLAIN
-            && type != GOptionPane::MessageType::INFORMATION
-            && type != GOptionPane::MessageType::ERROR
-            && type != GOptionPane::MessageType::WARNING
-            && type != GOptionPane::MessageType::QUESTION) {
+    if (type != GOptionPane::MessageType::PLAIN_MESSAGE
+            && type != GOptionPane::MessageType::INFORMATION_MESSAGE
+            && type != GOptionPane::MessageType::ERROR_MESSAGE
+            && type != GOptionPane::MessageType::WARNING_MESSAGE
+            && type != GOptionPane::MessageType::QUESTION_MESSAGE) {
         error("GOptionPane::showMessageDialog: Illegal dialog type");
     }
     if (title.empty()) {

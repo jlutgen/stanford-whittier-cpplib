@@ -12,7 +12,7 @@ GWindow *gw;
 
 void test_save() {
     GBufferedImage *gbi = new GBufferedImage(10, 10, 100, 100, "red");
-    //gw->add(gwi);
+    gw->add(gbi);
     gbi->save("norcos.png");
     gbi->save("norcos.gif");
     gbi->save("norcos.bmp");

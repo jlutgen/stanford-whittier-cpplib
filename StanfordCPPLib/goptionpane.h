@@ -82,11 +82,11 @@ public:
      * Constants for \ref showMessageDialog types, taken from Java's JOptionPane.
      */
     enum MessageType {
-        ERROR = 0,          ///<.
-        INFORMATION = 1,    ///<.
-        PLAIN = -1,         ///<.
-        QUESTION = 3,       ///<.
-        WARNING = 2         ///<.
+        ERROR_MESSAGE = 0,          ///<.
+        INFORMATION_MESSAGE = 1,    ///<.
+        PLAIN_MESSAGE = -1,         ///<.
+        QUESTION_MESSAGE = 3,       ///<.
+        WARNING_MESSAGE = 2         ///<.
     };
 
     /**
@@ -129,9 +129,9 @@ public:
      * Displays an output message dialog to the user.
      * The user must click the 'OK' button to close the dialog.
      * The caller can supply an optional window title; if none is passed, a default is used.
-     * The optional 'type' parameter must be one of \ref ERROR, \ref INFORMATION, \ref PLAIN,
-     * \ref QUESTION, or \ref WARNING; this slightly affects the dialog's
-     * appearance.  The default is \ref PLAIN.
+     * The optional 'type' parameter must be one of \ref ERROR_MESSAGE, \ref INFORMATION_MESSAGE,
+     * \ref PLAIN_MESSAGE, \ref QUESTION_MESSAGE, or \ref WARNING_MESSAGE; this slightly affects
+     * the dialog's appearance.  The default is \ref PLAIN_MESSAGE.
      *
      * The parameter \em parent specifies the GWindow in front of which the dialog box will
      * pop up. If \em parent is \code NULL, the dialog will pop up in front of the graphical
@@ -144,7 +144,7 @@ public:
      *     GOptionPane::showMessageDialog(parent, message, title, type);
      */
     static void showMessageDialog(GWindow *parent, std::string message, std::string title = "",
-                                  MessageType type = PLAIN);
+                                  MessageType type = PLAIN_MESSAGE);
     
     /**
      * Shows a general input box with a set of buttons from which the user may

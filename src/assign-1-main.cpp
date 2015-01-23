@@ -113,6 +113,12 @@ int main()
 
   gw.setWindowTitle("Balthazar");
   gw2.setWindowTitle("Cuthbert");
+  GRect *reck = new GRect(50, 50);
+  reck->setFillColor(0xff000000);
+  reck->setFilled(true);
+  gw2.add(reck, 10, 10);
+  return 0;
+
   GButton *button = new GButton("Shift Rectangle");
   GButton *quitButton = new GButton("Quit");
   GCheckBox *cb = new GCheckBox("check here");

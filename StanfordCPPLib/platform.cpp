@@ -476,8 +476,8 @@ string Platform::openFileDialog(string title, string mode, string path, string p
    std::string sep = getDirectoryPathSeparator();
    if (isDirectory(path) && !endsWith(path, sep)) {
        path += sep;
-       path += " "; // BUGFIX (JL): hack to circumvent back-end bug when path ends with backslash
    }
+   path += " "; // BUGFIX (JL): hack to circumvent back-end bug when path ends with backslash
    os << ", \"" << mode << "\", ";
    writeQuotedString(os, path); // BUGFIX (JL): path might contain backslashes
    os << ", \"" << patternName << "\"";

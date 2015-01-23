@@ -23,8 +23,7 @@ using namespace std;
 
 void fileDialogTest() {
     // cout << "current dir should be \"" << getCurrentDirectory() << "\"" << endl;
-    ifstream input;
-    string filename = openFileDialog(input, "booyahtitle", "/usr/lib/pam");
+    string filename = openFileDialog("booyahtitle", "/usr/lib/pam");
     cout << "you chose \"" << filename << "\"" << endl;
 }
 
@@ -44,25 +43,25 @@ string constToString(int enumVal) {
 }
 
 void goptionpaneTest() {
-    GOptionPane::showMessageDialog("Hello, world");
-    GOptionPane::showMessageDialog("Here's one with title and type", "booyah", GOptionPane::ERROR);
-    GOptionPane::showMessageDialog("special chars [*+*&}{] && || !)@(*&#)(&^%!{ \" \" \" \"}) C:\\Program Files\\Test ;,;:\", ';\"\\//\\// ( ) test 1 2 3 $a $b %a %b %1 %2 http://foo.com/! end");
+    GOptionPane::showMessageDialog(NULL, "Hello, world");
+    GOptionPane::showMessageDialog(NULL, "Here's one with title and type", "booyah", GOptionPane::ERROR);
+    GOptionPane::showMessageDialog(NULL, "special chars [*+*&}{] && || !)@(*&#)(&^%!{ \" \" \" \"}) C:\\Program Files\\Test ;,;:\", ';\"\\//\\// ( ) test 1 2 3 $a $b %a %b %1 %2 http://foo.com/! end");
     
-    int result = GOptionPane::showConfirmDialog("Are you sure?");
+    int result = GOptionPane::showConfirmDialog(NULL, "Are you sure?");
     cout << "you chose: " << constToString(result) << endl;
-    result = GOptionPane::showConfirmDialog("Here's one with title and type", "booyah", GOptionPane::OK_CANCEL);
+    result = GOptionPane::showConfirmDialog(NULL, "Here's one with title and type", "booyah", GOptionPane::OK_CANCEL);
     cout << "you chose: " << constToString(result)  << endl;
-    result = GOptionPane::showConfirmDialog("Here's a second one with title and type", "booyah", GOptionPane::YES_NO_CANCEL);
+    result = GOptionPane::showConfirmDialog(NULL, "Here's a second one with title and type", "booyah", GOptionPane::YES_NO_CANCEL);
     cout << "you chose: " << constToString(result) << endl;
     
-    string input = GOptionPane::showInputDialog("Type something:");
+    string input = GOptionPane::showInputDialog(NULL, "Type something:");
     cout << "you typed: \"" << input << "\"" << endl;
-    input = GOptionPane::showInputDialog("Here's one with a title", "booyah");
+    input = GOptionPane::showInputDialog(NULL, "Here's one with a title", "booyah");
     cout << "you typed: \"" << input << "\"" << endl;
     
     Vector<string> choices;
     choices += "a", "bb", "ccc", "dd";
-    string option = GOptionPane::showOptionDialog("choose!", choices, "booyah", "ccc");
+    string option = GOptionPane::showOptionDialog(NULL, "choose!", choices, "booyah", "ccc");
     cout << "you chose: \"" << option << "\"" << endl;
 }
 

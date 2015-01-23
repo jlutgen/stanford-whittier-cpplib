@@ -4,18 +4,18 @@ cache()
 #  Project-specific sources and headers
 #
 
-#SOURCES += $$PWD/src/gobject-tests.cpp
+SOURCES += $$PWD/src/gobject-tests.cpp
 #SOURCES += $$PWD/src/assign-1-main.cpp
 #SOURCES += $$PWD/src/buffered-image-test.cpp
 
 
 #  unit tests
-SOURCES += $$PWD/src/main-stepp-tests.cpp
-SOURCES += $$files($$PWD/src/tests-stepp/*.cpp)
-SOURCES -= $$PWD/src/tests-stepp/urlTests.cpp
-SOURCES += $$files($$PWD/src/tests-JL/*.cpp)
-HEADERS += $$files($$PWD/src/tests-stepp/*.h)
-HEADERS += $$files($$PWD/src/tests-JL/*.h)
+#SOURCES += $$PWD/src/main-stepp-tests.cpp
+#SOURCES += $$files($$PWD/src/tests-stepp/*.cpp)
+#SOURCES -= $$PWD/src/tests-stepp/urlTests.cpp
+#SOURCES += $$files($$PWD/src/tests-JL/*.cpp)
+#HEADERS += $$files($$PWD/src/tests-stepp/*.h)
+#HEADERS += $$files($$PWD/src/tests-JL/*.h)
 
 # more basic unit tests
 #SOURCES += $$files($$PWD/src/tests-roberts/*.cpp)

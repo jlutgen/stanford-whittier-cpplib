@@ -216,11 +216,6 @@ GWindow: removeFromRegion is in CPPLib, not in JBE.
 DONE
 
 
-GImageTools (java): has many nice low-level methods. Most not
-available in CPPLib. Add some of these?
-TODO
-
-
 Eliminate unused variable 'xch' in tokenscanner.cpp.
 DONE
 
@@ -299,7 +294,7 @@ DONE
 
 
 Adapt Stepp's test to my project.
-TODO
+DONE
 
 
 Possible things to add:
@@ -479,7 +474,7 @@ TODO
 
 
 Named type for file dialog filter list (dialog says "Image files" instead of "*.bmp;*.gif...")
-TODO
+DONE
 
 
 Buffered image scaling
@@ -497,7 +492,8 @@ Stepp's menus
 TODO
 
 Option to set parent window for GOptionPane
-MOSTLY DONE - need to document, possible reorder parameters
+DONE
 
-GRect--setFillColor(0x0) doesn't work but setFillColor("black") does??
+
+Document that scale, rotate (others?) have no effect on GInteractors.
 TODO

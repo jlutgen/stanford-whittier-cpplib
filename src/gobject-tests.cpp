@@ -403,15 +403,9 @@ void test_file_dialog() {
         startDir += '/';
     string result;
     if (type == "o") {
-        ifstream ifs;
-        result = openFileDialog(ifs,"Pick a freakin' file!", startDir + filter);
-        if (ifs.is_open())
-            ifs.close();
+        result = openFileDialog("Pick a freakin' file!", startDir + filter);
     } else {
-        ofstream ofs;
-        result = openFileDialog(ofs,"Pick a freakin' file!", startDir + filter);
-        if (ofs.is_open())
-            ofs.close();
+        result = saveFileDialog("Pick a freakin' file!", startDir + filter);
     }
     if (result.empty())
         cout << "User cancelled dialog or file could not be opened for reading" << endl;
