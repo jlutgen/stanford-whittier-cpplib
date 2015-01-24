@@ -34,6 +34,8 @@
 
 /**
  * \class GTextArea
+ *
+ * This class represents a multi-line area that displays plain text.
  */
 class GTextArea : public GInteractor {
 public:

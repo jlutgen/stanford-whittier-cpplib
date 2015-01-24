@@ -1017,7 +1017,7 @@ GRectangle GPolygon::getBounds() const {
       if (i == 0 || x > xMax) xMax = x;
       if (i == 0 || y > yMax) yMax = y;
    }
-   return GRectangle(xMin, yMin, xMax - xMin, yMax - yMin);
+   return GRectangle(xMin + getX(), yMin + getY(), xMax - xMin, yMax - yMin); // BUGFIX (JL): add getX, getY
 }
 
 bool GPolygon::contains(double x, double y) const {
@@ -1026,6 +1026,8 @@ bool GPolygon::contains(double x, double y) const {
    int n = vertices.size();
    if (n < 2) return false;
    if (vertices[0] == vertices[n - 1]) n--;
+   x = x - getX(); // BUGFIX (JL) - must translate by anchor point
+   y = y - getY();
    double x0 = vertices[0].getX();
    double y0 = vertices[0].getY();
    for (int i = 1; i <= n; i++) {

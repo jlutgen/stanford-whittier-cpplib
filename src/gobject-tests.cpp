@@ -9,6 +9,7 @@
 #include "strlib.h"
 #include "filelib.h"
 #include "gmath.h"
+#include "map.h"
 #include "gtextarea.h"
 
 using namespace std;
@@ -495,6 +496,198 @@ void test_console() {
     cout << "Console test ended" << endl;
 }
 
+void test_interactors_as_objects() {
+    GButton *b = new GButton("button");
+    b->rotate(90);
+    b->scale(2);
+    b->setColor("red");
+    b->setSize(100, 100);
+    b->setLineWidth(20);
+    gw->add(b, 10, 10);
+    gw->drawRect(b->getBounds());
+
+    GSlider *s = new GSlider(5, 40, 20);
+    s->rotate(90);
+    s->scale(2);
+    s->setColor("red");
+    s->setSize(100, 100);
+    s->setLineWidth(20);
+    gw->add(s, 120, 10);
+    gw->drawRect(s->getBounds());
+
+    GCheckBox *c = new GCheckBox("checkbox");
+    c->rotate(90);
+    c->scale(2);
+    c->setColor("red");
+    c->setSize(100, 100);
+    c->setLineWidth(20);
+    gw->add(c, 230, 10);
+    gw->drawRect(c->getBounds());
+
+    GChooser *ch = new GChooser;
+    ch->addItem("beef");
+    ch->addItem("veal");
+    ch->rotate(90);
+    ch->scale(2);
+    ch->setColor("red");
+    ch->setSize(100, 100);
+    ch->setLineWidth(20);
+    gw->add(ch, 340, 10);
+    gw->drawRect(ch->getBounds());
+
+    GTextField *t = new GTextField(40);
+    t->rotate(90);
+    t->scale(2);
+    t->setColor("red");
+    t->setSize(100, 100);
+    t->setLineWidth(20);
+    gw->add(t, 450, 10);
+    gw->drawRect(t->getBounds());
+
+    GButton *b2 = new GButton("button");
+    b2->rotate(90);
+    b2->scale(2);
+    b2->setColor("red");
+    b2->setSize(100, 100);
+    b2->setLineWidth(20);
+    gw->addToRegion(b2, "SOUTH");
+
+    GSlider *s2 = new GSlider(5, 40, 20);
+    s2->rotate(90);
+    s2->scale(2);
+    s2->setColor("red");
+    s2->setSize(100, 100);
+    s2->setLineWidth(20);
+    gw->addToRegion(s2, "SOUTH");
+
+    GCheckBox *c2 = new GCheckBox("checkbox");
+    c2->rotate(90);
+    c2->scale(2);
+    c2->setColor("red");
+    c2->setSize(100, 100);
+    c2->setLineWidth(20);
+    gw->addToRegion(c2, "SOUTH");
+
+    GChooser *ch2 = new GChooser;
+    ch2->addItem("beef");
+    ch2->addItem("veal");
+    ch2->rotate(90);
+    ch2->scale(2);
+    ch2->setColor("red");
+    ch2->setSize(100, 100);
+    ch2->setLineWidth(20);
+    gw->addToRegion(ch2, "SOUTH");
+
+    GTextField *t2 = new GTextField;
+    t2->rotate(90);
+    t2->scale(2);
+    t2->setColor("red");
+    t2->setSize(100, 100);
+    t2->setLineWidth(20);
+    gw->addToRegion(t2, "SOUTH");
+}
+
+void test_contains() {
+    int x0 = 350;
+    int y0 = 300;
+    Map<string, GObject*> shapeMap;
+    GOval *oval = new GOval(x0, y0, 200, 100);
+    GRoundRect *roundRect = new GRoundRect(x0, y0, 200, 100, 100);
+    GPolygon *poly = new GPolygon;
+    poly->addVertex(0, 0);
+    poly->addEdge(200, 100);
+    poly->addEdge(-200, 0);
+    poly->setLocation(x0, y0);
+    GPolygon *cpoly = new GPolygon;
+    cpoly->addVertex(0, 0);
+    cpoly->addEdge(200, 100);
+    cpoly->addEdge(0, -100);
+    cpoly->addEdge(-200, 100);
+    cpoly->setLocation(x0, y0);
+    GRect *rect = new GRect(x0, y0, 200, 100);
+    GLabel *label = new GLabel("Ostromantus", x0, y0);
+    shapeMap.put("oval", oval);
+    shapeMap.put("rounded rectangle", roundRect);
+    shapeMap.put("polygon", poly);
+    shapeMap.put("crazy polygon", cpoly);
+    shapeMap.put("rectangle", rect);
+    shapeMap.put("label", label);
+
+    GObject *currObj;
+    GChooser *ch = new GChooser;
+    ch->setActionCommand("chooser");
+    ch->addItem("oval");
+    ch->addItem("rounded rectangle");
+    ch->addItem("polygon");
+    ch->addItem("crazy polygon");
+    ch->addItem("rectangle");
+    ch->addItem("label");
+    ch->setSelectedItem("rectangle");
+    currObj = rect;
+
+    GButton *endButton = new GButton("End test");
+    GButton *fillButton = new GButton("Auto-fill");
+    GButton *rotateButton = new GButton("Rotate");
+    GButton *scaleButton = new GButton("Scale");
+
+    gw->addToRegion(ch, "north");
+    gw->addToRegion(rotateButton, "north");
+    gw->addToRegion(scaleButton, "north");
+    gw->addToRegion(fillButton, "north");
+    gw->addToRegion(endButton, "north");
+
+    while (true) {
+        GEvent e = waitForEvent(ACTION_EVENT | MOUSE_EVENT);
+        if (!e.isValid())
+            continue;
+        if (e.getEventClass() == ACTION_EVENT) {
+            if (((GActionEvent) e).getActionCommand() == "End test")
+                break;
+            if (((GActionEvent) e).getActionCommand() == "Auto-fill") {
+                GRectangle bds = currObj->getBounds();
+                int xmin = bds.getX() - 10;
+                int ymin = bds.getY() - 10;
+                int xmax = bds.getX() + bds.getWidth() + 10;
+                int ymax = bds.getY() + bds.getHeight() + 10;
+
+                for (int y = ymin; y < ymax; y+=2)
+                    for (int x = xmin; x < xmax; x+=2) {
+                        if (currObj->contains(x, y)) {
+                            gw->setColor("red");
+                            gw->fillOval(x, y, 1, 1);
+                        } else {
+                            gw->setColor("green");
+                            gw->fillOval(x, y, 1, 1);
+                        }
+                    }
+            }
+            if (((GActionEvent) e).getActionCommand() == "Rotate") {
+                currObj->rotate(45);
+            }
+            if (((GActionEvent) e).getActionCommand() == "Scale") {
+                currObj->scale(1.2, 0.8);
+            }
+            if (((GActionEvent) e).getActionCommand() == "chooser") {
+                string shape = ch->getSelectedItem();
+                gw->remove(currObj);
+                gw->setColor("white");
+                gw->fillRect(0, 0, gw->getCanvasWidth(), gw->getCanvasHeight());
+                gw->setColor("black");
+                currObj = shapeMap.get(shape);
+                gw->add(currObj);
+                gw->drawOval(currObj->getX()-2, currObj->getY()-2, 4, 4);
+            }
+        } else if (e.getEventType() == MOUSE_CLICKED) {
+            double x = ((GMouseEvent) e).getX();
+            double y = ((GMouseEvent) e).getY();
+            if (currObj->contains(x, y)) {
+                gw->setColor("red");
+                gw->fillOval(x, y, 1, 1);
+            }
+        }
+    }
+}
+
 int main() {
     setConsolePrintExceptions(true);
     setConsoleSize(getScreenWidth()-710-10, 300);
@@ -521,6 +714,8 @@ int main() {
         cout << "w) window create/destroy" << endl;
         cout << "n) nested compounds with interactors" << endl;
         cout << "C) console" << endl;
+        cout << "I) interactors as objects" << endl;
+        cout << "co) contains" << endl;
         string cmd = getLine("Command (Enter to quit)?");
         if (cmd.empty()) {
             break;
@@ -589,6 +784,14 @@ int main() {
             gw->setVisible(false);
             test_console();
             gw->setVisible(true);
+        } else if (cmd == "I") {
+            gw->setVisible(true);
+            gw->clear();
+            test_interactors_as_objects();
+        } else if (cmd == "co") {
+            gw->setVisible(true);
+            gw->clear();
+            test_contains();
         }
     }
 

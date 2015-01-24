@@ -488,12 +488,33 @@ DONE
 Option pane
 DONE
 
-Stepp's menus
-TODO
+
 
 Option to set parent window for GOptionPane
 DONE
 
 
+Finish GTextArea docs.
+TODO
+
+
+Test GObject::contains using mouse click loop.
+TODO
+
+
 Document that scale, rotate (others?) have no effect on GInteractors.
 TODO
+Mac
+Button:
+	scale, rotate: no effect
+	setColor: sets color of text on button
+	setSize: yes
+	getBounds: yes
+	setLineWidth: no
+	
+Slider
+	scale, rotate: no effect
+	setColor: no effect
+	setSize: yes
+	getBounds:yes
+	setLineWidth: no
