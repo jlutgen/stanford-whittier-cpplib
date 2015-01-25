@@ -24,7 +24,11 @@ package edu.stanford.cs.java.graphics;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * The <code>GArc</code> class is a graphical object whose appearance
@@ -191,29 +195,40 @@ public class GArc extends GObject implements GFillable {
  */
 
    public GRectangle getBounds() {  // Fix
-      double rx = frameWidth / 2;
-      double ry = frameHeight / 2;
-      double cx = getX() + rx;
-      double cy = getY() + ry;
-      double p1x = cx + GMath.cosDegrees(arcStart) * rx;
-      double p1y = cy - GMath.sinDegrees(arcStart) * ry;
-      double p2x = cx + GMath.cosDegrees(arcStart + arcSweep) * rx;
-      double p2y = cy - GMath.sinDegrees(arcStart + arcSweep) * ry;
-      double xMin = Math.min(p1x, p2x);
-      double xMax = Math.max(p1x, p2x);
-      double yMin = Math.min(p1y, p2y);
-      double yMax = Math.max(p1y, p2y);
-      if (containsAngle(0)) xMax = cx + rx;
-      if (containsAngle(90)) yMin = cy - ry;
-      if (containsAngle(180)) xMin = cx - rx;
-      if (containsAngle(270)) yMax = cy + ry;
-      if (isFilled()) {
-         xMin = Math.min(xMin, cx);
-         yMin = Math.min(yMin, cy);
-         xMax = Math.max(xMax, cx);
-         yMax = Math.max(yMax, cy);
+//      double rx = frameWidth / 2;
+//      double ry = frameHeight / 2;
+//      double cx = getX() + rx;
+//      double cy = getY() + ry;
+//      double p1x = cx + GMath.cosDegrees(arcStart) * rx;
+//      double p1y = cy - GMath.sinDegrees(arcStart) * ry;
+//      double p2x = cx + GMath.cosDegrees(arcStart + arcSweep) * rx;
+//      double p2y = cy - GMath.sinDegrees(arcStart + arcSweep) * ry;
+//      double xMin = Math.min(p1x, p2x);
+//      double xMax = Math.max(p1x, p2x);
+//      double yMin = Math.min(p1y, p2y);
+//      double yMax = Math.max(p1y, p2y);
+//      if (containsAngle(0)) xMax = cx + rx;
+//      if (containsAngle(90)) yMin = cy - ry;
+//      if (containsAngle(180)) xMin = cx - rx;
+//      if (containsAngle(270)) yMax = cy + ry;
+//      if (isFilled()) {
+//         xMin = Math.min(xMin, cx);
+//         yMin = Math.min(yMin, cy);
+//         xMax = Math.max(xMax, cx);
+//         yMax = Math.max(yMax, cy);
+//      }
+//      return new GRectangle(xMin, yMin, xMax - xMin, yMax - yMin);
+      
+      Shape shape = new Arc2D.Double(0, 0, frameWidth, frameHeight,
+              arcStart, arcSweep,
+              isFilled() ? Arc2D.PIE : Arc2D.OPEN);
+      AffineTransform matrix = getMatrix();
+      if (matrix != null) {
+         shape = matrix.createTransformedShape(shape);
       }
-      return new GRectangle(xMin, yMin, xMax - xMin, yMax - yMin);
+      Rectangle2D bounds = shape.getBounds();
+      return new GRectangle(bounds.getX() + getX(), bounds.getY() + getY(),
+                            bounds.getWidth(), bounds.getHeight());
    }
 
 /**
@@ -232,19 +247,28 @@ public class GArc extends GObject implements GFillable {
  */
 
    public boolean contains(double x, double y) {
-      double rx = frameWidth / 2;
-      double ry = frameHeight / 2;
-      if (rx == 0 || ry == 0) return false;
-      double dx = x - (getX() + rx);
-      double dy = y - (getY() + ry);
-      double r = (dx * dx) / (rx * rx) + (dy * dy) / (ry * ry);
-      if (isFilled()) {
-         if (r > 1.0) return false;
-      } else {
-         double t = ARC_TOLERANCE / ((rx + ry) / 2);
-         if (Math.abs(1.0 - r) > t) return false;
-      }
-      return containsAngle(GMath.toDegrees(Math.atan2(-dy, dx)));
+//      double rx = frameWidth / 2;
+//      double ry = frameHeight / 2;
+//      if (rx == 0 || ry == 0) return false;
+//      double dx = x - (getX() + rx);
+//      double dy = y - (getY() + ry);
+//      double r = (dx * dx) / (rx * rx) + (dy * dy) / (ry * ry);
+//      if (isFilled()) {
+//         if (r > 1.0) return false;
+//      } else {
+//         double t = ARC_TOLERANCE / ((rx + ry) / 2);
+//         if (Math.abs(1.0 - r) > t) return false;
+//      }
+//      return containsAngle(GMath.toDegrees(Math.atan2(-dy, dx)));
+	   
+	   Shape shape = new Arc2D.Double(0, 0, frameWidth, frameHeight,
+	              arcStart, arcSweep,
+	              isFilled() ? Arc2D.PIE : Arc2D.OPEN);
+	      AffineTransform matrix = getMatrix();
+	      if (matrix != null) {
+	         shape = matrix.createTransformedShape(shape);
+	      }
+	      return shape.contains(x - getX(), y - getY());
    }
 
 /**
