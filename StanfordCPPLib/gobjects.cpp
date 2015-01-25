@@ -299,6 +299,27 @@ GRoundRect::~GRoundRect() {
    /* Empty */
 }
 
+bool GRoundRect::contains(double x, double y) const {
+   if (transformed) return pp->contains(this, x, y);
+
+   // BUGFIX (JL): The rest of this is code to return correct result in non-transformed case (accounting for corners)
+   if (!getBounds().contains(x, y))
+       return false;
+
+   // If corner diameter is too big, the largest sensible value is used by Java back end.
+   double a = std::min(corner, width) / 2;
+   double b = std::min(corner, height) / 2;
+
+   // Get distances from nearest edges of bounding rectangle
+   double dx = std::min(std::abs(x - getX()), std::abs(x - (getX() + width)));
+   double dy = std::min(std::abs(y - getY()), std::abs(y - (getY() + height)));
+
+   if (dx > a || dy > b)
+       return true; // in "central cross" of rounded rect
+
+   return (dx - a)*(dx - a)/(a*a) + (dy - b)*(dy - b)/(b*b) <= 1;
+}
+
 string GRoundRect::getType() const {
    return "GRoundRect";
 }
@@ -477,12 +498,6 @@ void GOval::create(double width, double height) {
    pp->createGOval(this, width, height);
 }
 
-/*
- * Implementation notes: G3DRect class
- * -----------------------------------
- * Most of the G3DRect class is inherited from the GRect class.
- */
-
 GArc::GArc(double width, double height, double start, double sweep) {
    create(width, height, start, sweep);
 }
@@ -628,7 +643,8 @@ GPoint GArc::getArcPoint(double theta) const {
    return GPoint(cx + rx * cos(radians), cy - ry * sin(radians));
 }
 
-bool GArc::containsAngle(double theta) const {
+bool GArc::
+containsAngle(double theta) const {
    double start = min(this->start, this->start + this->sweep);
    double sweep = abs(this->sweep);
    if (sweep >= 360) return true;

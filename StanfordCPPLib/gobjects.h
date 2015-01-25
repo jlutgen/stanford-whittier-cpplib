@@ -222,7 +222,7 @@ public:
  * can be written as <code>"Dark Gray"</code>.
  *
  * The color can also be specified as a string in the form
- * <code>"#rrggbb"</code> where <code>rr</code>, <code>gg</code>, and
+ * <code>#</code><i><b>rrggbb</b></i> where <code>rr</code>, <code>gg</code>, and
  * <code>bb</code> are pairs of hexadecimal digits indicating the
  * red, green, and blue components of the color, respectively.
  *
@@ -639,7 +639,7 @@ public:
 
 
 /* Prototypes for the virtual methods */
-
+   virtual bool contains(double x, double y) const;
    virtual std::string getType() const;
    virtual std::string toString() const;
 

@@ -587,6 +587,14 @@ void test_interactors_as_objects() {
     gw->addToRegion(t2, "SOUTH");
 }
 
+void drawGrid() {
+    gw->setColor("green");
+    for (int i=0; i<gw->getCanvasWidth(); i+=10)
+      gw->drawLine(i, 0, i, gw->getCanvasHeight());
+    for (int j=0; j<gw->getCanvasHeight(); j+=10)
+      gw->drawLine(0, j, gw->getCanvasWidth(), j);
+}
+
 void test_contains() {
     int x0 = 350;
     int y0 = 300;
@@ -606,11 +614,19 @@ void test_contains() {
     cpoly->setLocation(x0, y0);
     GRect *rect = new GRect(x0, y0, 200, 100);
     GLabel *label = new GLabel("Ostromantus", x0, y0);
+    GArc *arc = new GArc(x0, y0, 350, 100, 45, 225);
+    arc->setLineWidth(5);
+    arc->setColor("#44000000");
+    GArc *filledArc = new GArc(x0, y0, 350, 100, 45, 225);
+    filledArc->setFillColor("#88e0e0e0");
+    filledArc->setFilled(true);
     shapeMap.put("oval", oval);
     shapeMap.put("rounded rectangle", roundRect);
     shapeMap.put("polygon", poly);
     shapeMap.put("crazy polygon", cpoly);
     shapeMap.put("rectangle", rect);
+    shapeMap.put("arc", arc);
+    shapeMap.put("filled arc", filledArc);
     shapeMap.put("label", label);
 
     GObject *currObj;
@@ -621,6 +637,8 @@ void test_contains() {
     ch->addItem("polygon");
     ch->addItem("crazy polygon");
     ch->addItem("rectangle");
+    ch->addItem("arc");
+    ch->addItem("filled arc");
     ch->addItem("label");
     ch->setSelectedItem("rectangle");
     currObj = rect;
@@ -672,6 +690,7 @@ void test_contains() {
                 gw->remove(currObj);
                 gw->setColor("white");
                 gw->fillRect(0, 0, gw->getCanvasWidth(), gw->getCanvasHeight());
+                drawGrid();
                 gw->setColor("black");
                 currObj = shapeMap.get(shape);
                 gw->add(currObj);
