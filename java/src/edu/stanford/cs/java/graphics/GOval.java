@@ -93,7 +93,7 @@ public class GOval extends GObject implements GFillable, GResizable {
       Shape shape = new Ellipse2D.Double(0, 0, frameWidth, frameHeight);
       AffineTransform matrix = getMatrix();
       if (matrix != null) {
-         shape = matrix.createTransformedShape(shape).getBounds();
+         shape = matrix.createTransformedShape(shape);
       }
       return shape.contains(x - getX(), y - getY());
    }

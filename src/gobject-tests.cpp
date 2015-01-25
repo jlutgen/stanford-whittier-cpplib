@@ -596,11 +596,12 @@ void drawGrid() {
 }
 
 void test_contains() {
+    bool useCompounds = false;
     int x0 = 350;
     int y0 = 300;
     Map<string, GObject*> shapeMap;
     GOval *oval = new GOval(x0, y0, 200, 100);
-    GRoundRect *roundRect = new GRoundRect(x0, y0, 200, 100, 100);
+    GRoundRect *roundRect = new GRoundRect(x0, y0, 200, 100, 300);
     GPolygon *poly = new GPolygon;
     poly->addVertex(0, 0);
     poly->addEdge(200, 100);
@@ -620,6 +621,13 @@ void test_contains() {
     GArc *filledArc = new GArc(x0, y0, 350, 100, 45, 225);
     filledArc->setFillColor("#88e0e0e0");
     filledArc->setFilled(true);
+    GCompound *comp1 = new GCompound;
+    comp1->setLocation(x0, y0);
+    comp1->add(new GLabel("compound", 0, 15));
+    GRect *bgRect = new GRect(0, 0);
+    gw->add(bgRect);
+    bgRect->setFillColor("#55dddddd");
+    bgRect->setFilled(true);
     shapeMap.put("oval", oval);
     shapeMap.put("rounded rectangle", roundRect);
     shapeMap.put("polygon", poly);
@@ -648,6 +656,9 @@ void test_contains() {
     GButton *rotateButton = new GButton("Rotate");
     GButton *scaleButton = new GButton("Scale");
 
+    GCheckBox *compCheckbox = new GCheckBox("compounds");
+    compCheckbox->setActionCommand("compounds");
+    gw->addToRegion(compCheckbox, "north");
     gw->addToRegion(ch, "north");
     gw->addToRegion(rotateButton, "north");
     gw->addToRegion(scaleButton, "north");
@@ -661,39 +672,61 @@ void test_contains() {
         if (e.getEventClass() == ACTION_EVENT) {
             if (((GActionEvent) e).getActionCommand() == "End test")
                 break;
+            if (((GActionEvent) e).getActionCommand() == "compounds") {
+                bgRect->setVisible(compCheckbox->isSelected());
+                useCompounds = compCheckbox->isSelected();
+            }
             if (((GActionEvent) e).getActionCommand() == "Auto-fill") {
                 GRectangle bds = currObj->getBounds();
                 int xmin = bds.getX() - 10;
                 int ymin = bds.getY() - 10;
                 int xmax = bds.getX() + bds.getWidth() + 10;
                 int ymax = bds.getY() + bds.getHeight() + 10;
-
-                for (int y = ymin; y < ymax; y+=2)
-                    for (int x = xmin; x < xmax; x+=2) {
+                int dx = useCompounds ? comp1->getX(): 0;
+                int dy = useCompounds ? comp1->getY(): 0;
+                for (int y = ymin; y < ymax; y+=1)
+                    for (int x = xmin; x < xmax; x+=1) {
                         if (currObj->contains(x, y)) {
                             gw->setColor("red");
-                            gw->fillOval(x, y, 1, 1);
+                            gw->fillOval(x + dx, y + dy, 1, 1);
                         } else {
                             gw->setColor("green");
-                            gw->fillOval(x, y, 1, 1);
+                            gw->fillOval(x + dx, y + dy, 1, 1);
                         }
                     }
             }
             if (((GActionEvent) e).getActionCommand() == "Rotate") {
                 currObj->rotate(45);
+                if (useCompounds) {
+                    bgRect->setBounds(comp1->getBounds());
+                }
             }
             if (((GActionEvent) e).getActionCommand() == "Scale") {
                 currObj->scale(1.2, 0.8);
+                if (useCompounds) {
+                    bgRect->setBounds(comp1->getBounds());
+                }
             }
             if (((GActionEvent) e).getActionCommand() == "chooser") {
                 string shape = ch->getSelectedItem();
-                gw->remove(currObj);
+                if (useCompounds) {
+                    comp1->remove(currObj);
+                    gw->remove(comp1);
+                } else {
+                    gw->remove(currObj);
+                }
                 gw->setColor("white");
                 gw->fillRect(0, 0, gw->getCanvasWidth(), gw->getCanvasHeight());
                 drawGrid();
                 gw->setColor("black");
                 currObj = shapeMap.get(shape);
-                gw->add(currObj);
+                if (useCompounds) {
+                    gw->add(comp1);
+                    comp1->add(currObj, 50, 50);
+                    bgRect->setBounds(comp1->getBounds());
+                } else {
+                    gw->add(currObj);
+                }
                 gw->drawOval(currObj->getX()-2, currObj->getY()-2, 4, 4);
             }
         } else if (e.getEventType() == MOUSE_CLICKED) {

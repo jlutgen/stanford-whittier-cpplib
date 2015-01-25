@@ -518,3 +518,10 @@ Slider
 	setSize: yes
 	getBounds:yes
 	setLineWidth: no
+
+
+Add CSS tags for formatting #aarrggbb as bold italic monospaced (in GWindow/GObject
+setColor, etc.)
+
+Document the fact that getLocation, getX, getY for GObject gives results 
+relative to the object's parent compound.
