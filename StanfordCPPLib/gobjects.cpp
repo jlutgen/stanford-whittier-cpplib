@@ -110,12 +110,14 @@ void GObject::scale(double sf) {
 void GObject::scale(double sx, double sy) {
    // Apply local transform
    transformed = true;
+   matrix.applyScale(sx, sy);
    pp->scale(this, sx, sy);
 }
 
 void GObject::rotate(double theta) {
    // Apply local transform
    transformed = true;
+   matrix.applyRotate(theta);
    pp->rotate(this, theta);
 }
 
@@ -168,6 +170,7 @@ GObject::GObject() {
    lineWidth = 1.0;
    transformed = false;
    visible = true;
+   //matrix.init();
 }
 
 GObject::~GObject() {
@@ -214,9 +217,35 @@ void GRect::setBounds(double x, double y, double width, double height) {
    setSize(width, height);
 }
 
+// added by JL
 GRectangle GRect::getBounds() const {
-   if (transformed) return pp->getBounds(this);
-   return GRectangle(x, y, width, height);
+    if (!transformed)
+       return GRectangle(x, y, width, height);
+    GPoint vertices[4];
+    vertices[0] = GPoint(0, 0); // unused!
+    vertices[1] = matrix.image(0, height);
+    vertices[2] = matrix.image(width, height);
+    vertices[3] = matrix.image(width, 0);
+    double x1, y1, x2, y2;
+    x1 = x2 = y1 = y2 = 0;
+    for (int i = 1; i < 4; i++) {
+        double x = vertices[i].getX();
+        double y = vertices[i].getY();
+        if (x < x1) x1 = x;
+        if (y < y1) y1 = y;
+        if (x > x2) x2 = x;
+        if (y > y2) y2 = y;
+    }
+    return GRectangle(this->x + x1, this->y + y1, x2 - x1, y2 - y1);
+}
+
+// added by JL
+bool GRect::contains(double x, double y) const {
+    GPoint p = matrix.preimage(x - this->x, y - this->y);
+    double xx = p.getX();
+    double yy = p.getY();
+    return 0 < xx && xx <= width
+        &&  0 < yy && yy <= height;
 }
 
 void GRect::setFilled(bool flag) {
@@ -1066,6 +1095,52 @@ string GPolygon::toString() const {
    ostringstream oss;
    oss << "GPolygon(" << vertices.size() << " vertices)";
    return oss.str();
+}
+
+GObject::Matrix2D::Matrix2D() {
+    m[0][1] = m[1][0] = 0;
+    m[0][0] = m[1][1] = 1;
+}
+
+void GObject::Matrix2D::applyRotate(double theta) {
+    // Counterintuitive sign weirdness
+    // because positive y-axis points downward.
+    double m00 = cosDegrees(theta)*m[0][0] - sinDegrees(theta)*m[0][1];
+    double m01 = sinDegrees(theta)*m[0][0] + cosDegrees(theta)*m[0][1];
+    double m10 = cosDegrees(theta)*m[1][0] - sinDegrees(theta)*m[1][1];
+    double m11 = sinDegrees(theta)*m[1][0] + cosDegrees(theta)*m[1][1];
+    m[0][0] = m00;
+    m[0][1] = m01;
+    m[1][0] = m10;
+    m[1][1] = m11;
+}
+
+void GObject::Matrix2D::applyScale(double sx, double sy) {
+    m[0][0] *= sx;
+    m[0][1] *= sy;
+    m[1][0] *= sx;
+    m[1][1] *= sy;
+}
+
+GPoint GObject::Matrix2D::image(const GPoint &pt) {
+    return image(pt.getX(), pt.getY());
+}
+
+GPoint GObject::Matrix2D::image(double x, double y) const {
+    double xx = m[0][0]*x + m[0][1]*y;
+    double yy = m[1][0]*x + m[1][1]*y;
+    return GPoint(xx, yy);
+}
+
+GPoint GObject::Matrix2D::preimage(const GPoint &pt) {
+    return preimage(pt.getX(), pt.getY());
+}
+
+GPoint GObject::Matrix2D::preimage(double x, double y) const {
+    double det = m[0][0]*m[1][1] - m[1][0]*m[0][1];
+    double xx = (m[1][1]*x - m[0][1]*y) / det;
+    double yy = (-m[1][0]*x + m[0][0]*y) / det;
+    return GPoint(xx, yy);
 }
 
 static double dsq(double x0, double y0, double x1, double y1) {

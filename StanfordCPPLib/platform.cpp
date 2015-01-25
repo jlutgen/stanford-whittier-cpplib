@@ -745,7 +745,7 @@ void Platform::rotate(GObject *gobj, double theta) {
 }
 
 // Move this computation into gobjects.cpp
-
+// (Done for GRect by JL)
 bool Platform::contains(const GObject *gobj, double x, double y) {
    ostringstream os;
    os << "GObject.contains(\"" << gobj << "\", " << x << ", " << y << ")";
@@ -754,6 +754,7 @@ bool Platform::contains(const GObject *gobj, double x, double y) {
 }
 
 // Move this computation into gobjects.cpp
+// (Done for GRect by JL)
 
 GRectangle Platform::getBounds(const GObject *gobj) {
    ostringstream os;

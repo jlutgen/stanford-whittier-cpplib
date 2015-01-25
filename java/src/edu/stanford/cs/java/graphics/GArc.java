@@ -194,31 +194,7 @@ public class GArc extends GObject implements GFillable {
  * @return The bounding box of this object
  */
 
-   public GRectangle getBounds() {  // Fix
-//      double rx = frameWidth / 2;
-//      double ry = frameHeight / 2;
-//      double cx = getX() + rx;
-//      double cy = getY() + ry;
-//      double p1x = cx + GMath.cosDegrees(arcStart) * rx;
-//      double p1y = cy - GMath.sinDegrees(arcStart) * ry;
-//      double p2x = cx + GMath.cosDegrees(arcStart + arcSweep) * rx;
-//      double p2y = cy - GMath.sinDegrees(arcStart + arcSweep) * ry;
-//      double xMin = Math.min(p1x, p2x);
-//      double xMax = Math.max(p1x, p2x);
-//      double yMin = Math.min(p1y, p2y);
-//      double yMax = Math.max(p1y, p2y);
-//      if (containsAngle(0)) xMax = cx + rx;
-//      if (containsAngle(90)) yMin = cy - ry;
-//      if (containsAngle(180)) xMin = cx - rx;
-//      if (containsAngle(270)) yMax = cy + ry;
-//      if (isFilled()) {
-//         xMin = Math.min(xMin, cx);
-//         yMin = Math.min(yMin, cy);
-//         xMax = Math.max(xMax, cx);
-//         yMax = Math.max(yMax, cy);
-//      }
-//      return new GRectangle(xMin, yMin, xMax - xMin, yMax - yMin);
-      
+   public GRectangle getBounds() { // rewritten by JL
       Shape shape = new Arc2D.Double(0, 0, frameWidth, frameHeight,
               arcStart, arcSweep,
               isFilled() ? Arc2D.PIE : Arc2D.OPEN);
@@ -231,14 +207,15 @@ public class GArc extends GObject implements GFillable {
                             bounds.getWidth(), bounds.getHeight());
    }
 
+// Containment redefined for unfilled arcs by JL and method 
+// rewritten by JL
 /**
  * Checks to see whether a point is inside the object.  For the
  * <code>GArc</code> class, containment depends on whether the arc
  * is filled.  Filled arcs are a wedge in which containment can be
- * defined in a natural way; unfilled arcs are essentially lines,
- * which means that containment is defined to mean that the point
- * is within <a href="#ARC_TOLERANCE"><code>ARC_TOLERANCE</code></a> pixels
- * of the arc.
+ * defined in a natural way; we define a point to be "inside" an 
+ * unfilled arcs if it inside the closed curve obtained by 
+ * connecting the arc's endpoints with a line segment.
  *
  * @param x The x-coordinate of the point being tested
  * @param y The y-coordinate of the point being tested
@@ -246,21 +223,7 @@ public class GArc extends GObject implements GFillable {
  *         (<code>x</code>,&nbsp;<code>y</code>) is inside the arc
  */
 
-   public boolean contains(double x, double y) {
-//      double rx = frameWidth / 2;
-//      double ry = frameHeight / 2;
-//      if (rx == 0 || ry == 0) return false;
-//      double dx = x - (getX() + rx);
-//      double dy = y - (getY() + ry);
-//      double r = (dx * dx) / (rx * rx) + (dy * dy) / (ry * ry);
-//      if (isFilled()) {
-//         if (r > 1.0) return false;
-//      } else {
-//         double t = ARC_TOLERANCE / ((rx + ry) / 2);
-//         if (Math.abs(1.0 - r) > t) return false;
-//      }
-//      return containsAngle(GMath.toDegrees(Math.atan2(-dy, dx)));
-	   
+   public boolean contains(double x, double y) {	   
 	   Shape shape = new Arc2D.Double(0, 0, frameWidth, frameHeight,
 	              arcStart, arcSweep,
 	              isFilled() ? Arc2D.PIE : Arc2D.OPEN);

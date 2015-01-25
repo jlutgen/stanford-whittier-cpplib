@@ -35,6 +35,7 @@
 #include "gtypes.h"
 #include "gwindow.h"
 #include "vector.h"
+#include "gmath.h"
 
 /* Forward declaration */
 
@@ -414,6 +415,34 @@ public:
 
 /* Private section */
 
+protected:
+    /*
+     * Protected class: Matrix
+     *
+     * Used to keep track of all scaling/rotation transformations that
+     * have been applied to a GObject, in order to simply the work of the `contains`
+     * and `getBounds` methods.
+     */
+    class Matrix2D {
+    public:
+        // initalize to identity matrix
+        Matrix2D();
+
+        // right-multiply by rotation matrix
+        void applyRotate(double theta);
+
+        // right-multiply by scaling matrix
+        void applyScale(double sx, double sy);
+
+        GPoint image(const GPoint &pt);
+        GPoint image(double x, double y) const;
+        GPoint preimage(const GPoint &pt);
+        GPoint preimage(double x, double y) const;
+
+    private:
+        double m[2][2];
+    };
+
 private:
    const GObject & operator=(const GObject & src) { return *this; }
    GObject(const GObject & src) { }
@@ -424,10 +453,11 @@ protected:
    double x;                       /* The x coordinate of the origin     */
    double y;                       /* The y coordinate of the origin     */
    double lineWidth;               /* The width of the line in pixels    */
-   std::string color;              /* The color of this object            */
+   std::string color;              /* The color of this object           */
    bool visible;                   /* Indicates if object is visible     */
    bool transformed;               /* Indicates if object is transformed */
    GCompound *parent;              /* Pointer to the parent              */
+   Matrix2D matrix;               /* Inverse of transformation matrix   */
 
 protected:
    GObject();
@@ -577,7 +607,7 @@ public:
 
 
 /* Prototypes for the virtual methods */
-
+   virtual bool contains(double x, double y) const;
    virtual GRectangle getBounds() const;
    virtual std::string getType() const;
    virtual std::string toString() const;

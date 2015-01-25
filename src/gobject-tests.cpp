@@ -678,10 +678,14 @@ void test_contains() {
             }
             if (((GActionEvent) e).getActionCommand() == "Auto-fill") {
                 GRectangle bds = currObj->getBounds();
-                int xmin = bds.getX() - 10;
-                int ymin = bds.getY() - 10;
-                int xmax = bds.getX() + bds.getWidth() + 10;
-                int ymax = bds.getY() + bds.getHeight() + 10;
+                int xmin = bds.getX();
+                int ymin = bds.getY();
+                int xmax = bds.getX() + bds.getWidth();
+                int ymax = bds.getY() + bds.getHeight();
+//                int xmin = 0;
+//                int ymin = 0;
+//                int xmax = gw->getCanvasWidth();
+//                int ymax = gw->getCanvasHeight();
                 int dx = useCompounds ? comp1->getX(): 0;
                 int dy = useCompounds ? comp1->getY(): 0;
                 for (int y = ymin; y < ymax; y+=1)
@@ -717,7 +721,7 @@ void test_contains() {
                 }
                 gw->setColor("white");
                 gw->fillRect(0, 0, gw->getCanvasWidth(), gw->getCanvasHeight());
-                drawGrid();
+                //drawGrid();
                 gw->setColor("black");
                 currObj = shapeMap.get(shape);
                 if (useCompounds) {
