@@ -522,6 +522,11 @@ Slider
 
 Add CSS tags for formatting #aarrggbb as bold italic monospaced (in GWindow/GObject
 setColor, etc.)
+TODO
 
 Document the fact that getLocation, getX, getY for GObject gives results 
 relative to the object's parent compound.
+TODO
+
+Document redefinition of containment for unfilled GArc.
+TODO

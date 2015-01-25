@@ -217,7 +217,7 @@ void GRect::setBounds(double x, double y, double width, double height) {
    setSize(width, height);
 }
 
-// added by JL
+// computation for transformed case added by JL
 GRectangle GRect::getBounds() const {
     if (!transformed)
        return GRectangle(x, y, width, height);
@@ -465,18 +465,37 @@ void GOval::setBounds(double x, double y, double width, double height) {
    setSize(width, height);
 }
 
+// computation for transformed case added by JL
 GRectangle GOval::getBounds() const {
-   if (transformed) return pp->getBounds(this);
-   return GRectangle(x, y, width, height);
+    if (!transformed)
+       return GRectangle(x, y, width, height);
+    GPoint vertices[4];
+    vertices[0] = GPoint(0, 0); // unused!
+    vertices[1] = matrix.image(0, height);
+    vertices[2] = matrix.image(width, height);
+    vertices[3] = matrix.image(width, 0);
+    double x1, y1, x2, y2;
+    x1 = x2 = y1 = y2 = 0;
+    for (int i = 1; i < 4; i++) {
+        double x = vertices[i].getX();
+        double y = vertices[i].getY();
+        if (x < x1) x1 = x;
+        if (y < y1) y1 = y;
+        if (x > x2) x2 = x;
+        if (y > y2) y2 = y;
+    }
+    return GRectangle(this->x + x1, this->y + y1, x2 - x1, y2 - y1);
 }
 
 bool GOval::contains(double x, double y) const {
-   if (transformed) return pp->contains(this, x, y);
+   GPoint p = matrix.preimage(x - this->x, y - this->y);
+   double xx = p.getX();
+   double yy = p.getY();
    double rx = width / 2;
    double ry = height / 2;
    if (rx == 0 || ry == 0) return false;
-   double dx = x - (this->x + rx);
-   double dy = y - (this->y + ry);
+   double dx = xx - rx;
+   double dy = yy - ry;
    return (dx * dx) / (rx * rx) + (dy * dy) / (ry * ry) <= 1.0;
 }
 
