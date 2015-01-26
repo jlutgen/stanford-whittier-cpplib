@@ -170,7 +170,6 @@ GObject::GObject() {
    lineWidth = 1.0;
    transformed = false;
    visible = true;
-   //matrix.init();
 }
 
 GObject::~GObject() {
@@ -328,11 +327,12 @@ GRoundRect::~GRoundRect() {
    /* Empty */
 }
 
+// Rewritten by JL to handle transformed case and take corners into account
 bool GRoundRect::contains(double x, double y) const {
-   if (transformed) return pp->contains(this, x, y);
-
-   // BUGFIX (JL): The rest of this is code to return correct result in non-transformed case (accounting for corners)
-   if (!getBounds().contains(x, y))
+   GPoint p = matrix.preimage(x - this->x, y - this->y);
+   double xx = p.getX();
+   double yy = p.getY();
+   if (xx < 0 || xx > width || yy < 0 || yy > height)
        return false;
 
    // If corner diameter is too big, the largest sensible value is used by Java back end.
@@ -340,8 +340,8 @@ bool GRoundRect::contains(double x, double y) const {
    double b = std::min(corner, height) / 2;
 
    // Get distances from nearest edges of bounding rectangle
-   double dx = std::min(std::abs(x - getX()), std::abs(x - (getX() + width)));
-   double dy = std::min(std::abs(y - getY()), std::abs(y - (getY() + height)));
+   double dx = std::min(xx, width - xx);
+   double dy = std::min(yy, height - yy);
 
    if (dx > a || dy > b)
        return true; // in "central cross" of rounded rect

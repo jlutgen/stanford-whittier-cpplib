@@ -76,7 +76,7 @@ public class GLine extends GObject {
  *
  * @return The bounding box for this object
  */
-
+   // BUGFIX (JL): rewrote to give correct result.
    public GRectangle getBounds() {
       double x0 = getX();
       double y0 = getY();
@@ -84,14 +84,10 @@ public class GLine extends GObject {
       double y1 = y0 + dy;
       AffineTransform matrix = getMatrix();
       if (matrix != null) {
-         Point2D pt = new Point2D.Double(x0, y0);
+         Point2D pt = new Point2D.Double(dx, dy);
          matrix.transform(pt, pt);
-         x0 = pt.getX();
-         y0 = pt.getY();
-         pt = new Point2D.Double(x1, y1);
-         matrix.transform(pt, pt);
-         x1 = pt.getX();
-         y1 = pt.getY();
+         x1 = x0 + pt.getX();
+         y1 = y0 + pt.getY();
       }
       double x = Math.min(x0, x1);
       double y = Math.min(y0, y1);

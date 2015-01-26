@@ -24,6 +24,7 @@ package edu.stanford.cs.java.graphics;
 
 import java.awt.Graphics2D;
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 
 /**
  * The <code>G3DRect</code> class is used to represent a rectangle whose
@@ -92,25 +93,30 @@ public class G3DRect extends GRect {
       isRaised = raised;
    }
 
+   /**
+    * Implements the <code>paint2d</code> operation for this graphical object.
+    * This method is not called directly by clients.
+    * @noshow
+    */
+
+   protected void paint2d(Graphics2D g) {
+	   if (isFilled()) {
+		   g.setColor(getFillColor());
+		   g.fill3DRect(0, 0, GMath.round(getFrameWidth()),
+				   GMath.round(getFrameHeight()), isRaised);
+		   g.setColor(getColor());
+	   } else {
+		   g.draw3DRect(0, 0, GMath.round(getFrameWidth()),
+				   GMath.round(getFrameHeight()), isRaised);
+	   }
+   }
+
 /**
  * Implements the <code>paint</code> operation for this graphical object.
  * This method is not called directly by clients.
  * @noshow
  */
 
-   public void paint(Graphics g) {
-      if (!isVisible()) return;
-      Graphics2D g2d = createTransformedGraphics(g);
-      if (isFilled()) {
-         g2d.setColor(getFillColor());
-         g2d.fill3DRect(0, 0, GMath.round(getFrameWidth()),
-                              GMath.round(getFrameHeight()), isRaised);
-         g2d.setColor(getColor());
-      }
-      g2d.draw3DRect(0, 0, GMath.round(getFrameWidth()),
-                           GMath.round(getFrameHeight()), isRaised);
-      g2d.dispose();
-   }
 
 /**
  * Sets whether this object appears raised.

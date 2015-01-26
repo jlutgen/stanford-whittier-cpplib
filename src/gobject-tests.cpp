@@ -602,6 +602,11 @@ void test_contains() {
     Map<string, GObject*> shapeMap;
     GOval *oval = new GOval(x0, y0, 200, 100);
     GRoundRect *roundRect = new GRoundRect(x0, y0, 200, 100, 300);
+    roundRect->setLineWidth(20);
+    G3DRect *rect3d = new G3DRect(x0, y0, 200, 100, true);
+    //rect3d->setLineWidth(5);
+    rect3d->setFillColor("green");
+    rect3d->setFilled(true);
     GPolygon *poly = new GPolygon;
     poly->addVertex(0, 0);
     poly->addEdge(200, 100);
@@ -614,6 +619,7 @@ void test_contains() {
     cpoly->addEdge(-200, 100);
     cpoly->setLocation(x0, y0);
     GRect *rect = new GRect(x0, y0, 200, 100);
+    GLine *line = new GLine(x0, y0, x0 + 200, y0 + 100);
     GLabel *label = new GLabel("Ostromantus", x0, y0);
     GArc *arc = new GArc(x0, y0, 350, 100, 45, 225);
     arc->setLineWidth(5);
@@ -630,9 +636,11 @@ void test_contains() {
     bgRect->setFilled(true);
     shapeMap.put("oval", oval);
     shapeMap.put("rounded rectangle", roundRect);
+    shapeMap.put("3D rectangle", rect3d);
     shapeMap.put("polygon", poly);
     shapeMap.put("crazy polygon", cpoly);
     shapeMap.put("rectangle", rect);
+    shapeMap.put("line", line);
     shapeMap.put("arc", arc);
     shapeMap.put("filled arc", filledArc);
     shapeMap.put("label", label);
@@ -642,9 +650,11 @@ void test_contains() {
     ch->setActionCommand("chooser");
     ch->addItem("oval");
     ch->addItem("rounded rectangle");
+    ch->addItem(("3D rectangle"));
     ch->addItem("polygon");
     ch->addItem("crazy polygon");
     ch->addItem("rectangle");
+    ch->addItem("line");
     ch->addItem("arc");
     ch->addItem("filled arc");
     ch->addItem("label");
