@@ -161,7 +161,7 @@ public class GLine extends GObject {
  * @return <code>true</code> if the point (<code>x</code>,&nbsp;<code>y</code>)
  *         is within a short distance of the line
  */
-
+   // BUGFIX (JL): rewrote to give correct result.
    public boolean contains(double x, double y) {
       double x0 = getX();
       double y0 = getY();
@@ -169,14 +169,10 @@ public class GLine extends GObject {
       double y1 = y0 + dy;
       AffineTransform matrix = getMatrix();
       if (matrix != null) {
-         Point2D pt = new Point2D.Double(x0, y0);
+         Point2D pt = new Point2D.Double(dx, dy);
          matrix.transform(pt, pt);
-         x0 = pt.getX();
-         y0 = pt.getY();
-         pt = new Point2D.Double(x1, y1);
-         matrix.transform(pt, pt);
-         x1 = pt.getX();
-         y1 = pt.getY();
+         x1 = x0 + pt.getX();
+         y1 = y0 + pt.getY();
       }
       double tSquared = LINE_TOLERANCE * LINE_TOLERANCE;
       if (distanceSquared(x, y, x0, y0) < tSquared) return true;
