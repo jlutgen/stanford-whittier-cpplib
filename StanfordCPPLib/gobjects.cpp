@@ -974,19 +974,31 @@ GPoint GLine::getEndPoint() const {
    return GPoint(x + dx, y + dy);
 }
 
+// JL rewrote to include transformed case in front end
 GRectangle GLine::getBounds() const {
-   if (transformed) return pp->getBounds(this);
-   double x0 = (dx < 0) ? x + dx : x;
-   double y0 = (dy < 0) ? y + dy : y;
-   return GRectangle(x0, y0, abs(dx), abs(dy));
+   double tdx = dx;
+   double tdy = dy;
+   if (transformed) {
+       GPoint pt = matrix.image(dx, dy);
+       tdx = pt.getX();
+       tdy = pt.getY();
+   }
+   double x0 = (tdx < 0) ? x + tdx : x;
+   double y0 = (tdy < 0) ? y + tdy : y;
+   return GRectangle(x0, y0, abs(tdx), abs(tdy));
 }
 
+// JL rewrote to include transformed case in front end
 bool GLine::contains(double x, double y) const {
-   if (transformed) return pp->contains(this, x, y);
    double x0 = getX();
    double y0 = getY();
    double x1 = x0 + dx;
    double y1 = y0 + dy;
+   if (transformed) {
+       GPoint pt = matrix.image(dx, dy);
+       x1 = x0 + pt.getX();
+       y1 = y0 + pt.getY();
+   }
    double tSquared = LINE_TOLERANCE * LINE_TOLERANCE;
    if (dsq(x, y, x0, y0) < tSquared) return true;
    if (dsq(x, y, x1, y1) < tSquared) return true;
