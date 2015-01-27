@@ -420,7 +420,7 @@ protected:
      * Protected class: Matrix
      *
      * Used to keep track of all scaling/rotation transformations that
-     * have been applied to a GObject, in order to simply the work of the `contains`
+     * have been applied to a GObject. Intended for use by the `contains`
      * and `getBounds` methods.
      */
     class Matrix2D {

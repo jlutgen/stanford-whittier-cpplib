@@ -654,8 +654,13 @@ GRectangle GArc::getBounds() const {
    return GRectangle(xMin, yMin, xMax - xMin, yMax - yMin);
 }
 
+// JL moved computation for transformed case into front end here
 bool GArc::contains(double x, double y) const {
-   if (transformed) return pp->contains(this, x, y);
+   if (transformed) {
+       GPoint pt = matrix.preimage(x - this->x, y - this->y);
+       x = this->x + pt.getX();
+       y = this->y + pt.getY();
+   }
    double rx = frameWidth / 2;
    double ry = frameHeight / 2;
    if (rx == 0 || ry == 0) return false;
@@ -668,7 +673,7 @@ bool GArc::contains(double x, double y) const {
       double t = ARC_TOLERANCE / ((rx + ry) / 2);
       if (abs(1.0 - r) > t) return false;
    }
-   return containsAngle(atan2(-dy, dx) * 180 / PI);
+   return containsAngle(atan2(-dy/ry, dx/rx) * 180 / PI); // BUGFIX (JL): must scale by ry, rx.
 }
 
 string GArc::getType() const {
@@ -1079,25 +1084,32 @@ string GPolygon::getFillColor() const {
    return fillColor;
 }
 
+// JL added code to handle transformed case
 GRectangle GPolygon::getBounds() const {
-   if (transformed) return pp->getBounds(this);
    double xMin = 0;
    double yMin = 0;
    double xMax = 0;
    double yMax = 0;
+   double x0 = getX();
+   double y0 = getY();
    for (int i = 0; i < vertices.size(); i++) {
       double x = vertices[i].getX();
       double y = vertices[i].getY();
+      if (transformed) {
+          GPoint pt = matrix.image(x, y);
+          x = pt.getX();
+          y = pt.getY();
+      }
       if (i == 0 || x < xMin) xMin = x;
       if (i == 0 || y < yMin) yMin = y;
       if (i == 0 || x > xMax) xMax = x;
       if (i == 0 || y > yMax) yMax = y;
    }
-   return GRectangle(xMin + getX(), yMin + getY(), xMax - xMin, yMax - yMin); // BUGFIX (JL): add getX, getY
+   return GRectangle(xMin + x0, yMin + y0, xMax - xMin, yMax - yMin); // BUGFIX (JL): add x0, y0
 }
 
+// JL added code to handle transformed case
 bool GPolygon::contains(double x, double y) const {
-   if (transformed) return pp->contains(this, x, y);
    int crossings = 0;
    int n = vertices.size();
    if (n < 2) return false;
@@ -1109,6 +1121,11 @@ bool GPolygon::contains(double x, double y) const {
    for (int i = 1; i <= n; i++) {
       double x1 = vertices[i % n].getX();
       double y1 = vertices[i % n].getY();
+      if (transformed) {
+          GPoint pt = matrix.image(x1, y1);
+          x1 = pt.getX();
+          y1 = pt.getY();
+      }
       if ((y0 > y) != (y1 > y) && x - x0 < (x1 - x0) * (y - y0) / (y1 - y0)) {
          crossings++;
       }

@@ -755,7 +755,6 @@ bool Platform::contains(const GObject *gobj, double x, double y) {
 
 // Move this computation into gobjects.cpp
 // (Done for GRect, GOval, GRoundRect, GLine by JL)
-
 GRectangle Platform::getBounds(const GObject *gobj) {
    ostringstream os;
    os << "GObject.getBounds(\"" << gobj << "\")";

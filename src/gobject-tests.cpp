@@ -621,8 +621,8 @@ void test_contains() {
     GRect *rect = new GRect(x0, y0, 200, 100);
     GLine *line = new GLine(x0, y0, x0 + 200, y0 + 100);
     GLabel *label = new GLabel("Ostromantus", x0, y0);
-    GArc *arc = new GArc(x0, y0, 350, 100, 45, 225);
-    arc->setLineWidth(5);
+    GArc *arc = new GArc(x0, y0, 350, 350, 0, 90);
+    //arc->setLineWidth(5);
     arc->setColor("#44000000");
     GArc *filledArc = new GArc(x0, y0, 350, 100, 45, 225);
     filledArc->setFillColor("#88e0e0e0");
@@ -709,6 +709,7 @@ void test_contains() {
                         }
                     }
             }
+
             if (((GActionEvent) e).getActionCommand() == "Rotate") {
                 currObj->rotate(45);
                 if (useCompounds) {
