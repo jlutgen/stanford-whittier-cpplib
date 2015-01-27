@@ -1299,11 +1299,11 @@ public:
  *     GImage *image = new GImage(filename);
  *     GImage *image = new GImage(filename, x, y);
  */
-   GImage(std::string filename, double x, double y);
+   GImage(std::string filenameOrURL, double x, double y);
 
 
 /* Prototypes for the virtual methods */
-
+   virtual bool contains(double x, double y) const;
    virtual GRectangle getBounds() const;
    virtual std::string getType() const;
    virtual std::string toString() const;

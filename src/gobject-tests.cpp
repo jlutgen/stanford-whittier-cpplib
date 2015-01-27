@@ -634,6 +634,8 @@ void test_contains() {
     gw->add(bgRect);
     bgRect->setFillColor("#55dddddd");
     bgRect->setFilled(true);
+    GImage *image = new GImage("homer-transparent.png");
+    image->setLocation(x0, y0);
     shapeMap.put("oval", oval);
     shapeMap.put("rounded rectangle", roundRect);
     shapeMap.put("3D rectangle", rect3d);
@@ -644,6 +646,7 @@ void test_contains() {
     shapeMap.put("arc", arc);
     shapeMap.put("filled arc", filledArc);
     shapeMap.put("label", label);
+    shapeMap.put("image", image);
 
     GObject *currObj;
     GChooser *ch = new GChooser;
@@ -658,6 +661,7 @@ void test_contains() {
     ch->addItem("arc");
     ch->addItem("filled arc");
     ch->addItem("label");
+    ch->addItem("image");
     ch->setSelectedItem("rectangle");
     currObj = rect;
 

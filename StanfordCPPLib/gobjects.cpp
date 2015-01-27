@@ -847,14 +847,40 @@ GImage::GImage(string filenameOrURL) {
    create(filenameOrURL);
 }
 
-GImage::GImage(string filename, double x, double y) {
-   create(filename);
+GImage::GImage(string filenameOrURL, double x, double y) {
+   create(filenameOrURL);
    setLocation(x, y);
 }
 
+// added by JL
+bool GImage::contains(double x, double y) const {
+    GPoint p = matrix.preimage(x - this->x, y - this->y);
+    double xx = p.getX();
+    double yy = p.getY();
+    return 0 < xx && xx <= width
+        &&  0 < yy && yy <= height;
+}
+
+// JL rewrote to handle transformed case
 GRectangle GImage::getBounds() const {
-   if (transformed) return pp->getBounds(this);
-   return GRectangle(x, y, width, height);
+    if (!transformed)
+       return GRectangle(x, y, width, height);
+    GPoint vertices[4];
+    vertices[0] = GPoint(0, 0); // unused!
+    vertices[1] = matrix.image(0, height);
+    vertices[2] = matrix.image(width, height);
+    vertices[3] = matrix.image(width, 0);
+    double x1, y1, x2, y2;
+    x1 = x2 = y1 = y2 = 0;
+    for (int i = 1; i < 4; i++) {
+        double x = vertices[i].getX();
+        double y = vertices[i].getY();
+        if (x < x1) x1 = x;
+        if (y < y1) y1 = y;
+        if (x > x2) x2 = x;
+        if (y > y2) y2 = y;
+    }
+    return GRectangle(this->x + x1, this->y + y1, x2 - x1, y2 - y1);
 }
 
 string GImage::getType() const {
