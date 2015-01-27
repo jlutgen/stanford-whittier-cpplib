@@ -756,26 +756,47 @@ GObject *GCompound::getElement(int index) {
    return contents.get(index);
 }
 
+// JL rewrote to handle transformed case
 GRectangle GCompound::getBounds() const {
-   if (transformed) return pp->getBounds(this);
-   double xMin = +1E20;
-   double yMin = +1E20;
-   double xMax = -1E20;
-   double yMax = -1E20;
+   double x1, y1, x2, y2;
+   x1 = 1E20;
+   x2 = -1E20;
+   y1 = 1E20;
+   y2 = -1E20;
    for (int i = 0; i < contents.size(); i++) {
       GRectangle bounds = contents.get(i)->getBounds();
-      xMin = min(xMin, bounds.getX());
-      yMin = min(yMin, bounds.getY());
-      xMax = max(xMax, bounds.getX() + bounds.getWidth());
-      yMax = max(yMax, bounds.getY() + bounds.getHeight()); // BUGFIX (JL): was yMin = min(...)
+      GPoint vertices[4];
+      vertices[0] = GPoint(bounds.getX(), bounds.getY());
+      vertices[1] = GPoint(bounds.getX() + bounds.getWidth(), bounds.getY());
+      vertices[2] = GPoint(bounds.getX(), bounds.getY() + bounds.getHeight());
+      vertices[3] = GPoint(bounds.getX()+ bounds.getWidth(), bounds.getY() + bounds.getHeight());
+      if (transformed) {
+          for (int j = 0; j < 4; j++)
+             vertices[j] = matrix.image(vertices[j]);
+      }
+      for (int j = 0; j < 4; j++) {
+          double x = vertices[j].getX();
+          double y = vertices[j].getY();
+          if (x < x1) x1 = x;
+          if (y < y1) y1 = y;
+          if (x > x2) x2 = x;
+          if (y > y2) y2 = y;
+      }
    }
-   return GRectangle(x + xMin, y + yMin, xMax - xMin, yMax - yMin); // (JL) shifted anchor point
+   return GRectangle(x + x1, y + y1, x2 - x1, y2 - y1);
 }
 
+// JL rewrote to handle transformed case
 bool GCompound::contains(double x, double y) const {
-   if (transformed) return pp->contains(this, x, y);
+   x -= this->x;
+   y -= this->y;
+   if (transformed) {
+       GPoint pt = matrix.preimage(x, y);
+       x = pt.getX();
+       y = pt.getY();
+   }
    for (int i = 0; i < contents.size(); i++) {
-      if (contents.get(i)->contains(x, y)) return true;
+       if (contents.get(i)->contains(x, y)) return true; // BUGFIX (JL): shift by this->x, this->y
    }
    return false;
 }
@@ -1179,10 +1200,10 @@ GObject::Matrix2D::Matrix2D() {
 void GObject::Matrix2D::applyRotate(double theta) {
     // Counterintuitive sign weirdness
     // because positive y-axis points downward.
-    double m00 = cosDegrees(theta)*m[0][0] - sinDegrees(theta)*m[0][1];
-    double m01 = sinDegrees(theta)*m[0][0] + cosDegrees(theta)*m[0][1];
-    double m10 = cosDegrees(theta)*m[1][0] - sinDegrees(theta)*m[1][1];
-    double m11 = sinDegrees(theta)*m[1][0] + cosDegrees(theta)*m[1][1];
+    double m00 = cosDegrees(theta) * m[0][0] - sinDegrees(theta) * m[0][1];
+    double m01 = sinDegrees(theta) * m[0][0] + cosDegrees(theta) * m[0][1];
+    double m10 = cosDegrees(theta) * m[1][0] - sinDegrees(theta) * m[1][1];
+    double m11 = sinDegrees(theta) * m[1][0] + cosDegrees(theta) * m[1][1];
     m[0][0] = m00;
     m[0][1] = m01;
     m[1][0] = m10;
@@ -1196,24 +1217,24 @@ void GObject::Matrix2D::applyScale(double sx, double sy) {
     m[1][1] *= sy;
 }
 
-GPoint GObject::Matrix2D::image(const GPoint &pt) {
+GPoint GObject::Matrix2D::image(const GPoint &pt) const {
     return image(pt.getX(), pt.getY());
 }
 
 GPoint GObject::Matrix2D::image(double x, double y) const {
-    double xx = m[0][0]*x + m[0][1]*y;
-    double yy = m[1][0]*x + m[1][1]*y;
+    double xx = m[0][0] * x + m[0][1] * y;
+    double yy = m[1][0] * x + m[1][1] * y;
     return GPoint(xx, yy);
 }
 
-GPoint GObject::Matrix2D::preimage(const GPoint &pt) {
+GPoint GObject::Matrix2D::preimage(const GPoint &pt) const {
     return preimage(pt.getX(), pt.getY());
 }
 
 GPoint GObject::Matrix2D::preimage(double x, double y) const {
-    double det = m[0][0]*m[1][1] - m[1][0]*m[0][1];
-    double xx = (m[1][1]*x - m[0][1]*y) / det;
-    double yy = (-m[1][0]*x + m[0][0]*y) / det;
+    double det = m[0][0] * m[1][1] - m[1][0] * m[0][1];
+    double xx = (m[1][1] * x - m[0][1] * y) / det;
+    double yy = (-m[1][0] * x + m[0][0] * y) / det;
     return GPoint(xx, yy);
 }
 

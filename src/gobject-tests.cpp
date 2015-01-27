@@ -630,12 +630,18 @@ void test_contains() {
     GCompound *comp1 = new GCompound;
     comp1->setLocation(x0, y0);
     comp1->add(new GLabel("compound", 0, 15));
-    GRect *bgRect = new GRect(0, 0);
-    gw->add(bgRect);
-    bgRect->setFillColor("#55dddddd");
-    bgRect->setFilled(true);
+    GRect *bgRect1 = new GRect(0, 0);
+    gw->add(bgRect1);
+    bgRect1->setFillColor("#55dddddd");
+    bgRect1->setFilled(true);
     GImage *image = new GImage("homer-transparent.png");
     image->setLocation(x0, y0);
+    GCompound *comp = new GCompound;
+    comp->setLocation(x0, y0);
+    GRect *compRect = new GRect(20, 20, 100, 100);
+    GOval *compOval = new GOval(90, 90, 150, 70);
+    comp->add(compRect);
+    comp->add(compOval);
     shapeMap.put("oval", oval);
     shapeMap.put("rounded rectangle", roundRect);
     shapeMap.put("3D rectangle", rect3d);
@@ -647,6 +653,7 @@ void test_contains() {
     shapeMap.put("filled arc", filledArc);
     shapeMap.put("label", label);
     shapeMap.put("image", image);
+    shapeMap.put("compound", comp);
 
     GObject *currObj;
     GChooser *ch = new GChooser;
@@ -662,6 +669,7 @@ void test_contains() {
     ch->addItem("filled arc");
     ch->addItem("label");
     ch->addItem("image");
+    ch->addItem("compound");
     ch->setSelectedItem("rectangle");
     currObj = rect;
 
@@ -687,7 +695,7 @@ void test_contains() {
             if (((GActionEvent) e).getActionCommand() == "End test")
                 break;
             if (((GActionEvent) e).getActionCommand() == "compounds") {
-                bgRect->setVisible(compCheckbox->isSelected());
+                bgRect1->setVisible(compCheckbox->isSelected());
                 useCompounds = compCheckbox->isSelected();
             }
             if (((GActionEvent) e).getActionCommand() == "Auto-fill") {
@@ -717,13 +725,13 @@ void test_contains() {
             if (((GActionEvent) e).getActionCommand() == "Rotate") {
                 currObj->rotate(45);
                 if (useCompounds) {
-                    bgRect->setBounds(comp1->getBounds());
+                    bgRect1->setBounds(comp1->getBounds());
                 }
             }
             if (((GActionEvent) e).getActionCommand() == "Scale") {
                 currObj->scale(1.2, 0.8);
                 if (useCompounds) {
-                    bgRect->setBounds(comp1->getBounds());
+                    bgRect1->setBounds(comp1->getBounds());
                 }
             }
             if (((GActionEvent) e).getActionCommand() == "chooser") {
@@ -742,7 +750,7 @@ void test_contains() {
                 if (useCompounds) {
                     gw->add(comp1);
                     comp1->add(currObj, 50, 50);
-                    bgRect->setBounds(comp1->getBounds());
+                    bgRect1->setBounds(comp1->getBounds());
                 } else {
                     gw->add(currObj);
                 }

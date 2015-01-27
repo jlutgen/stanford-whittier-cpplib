@@ -434,9 +434,9 @@ protected:
         // right-multiply by scaling matrix
         void applyScale(double sx, double sy);
 
-        GPoint image(const GPoint &pt);
+        GPoint image(const GPoint &pt) const;
         GPoint image(double x, double y) const;
-        GPoint preimage(const GPoint &pt);
+        GPoint preimage(const GPoint &pt) const;
         GPoint preimage(double x, double y) const;
 
     private:
