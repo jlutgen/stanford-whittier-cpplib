@@ -978,9 +978,37 @@ double GLabel::getFontDescent() const {
    return descent;
 }
 
-GRectangle GLabel::getBounds() const {
-   if (transformed) return pp->getBounds(this);
-   return GRectangle(x, y - ascent, width, height);
+// JL added
+bool GLabel::contains(double x, double y) const {
+   x -= this->x;
+   y -= this->y;
+   if (transformed) {
+       GPoint pt = matrix.preimage(x, y);
+       x = pt.getX();
+       y = pt.getY();
+   }
+   return 0 <= x && x <= width && -ascent <= y && y <= -ascent + height;
+}
+
+// JL rewrote to handle transformed case
+GRectangle GLabel::getBounds() const {   
+   if (!transformed)
+      return GRectangle(x, y - ascent, width, height);
+   GPoint vertices[4];
+   vertices[0] = matrix.image(0, -ascent);
+   vertices[1] = matrix.image(0, -ascent + height);
+   vertices[2] = matrix.image(width, -ascent + height);
+   vertices[3] = matrix.image(width, -ascent);
+   double x1, y1, x2, y2;
+   for (int i = 0; i < 4; i++) {
+       double x = vertices[i].getX();
+       double y = vertices[i].getY();
+       if (i == 0 || x < x1) x1 = x;
+       if (i == 0 || y < y1) y1 = y;
+       if (i == 0 || x > x2) x2 = x;
+       if (i == 0 || y > y2) y2 = y;
+   }
+   return GRectangle(x + x1, y + y1, x2 - x1, y2 - y1);
 }
 
 string GLabel::getType() const {

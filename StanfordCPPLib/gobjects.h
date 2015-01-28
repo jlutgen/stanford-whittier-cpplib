@@ -1451,7 +1451,7 @@ public:
 
 
 /* Prototypes for the virtual methods */
-
+   virtual bool contains(double x, double y) const;
    virtual GRectangle getBounds() const;
    virtual std::string getType() const;
    virtual std::string toString() const;

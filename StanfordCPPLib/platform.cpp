@@ -745,7 +745,7 @@ void Platform::rotate(GObject *gobj, double theta) {
 }
 
 // Move this computation into gobjects.cpp
-// (Done for GRect, GOval, GRoundRect, GLine, GPolygon, GImage, GCompound by JL)
+// (Done for GRect, GOval, GRoundRect, GLine, GPolygon, GImage, GCompound, GLabel by JL)
 bool Platform::contains(const GObject *gobj, double x, double y) {
    ostringstream os;
    os << "GObject.contains(\"" << gobj << "\", " << x << ", " << y << ")";
@@ -754,7 +754,7 @@ bool Platform::contains(const GObject *gobj, double x, double y) {
 }
 
 // Move this computation into gobjects.cpp
-// (Done for GRect, GOval, GRoundRect, GLine, GPolygon, GImage, GCompound by JL)
+// (Done for GRect, GOval, GRoundRect, GLine, GPolygon, GImage, GCompound, GLabel by JL)
 GRectangle Platform::getBounds(const GObject *gobj) {
    ostringstream os;
    os << "GObject.getBounds(\"" << gobj << "\")";
