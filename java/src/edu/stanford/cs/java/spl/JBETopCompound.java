@@ -1,5 +1,5 @@
 /*
- * @(#)JBETopCompound.java   3.01.1 07/30/14
+ * JBETopCompound.java
  */
 
 /*************************************************************************/
@@ -44,35 +44,37 @@ public class JBETopCompound extends GCompound {
    public void setParent(GContainer parent) {
 	   super.setParent(parent);
 	   if (parent == null && owner != null) {
+		   
+		   // BUGFIX (JL)
 		   // This compound has a JBECanvas above it,
 		   // but is being removed from its parent, so we
 		   // must remove any interactors in this compound or
-		   // compounds below this one from the canvas. (JL)
+		   // compounds below this one from the canvas.
 		   mapRemoveInteractorsFromCanvas(owner);
+		   
 		   owner = null;
 	   } else if (parent instanceof JBETopCompound) {
 		   JBECanvas jc = ((JBETopCompound) parent).getCanvas();
 		   if (jc != null) {
+			   
+			   // BUGFIX (JL)
 			   // This compound is being added to a compound that
 			   // has a canvas above it, so we must add any interactors
 			   // in this compound or compounds below this one to
-			   // the canvas. (JL)
+			   // the canvas.
 			   owner = jc;
 			   mapAddInteractorsToCanvas(jc);
 		   }
 	   }
    }
 
-   // JL
+   // Method added by JL
    public void mapAddInteractorsToCanvas(JBECanvas jc) {
 	   int nElements = getElementCount();
 		for (int i = 0; i < nElements; i++) {
 			GObject gobj = getElement(i);
 			if (gobj instanceof GInteractor) {
 				JComponent interactor = ((GInteractor) gobj).getInteractor();
-//				GPoint canvasLoc = getCanvasPoint(gobj.getLocation());
-//				interactor.setLocation(GMath.round(canvasLoc.getX()), 
-//						               GMath.round(canvasLoc.getY()));
 				((GInteractor) gobj).updateCanvasLocation();
 				jc.add(interactor);
 				jc.validate();
@@ -83,7 +85,7 @@ public class JBETopCompound extends GCompound {
 		}
    }
    
-   // JL
+   // Method added by JL
    public void mapRemoveInteractorsFromCanvas(JBECanvas jc) {
 	   int nElements = getElementCount();
 	   for (int i = 0; i < nElements; i++) {
@@ -98,7 +100,7 @@ public class JBETopCompound extends GCompound {
 	   }
    }
    
-   // JL
+   // Method added by JL
    // @Override
    public void setLocation(double x, double y) {
 	   super.setLocation(x, y);
@@ -107,7 +109,7 @@ public class JBETopCompound extends GCompound {
 	   }
    }
    
-   // JL
+   // Method added by JL
    public void mapUpdateCanvasLocations() {
 	   int nElements = getElementCount();
 	   for (int i = 0; i < nElements; i++) {
@@ -120,5 +122,9 @@ public class JBETopCompound extends GCompound {
 	   }
    }
    
+   // Implementation note (JL): JBETopCompound is used for all GCompounds created
+   // by front end, not just the top compound. We use the `owner` field to track
+   // whether this JBETopCompound has a JBECanvas as an ancestor, in which case `owner`
+   // is that JBECanvas, or doesn't, in which case `owner` is null.
    private JBECanvas owner;
 }

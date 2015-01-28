@@ -1,5 +1,5 @@
 /*
- * @(#)GRoundRect.java   2.03.1 05/26/14
+ * GRoundRect.java
  */
 
 /*************************************************************************/
@@ -25,7 +25,6 @@ package edu.stanford.cs.java.graphics;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 /**

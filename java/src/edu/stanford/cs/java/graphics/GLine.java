@@ -1,5 +1,5 @@
 /*
- * @(#)GLine.java   2.03.1 05/26/14
+ * GLine.java
  */
 
 /*************************************************************************/
@@ -76,7 +76,10 @@ public class GLine extends GObject {
  *
  * @return The bounding box for this object
  */
-   // BUGFIX (JL): rewrote to give correct result.
+   // BUGFIX (JL): rewrote to give correct result in case where matrix != null.
+   // Original version transformed (x0, y0) and (x1, y1),
+   // but origin for transformation is (x0, y0), so must
+   // transform (dx, dy) then translate by (x0, y0).
    public GRectangle getBounds() {
       double x0 = getX();
       double y0 = getY();
@@ -161,7 +164,10 @@ public class GLine extends GObject {
  * @return <code>true</code> if the point (<code>x</code>,&nbsp;<code>y</code>)
  *         is within a short distance of the line
  */
-   // BUGFIX (JL): rewrote to give correct result.
+   // BUGFIX (JL): rewrote to give correct result in case where matrix != null.
+   // Original version transformed (x0, y0) and (x1, y1),
+   // but origin for transformation is (x0, y0), so must
+   // transform (dx, dy) then translate by (x0, y0).
    public boolean contains(double x, double y) {
       double x0 = getX();
       double y0 = getY();

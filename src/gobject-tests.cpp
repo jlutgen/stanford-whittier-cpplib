@@ -642,6 +642,9 @@ void test_contains() {
     GOval *compOval = new GOval(90, 90, 150, 70);
     comp->add(compRect);
     comp->add(compOval);
+    GButton *button = new GButton("Testo");
+    button->setSize(200, 100);
+    button->setLocation(x0, y0);
     shapeMap.put("oval", oval);
     shapeMap.put("rounded rectangle", roundRect);
     shapeMap.put("3D rectangle", rect3d);
@@ -654,6 +657,7 @@ void test_contains() {
     shapeMap.put("label", label);
     shapeMap.put("image", image);
     shapeMap.put("compound", comp);
+    shapeMap.put("button", button);
 
     GObject *currObj;
     GChooser *ch = new GChooser;
@@ -670,6 +674,7 @@ void test_contains() {
     ch->addItem("label");
     ch->addItem("image");
     ch->addItem("compound");
+    ch->addItem("button");
     ch->setSelectedItem("rectangle");
     currObj = rect;
 
@@ -697,6 +702,12 @@ void test_contains() {
             if (((GActionEvent) e).getActionCommand() == "compounds") {
                 bgRect1->setVisible(compCheckbox->isSelected());
                 useCompounds = compCheckbox->isSelected();
+            }
+            if (((GActionEvent) e).getActionCommand() == "Testo") {
+                GPoint pt = button->getLocation();
+                button->setLocation(pt.getX()-button->getWidth()-10, pt.getY());
+                pause(1000);
+                button->setLocation(pt);
             }
             if (((GActionEvent) e).getActionCommand() == "Auto-fill") {
                 GRectangle bds = currObj->getBounds();

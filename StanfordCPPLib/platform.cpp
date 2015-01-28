@@ -477,9 +477,9 @@ string Platform::openFileDialog(string title, string mode, string path, string p
    if (isDirectory(path) && !endsWith(path, sep)) {
        path += sep;
    }
-   path += " "; // BUGFIX (JL): hack to circumvent back-end bug when path ends with backslash
+   path += " "; // BUGFIX (JL): hack to circumvent back-end bug when path ends with backslash (back end will strip off this space)
    os << ", \"" << mode << "\", ";
-   writeQuotedString(os, path); // BUGFIX (JL): path might contain backslashes
+   writeQuotedString(os, path); // BUGFIX (JL): Must use writeQuotedString because path might contain backslashes
    os << ", \"" << patternName << "\"";
    os << ")";
    putPipe(os.str());

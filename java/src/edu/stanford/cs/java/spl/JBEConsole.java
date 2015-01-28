@@ -1,5 +1,5 @@
 /*
- * @(#)JBEConsole.java   3.01.1 07/30/14
+ * JBEConsole.java
  */
 
 /*************************************************************************/
@@ -22,18 +22,12 @@
 
 package edu.stanford.cs.java.spl;
 
-//import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 import java.awt.Color;
-//import java.awt.Dimension;
-//import java.awt.Event;
 import java.awt.Font;
-//import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-//import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JMenu;
@@ -41,10 +35,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-//import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-//import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Document;
@@ -344,7 +336,7 @@ class ConsoleTextPane extends JTextPane implements KeyListener {
 	/**
 	 * Returns the length of the text stored in the console model.
 	 */
-	// Called from EDT
+	// Called from Event Dispatch Thread
 	public int getLength() {
 		return document.getLength();
 	}

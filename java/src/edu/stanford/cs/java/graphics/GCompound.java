@@ -1,5 +1,5 @@
 /*
- * @(#)GCompound.java   2.03.1 05/26/14
+ * GCompound.java
  */
 
 /*************************************************************************/
@@ -30,8 +30,6 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
-
-import edu.stanford.cs.java.spl.JBETopCompound;
 
 /**
  * This class defines a graphical object that consists of a collection

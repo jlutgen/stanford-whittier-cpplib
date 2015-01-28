@@ -1,5 +1,5 @@
 /*
- * @(#) GInteractor.java   3.01.1 07/30/14
+ * GInteractor.java
  */
 
 /*************************************************************************/
@@ -23,7 +23,6 @@
 package edu.stanford.cs.java.spl;
 
 import edu.stanford.cs.java.graphics.GCanvas;
-import edu.stanford.cs.java.graphics.GCompound;
 import edu.stanford.cs.java.graphics.GContainer;
 import edu.stanford.cs.java.graphics.GDimension;
 import edu.stanford.cs.java.graphics.GMath;
@@ -33,8 +32,6 @@ import edu.stanford.cs.java.graphics.GRectangle;
 import edu.stanford.cs.java.graphics.GResizable;
 
 import java.awt.Color;
-import java.awt.Component;
-//import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -43,8 +40,7 @@ import java.awt.Point;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-//import javax.swing.JLabel;
-//import javax.swing.JPanel;
+
 
 public abstract class GInteractor extends GObject implements GResizable {
 
@@ -89,7 +85,7 @@ public abstract class GInteractor extends GObject implements GResizable {
       interactor.repaint();
    }
    
-   // JL
+   // JL added this method so front end can enable/disable buttons
    public void setEnabled(boolean enabled) {
 	   interactor.setEnabled(enabled);
 	   interactor.repaint();
@@ -144,7 +140,7 @@ public abstract class GInteractor extends GObject implements GResizable {
       actionCommand = cmd;
    }
 
-   // added by JL
+   // Method added by JL so front end can set foreground color for interactors
    public void setColor(Color c) {
 	   final Color fc = c;
 	   SwingUtilities.invokeLater(new Runnable() {
@@ -155,7 +151,7 @@ public abstract class GInteractor extends GObject implements GResizable {
 	   });
    }
    
-   // added by JL (but it's never called)
+   // Method added by JL (but it's never called)
    public Color getColor() {
 	   return interactor.getForeground();
    }

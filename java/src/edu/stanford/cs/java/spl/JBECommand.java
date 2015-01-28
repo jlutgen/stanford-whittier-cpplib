@@ -1,5 +1,5 @@
 /*
- * @(#)JBECommand.java   3.01.1 07/30/14
+ * JBECommand.java
  */
 
 /*************************************************************************/
@@ -24,7 +24,6 @@ package edu.stanford.cs.java.spl;
 
 import edu.stanford.cs.java.graphics.G3DRect;
 import edu.stanford.cs.java.graphics.GArc;
-//import edu.stanford.cs.java.graphics.GCompound;
 import edu.stanford.cs.java.graphics.GContainer;
 import edu.stanford.cs.java.graphics.GDimension;
 import edu.stanford.cs.java.graphics.GFillable;
@@ -45,8 +44,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
-import java.lang.reflect.InvocationTargetException;
-//import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -238,8 +235,8 @@ class GWindow_close extends JBECommand {
 		scanner.verifyToken(")");
 		if (jw != null) 
 			jw.close();
-		// else do nothing, since user might have closed window, in which 
-		// case jw will be null
+		// Else do nothing, since user might have closed window, in which 
+		// case `jw` will be null.
 	}
 }
 
@@ -1855,9 +1852,7 @@ class GWindow_exitGraphics extends JBECommand {
 	}
 }
 
-/* JL added this class */
-
-
+// JL added this class
 class File_openFileDialog extends JBECommand {
 	public void execute(TokenScanner scanner, JavaBackEnd jbe) {
 		scanner.verifyToken("(");
@@ -1865,8 +1860,12 @@ class File_openFileDialog extends JBECommand {
 		scanner.verifyToken(",");
 		final String mode = nextString(scanner);
 		scanner.verifyToken(",");
-		final String pathAndFilter = nextString(scanner).trim(); // JL added .trim(). Clients must add a space to end of real path since path can end with backslash,
-		// so we must remove it to recover real path.
+		
+		// JL added .trim(). Clients must add a space to end of 
+		// real path since path can end with backslash, so we 
+		// must remove it to recover real path.
+		final String pathAndFilter = nextString(scanner).trim(); 
+		
 		scanner.verifyToken(",");
 		final String filterDescription = nextString(scanner);
 		scanner.verifyToken(")");
@@ -1887,7 +1886,7 @@ class File_openFileDialog extends JBECommand {
 }
 
 // all GBufferedImage commands are OK on main thread, 
-// since that class handles EDT stuff on its own
+// since that class handles Event Dispatch Thread stuff on its own
 class GBufferedImage_create extends JBECommand {
 	// gbufferedimage = new GBufferedImage(x, y, width, height);
 	public void execute(TokenScanner paramTokenScanner, JavaBackEnd jbe) {

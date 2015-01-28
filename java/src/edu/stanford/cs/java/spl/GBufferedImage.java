@@ -11,6 +11,8 @@ import javax.swing.*;
  * 
  * @author Marty Stepp
  * @version 2014/10/22
+ * 
+ * Jeff Lutgen added scale method.
  */
 public class GBufferedImage extends GInteractor {
 	
@@ -79,8 +81,7 @@ public class GBufferedImage extends GInteractor {
 			imageWidth = bufferedImage.getWidth();
 			imageHeight = bufferedImage.getHeight();
 			repaintImage();
-			//System.out.println("result:" + toStringBase64());   // this is a LONG string
-		    return toStringBase64();
+		    return toStringBase64(); // this is a LONG string
 		} catch (Exception e) {
 			throw (new RuntimeException(e.getMessage()));
 		}
@@ -125,6 +126,8 @@ public class GBufferedImage extends GInteractor {
 		return base64;
 	}
 	
+	// JL modified this method so that calls to thread-unsafe Swing methods
+	// occur on the Event Dispatch Thread.
 	private void repaintImage() {
 		SwingUtilities.invokeLater(new Runnable() {
 	        public void run() {

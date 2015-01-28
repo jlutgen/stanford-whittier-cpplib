@@ -1,5 +1,5 @@
 /*
- * @(#)GArc.java   2.03.1 05/26/14
+ * GArc.java
  */
 
 /*************************************************************************/
@@ -27,7 +27,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -194,7 +193,8 @@ public class GArc extends GObject implements GFillable {
  * @return The bounding box of this object
  */
 
-   public GRectangle getBounds() { // rewritten by JL
+   // Rewritten by JL to handle the transformed case
+   public GRectangle getBounds() {
       Shape shape = new Arc2D.Double(0, 0, frameWidth, frameHeight,
               arcStart, arcSweep,
               isFilled() ? Arc2D.PIE : Arc2D.OPEN);
@@ -207,8 +207,8 @@ public class GArc extends GObject implements GFillable {
                             bounds.getWidth(), bounds.getHeight());
    }
 
-// Containment redefined for unfilled arcs by JL and method 
-// rewritten by JL
+// Containment redefined for unfilled arcs by JL to agree with Swing,
+// and method rewritten by JL to handle the transformed case.
 /**
  * Checks to see whether a point is inside the object.  For the
  * <code>GArc</code> class, containment depends on whether the arc
@@ -350,23 +350,6 @@ public class GArc extends GObject implements GFillable {
                         cy - ry * GMath.sinDegrees(angle));
    }
 
-/**
- * Returns <code>true</code> if the arc contains the specified angle.
- */
-
-   private boolean containsAngle(double theta) {
-      double start = Math.min(getStartAngle(),
-                              getStartAngle() + getSweepAngle());
-      double sweep = Math.abs(getSweepAngle());
-      if (sweep >= 360) return true;
-      theta = (theta < 0) ? 360 - (-theta % 360) : theta % 360;
-      start = (start < 0) ? 360 - (-start % 360) : start % 360;
-      if (start + sweep > 360) {
-         return theta >= start || theta <= start + sweep - 360;
-      } else {
-         return theta >= start && theta <= start + sweep;
-      }
-   }
 
 /* Private instance variables */
 

@@ -1,5 +1,5 @@
 /*
- * @(#)JBELabel.java   3.01.1 07/30/14
+ * JBELabel.java
  */
 
 /*************************************************************************/
@@ -46,7 +46,7 @@ public class JBELabel extends GLabel {
       return jlabel;
    }
 
-   // overrides GLabel
+   // overrides GLabel. Added by JL
    public void setFont(Font font) {
 	   final Font ffont = font;
 	   SwingUtilities.invokeLater(new Runnable() {

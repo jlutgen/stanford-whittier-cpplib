@@ -1,5 +1,5 @@
 /*
- * File: TokenScanner.java
+ * TokenScanner.java
  * -----------------------
  * This file exports a TokenScanner class that is easy to use in a
  * variety of common applications.

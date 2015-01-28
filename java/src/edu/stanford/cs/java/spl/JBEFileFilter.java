@@ -1,5 +1,5 @@
 /*
- * @(#)JBEFileFilter.java   3.01.1 07/30/14
+ * JBEFileFilter.java
  */
 
 /*************************************************************************/
@@ -56,7 +56,15 @@ public class JBEFileFilter extends FileFilter {
       dir = (sp == -1) ? "" : pathAndFilter.substring(0, sp);
       String last = pathAndFilter.substring(sp + 1);
       if (!isPattern(last)) {
-         //if (dir.isEmpty()) dir += "/"; // JL commented out (BUGFIX)
+    	 // BUGFIX (JL): Added the check for last.isEmpty(), because if `dir` is empty,
+    	 // then either `pathAndFilter` is a single relative directory name, like "images", 
+    	 // in which case `last` is "images" and `dir` was getting set to "/images" (bad news),
+    	 // or `pathAndFilter` is "/", in which case `last` is empty and we do need
+    	 // to append "/" to `dir` before appending `last`.
+    	 // (Note that Stepp's bugfix in front end adds a trailing slash to the string
+    	 // passed as `pathAndFilter` if there is no pattern part, so `pathAndFilter`
+    	 // will never have the form "/etc".) 
+         if (dir.isEmpty() && last.isEmpty()) dir += "/";
          dir += last;
       }
       if (dir.isEmpty()) {
@@ -116,8 +124,11 @@ public class JBEFileFilter extends FileFilter {
    private static String getPatternPart(String path) {
       int sp = Math.max(path.lastIndexOf("/"), path.lastIndexOf('\\'));
       String last = path.substring(sp + 1);
-      // return (isPattern(last)) ? last : null;
-      return (isPattern(last)) ? last : ""; // JL (fix crash in JBEFileFilter())
+      
+      // BUGFIX (JL): was returning `null` instead of empty string when 
+      // isPattern(last) is false, but that was causing a null pointer 
+      // exception in the JBEFileFilter constructor.
+      return (isPattern(last)) ? last : ""; 
    }
 
    private static boolean isPattern(String str) {

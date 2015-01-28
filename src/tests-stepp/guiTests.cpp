@@ -44,7 +44,7 @@ string constToString(int enumVal) {
 
 void goptionpaneTest() {
     GOptionPane::showMessageDialog(NULL, "Hello, world");
-    GOptionPane::showMessageDialog(NULL, "Here's one with title and type", "booyah", GOptionPane::ERROR);
+    GOptionPane::showMessageDialog(NULL, "Here's one with title and type", "booyah", GOptionPane::ERROR_MESSAGE);
     GOptionPane::showMessageDialog(NULL, "special chars [*+*&}{] && || !)@(*&#)(&^%!{ \" \" \" \"}) C:\\Program Files\\Test ;,;:\", ';\"\\//\\// ( ) test 1 2 3 $a $b %a %b %1 %2 http://foo.com/! end");
     
     int result = GOptionPane::showConfirmDialog(NULL, "Are you sure?");

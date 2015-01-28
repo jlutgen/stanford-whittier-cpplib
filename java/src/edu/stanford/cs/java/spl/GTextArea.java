@@ -1,5 +1,5 @@
 /*
- * @GTextArea.java
+ * GTextArea.java
  * 
  * @author Jeff Lutgen
  */
@@ -26,7 +26,6 @@ package edu.stanford.cs.java.spl;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -65,14 +64,6 @@ public class GTextArea extends GInteractor {
 		scrollPane.setViewportView(textArea);
 		setFont(DEFAULT_FONT);
 		setSize(width, height); 
-		
-		// DELETE
-//		setText("Text:\u2714");
-//		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//		String [] fonts = ge.getAvailableFontFamilyNames();
-//		for (int i=0; i<fonts.length; i++) {
-//			System.out.println(fonts[i]);
-//		}
 	}
 
 	/**

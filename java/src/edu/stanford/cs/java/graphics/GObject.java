@@ -1,5 +1,5 @@
 /*
- * @(#)GObject.java   2.03.1 05/26/14
+ * GObject.java
  */
 
 /*************************************************************************/
@@ -626,7 +626,7 @@ public abstract class GObject implements Cloneable, GScalable {
          transientParent = null; // JL
       } else {
          transientParent = parent;
-         compoundParent = null;
+         compoundParent = null; // JL
       }
    }
 

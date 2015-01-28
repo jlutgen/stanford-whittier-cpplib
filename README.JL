@@ -208,7 +208,7 @@ Console: implement copy menu item, at least.
 DONE (copy, cut, paste, select all)
 
 
-Console: Implement file menu with Quit?
+Console: File menu with Quit?
 TODO
 
 
@@ -249,7 +249,7 @@ to resize console. See changes in JavaBackEnd.java setConsoleSize().
 DONE
 
 
-Add code to platform.cpp so in Windows so can set environment variable
+Add code to platform.cpp so in Windows can set environment variable
 JBETRACE to "true" to get comm trace logged to JBElog.txt. There is already
 the capability in non-Windows systems to log to /dev/tty when JBETRACE is
 "true". 

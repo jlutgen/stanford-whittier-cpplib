@@ -1,5 +1,5 @@
 /*
- * @(#)G3DRect.java   2.03.1 05/26/14
+ * G3DRect.java
  */
 
 /*************************************************************************/
@@ -23,8 +23,6 @@
 package edu.stanford.cs.java.graphics;
 
 import java.awt.Graphics2D;
-import java.awt.Graphics;
-import java.awt.geom.Rectangle2D;
 
 /**
  * The <code>G3DRect</code> class is used to represent a rectangle whose

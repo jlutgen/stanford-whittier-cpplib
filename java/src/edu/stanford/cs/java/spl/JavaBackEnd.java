@@ -1,5 +1,5 @@
 /*
- * @(#)JavaBackEnd.java   3.01.1 07/30/14
+ * JavaBackEnd.java
  */
 
 /*************************************************************************/
@@ -47,7 +47,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.io.BufferedInputStream;
@@ -213,12 +212,14 @@ ChangeListener {
 		
 		JBEWindow window = new JBEWindow(this, id, appName, width, height);
 		windowTable.put(id, window);
-		//consoleWidth = width;
+		
+		// Ugly hack by JL to compensate for top menu bar on Mac
 		if (isMacOS) {
 			consoleY = 66 + height; // take top menu bar into account
 		} else {
 			consoleY = 38 + height;
 		}
+		
 		window.setLocation(DEFAULT_GRAPHICS_X, DEFAULT_GRAPHICS_Y);
 		activeWindowCount++;
 		window.setResizable(false);
@@ -353,7 +354,11 @@ ChangeListener {
 
 	protected String getConsole() {
 		if (consoleFrame == null) showConsole();
-		consoleFrame.requestFocus(); // JL added
+		
+		// JL added next line so he doesn't have to click in the console window 
+		// before typing (when a GWindow had the focus).
+		consoleFrame.requestFocus(); 
+		
 		return console.getLine();
 	}
 
@@ -500,7 +505,9 @@ ChangeListener {
 	}
 
 	/* File dialogs */
-
+	
+	// JL added filterDescription parameter so front end can pass in
+	// a description like "Image files" to be displayed in the dialog.
 	protected String openFileDialog(String title, String mode, 
 			String pathAndFilter, String filterDescription) {
 		JBEFileFilter filter = new JBEFileFilter(pathAndFilter, filterDescription);
@@ -781,7 +788,6 @@ ChangeListener {
 				JBECommand cmd = cmdTable.get(fn);
 				if (cmd != null) cmd.execute(scanner, this);
 			} catch (Exception ex) {
-				//System.err.println("error:" + ex.getMessage());
 				System.out.println("error:" + ex.getMessage().replace('\n', ' '));
 				ex.printStackTrace(System.err);
 			}
@@ -852,6 +858,10 @@ ChangeListener {
 		return image;
 	}
 
+	// JL modified this method. Attempts to play sound files were producing 
+	// "java.io.IOException: mark/reset" exceptions.
+	// See http://stackoverflow.com/questions/5529754/java-io-ioexception-mark-reset-not-supported
+	// and http://www.cs.unc.edu/~luv/teaching/COMP110/programs/AudioPlayer.java
 	protected Clip getClip(String name) {
 		Clip clip = clipTable.get(name);
 		if (clip != null) return clip;
@@ -901,7 +911,7 @@ ChangeListener {
 					types, new AppleQuitProxy(this));
 			addListener.invoke(app, args);
 		} catch (Exception ex) {
-			// System.err.println("expected error on non-Apple system: "+ ex.getMessage());
+			/* empty */
 		}
 	}
 
