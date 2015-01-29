@@ -323,7 +323,7 @@ double getScreenHeight() {
 int convertColorToRGB(string colorName) {
    if (colorName[0] == '#') {
       unsigned aa = 0xFF;
-      if (colorName.length() == 9) aa = 0; // BUGFIX (JL) - was 8
+      if (colorName.length() == 9) aa = 0; // BUGFIX (JL) - was 8, but "#aarrggbb" has length 9
       istringstream is(colorName.substr(1) + "@");
       unsigned rgb;
       char terminator = '\0';

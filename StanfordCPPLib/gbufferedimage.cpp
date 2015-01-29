@@ -284,7 +284,12 @@ GBufferedImage *GBufferedImage::rescale(int width, int height) const {
                 error("GBufferedImage::rescale: image data does not contain valid pixel (x="
                       + integerToString(x) + ", y=" + integerToString(y) + ")");
             }
-            int px = convertColorToRGB(line) & 0x00FFFFFF; // JL added mask
+
+            // BUGFIX (JL) added mask, because convertColorToRGB returns an int of the form
+            // 0xaarrggbb, but GBufferedImage assumes all ints representing colors are of the
+            // form 0xrrggbb.
+            int px = convertColorToRGB(line) & 0x00FFFFFF;
+
             scaledImage->m_pixels[y][x] = px;
         }
     }

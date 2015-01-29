@@ -402,7 +402,10 @@ string Platform::getCurrentDirectory() {
 
 void Platform::createDirectory(string path) {
    if (endsWith(path, "/")) {
-      path = path.substr(0, path.length() - 1); // BUGFIX (JL): was `path.length() - 2`
+
+      // BUGFIX (JL): was `path.length() - 2`, but we want everything up to
+      // but not including the final slash.
+      path = path.substr(0, path.length() - 1);
    }
    if (mkdir(path.c_str(), 0777) != 0) {
       if (errno == EEXIST && isDirectory(path)) return;
@@ -1539,7 +1542,9 @@ static void initPipe() {
       execlp("java", "java", "-jar", "spl.jar", programName.c_str(), NULL);
 #endif
    }
-      throw ErrorException("Could not exec spl.jar"); // BUGFIX (JL) was `throw new Error...`
+      // BUGFIX (JL) was `throw new ErrorException(...)`, but our error-handling code
+      // catches exception objects, not pointers to exception objects.
+      throw ErrorException("Could not exec spl.jar");
    } else {
       pin = fromJBE[0];
       pout = toJBE[1];

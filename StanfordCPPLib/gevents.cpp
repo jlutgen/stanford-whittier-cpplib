@@ -202,9 +202,9 @@ GMouseEvent::GMouseEvent(GEvent e) {
       eventTime = e.eventTime;
       x = e.x;
       y = e.y;
-      gwd = e.gwd; //  BUGFIX (JL) - Otherwise, doing
-                   //   GMouseEvent me = waitForEvent(MOUSE_EVENT);
-                   //   cout << me.getGWindow().getWindowTitle() << endl;
+      gwd = e.gwd; //  BUGFIX (JL): If gwd isn't initialized, doing
+                   //     GMouseEvent me = waitForEvent(MOUSE_EVENT);
+                   //     cout << me.getGWindow().getWindowTitle() << endl;
                    // causes a crash, since me.gwd is garbage.
    }
 }
@@ -262,9 +262,9 @@ GKeyEvent::GKeyEvent(GEvent e) {
       eventTime = e.eventTime;
       keyChar = e.keyChar;
       keyCode = e.keyCode;
-      gwd = e.gwd; // JL added. Otherwise, doing
-                   //   GKeyEvent ke = waitForEvent(KEY_EVENT);
-                   //   cout << ke.getGWindow().getWindowTitle() << endl;
+      gwd = e.gwd; // BUGFIX (JL). If gwd isn't initialized, doing
+                   //    GKeyEvent ke = waitForEvent(KEY_EVENT);
+                   //    cout << ke.getGWindow().getWindowTitle() << endl;
                    // causes a crash, since ke.gwd is garbage.
    }
 }

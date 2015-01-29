@@ -127,7 +127,7 @@ std::string addr2line_clean(std::string line) {
 #if defined(_WIN32)
     // TODO: implement on Windows
     // "ZN10stacktrace25print_stack_trace_windowsEv at C:\Users\stepp\Documents\StanfordCPPLib\build\stanfordcpplib-windows-Desktop_Qt_5_3_MinGW_32bit-Debug/../../StanfordCPPLib/stacktrace/call_stack_windows.cpp:126"
-    line = trim(line); // JL bugfix
+    line = trim(line); // BUGFIX (JL)
 #elif defined(__APPLE__)
     // Mac OS X version (atos)
     // "Vector<int>::checkIndex(int) const (in Autograder_QtCreatorProject) (vector.h:764)"
@@ -179,7 +179,11 @@ int addr2line_all(void** addrs, int length, std::string& output) {
     // have addr2line map the address to the relevant line in the code
 #if defined(__APPLE__)
     // Mac OS X
-    out << "xcrun atos -o " << exceptions::getProgramNameForStackTrace() << addrsStr; // BUGFIX (JL) was "atos -o"
+
+    // BUGFIX (JL) was "atos -o", but newer versions of atos include a 5-line informational
+    // message at the beginning of the output, so must call atos using either "xcrun atos"
+    // or "atos -d".
+    out << "xcrun atos -o " << exceptions::getProgramNameForStackTrace() << addrsStr;
 #elif defined(_WIN32)
     // Windows
     out << "addr2line.exe -f -C -s -p -e " << exceptions::getProgramNameForStackTrace() << addrsStr;

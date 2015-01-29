@@ -72,12 +72,13 @@
 #endif
 
 #if CONSOLE_FLAG | GRAPHICS_FLAG | JBEMISC_FLAG
+
+// BUGFIX (JL)
 // We're using the Java back end for console, graphics, or something else,
 // and cin/cout will be redirected, so we save their current
 // rdbufs and restore them after user's main() returns, or
-// after we handle an error exception. Failure to do so can
-// cause a segmentation fault. (JL)
-
+// after we handle an error exception. Failure to do so causes
+// a segmentation fault on some platforms.
 #  define main main(int argc, char **argv) { \
       extern int Main(); \
       extern int startupMain(int argc, char **argv); \

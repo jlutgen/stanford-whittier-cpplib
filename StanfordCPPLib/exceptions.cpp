@@ -276,12 +276,12 @@ void printStackTrace(std::ostream& out) {
         }
 
 
-        // JL
+        // JL debugging
 //        cout << "entry #" << i << endl;
 //        cout << "lineStrLength: " << lineStrLength << endl;
 //        cout << "lineStr: " << lineStr << endl;
 //        cout << "entry.function: " << entry.function << endl;
-        // JL end
+        // JL end debugging
 
 
         out << " *** " << std::left << std::setw(lineStrLength) << lineStr

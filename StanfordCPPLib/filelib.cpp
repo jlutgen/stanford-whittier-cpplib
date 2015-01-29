@@ -41,7 +41,7 @@ static Platform *pp = getPlatform();
 
 /* Prototypes */
 
-static void splitPath(string path, Vector<string> &list); // JL BUGFIX: added &
+static void splitPath(string path, Vector<string> &list); // BUGFIX (JL): added '&'
 static bool recursiveMatch(string str, int sx, string pattern, int px);
 
 /* Implementations */
@@ -274,16 +274,15 @@ void renameFile(string oldname, string newname) {
    rename(oldname.c_str(), newname.c_str());
 }
 
+// JL rewrote this method. It wasn't working correctly in many cases.
 void createDirectoryPath(string path) {
    int cp = 0;  // BUGFIX (JL): was 1
    if (path == "") return;
    path = expandPathname(path); // JL
    char sep = getDirectoryPathSeparator()[0]; // JL
    while ((cp = path.find(sep, cp + 1)) != string::npos) { // JL changed '/' to sep
-      cout << "createDirectoryPath:" << path.substr(0, cp) << endl; // DELETE
       createDirectory(path.substr(0, cp)); // BUGFIX (JL): was `cp - 1`
    }
-   cout << "createDirectoryPath:" << path << endl; // DELETE
    createDirectory(path);
 }
 
@@ -346,6 +345,7 @@ void listDirectory(string path, vector<string> & list) {
 
 /* Private functions */
 
+// JL corrected some off-by-one errors.
 static void splitPath(string path, Vector<string>& list) { // JL BUGFIX: added `&`
    char sep = (path.find(';') == string::npos) ? ':' : ';';
    path += sep;
@@ -353,8 +353,8 @@ static void splitPath(string path, Vector<string>& list) { // JL BUGFIX: added `
    while (true) {
       int finish = path.find(sep, start);
       if (finish == string::npos) break;
-      if (finish > start ) { // JL BUGFIX: was `start + 1`
-         list.add(path.substr(start, finish - start)); // JL BUGFIX: was `finish - start - 1`
+      if (finish > start ) { // BUGFIX (JL): was `start + 1`
+         list.add(path.substr(start, finish - start)); // BUGFIX (JL): was `finish - start - 1`
       }
       start = finish + 1;
    }

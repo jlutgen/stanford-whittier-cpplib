@@ -116,15 +116,21 @@ int forkForPlatform(void (*fn)(void *), void *arg) {
    //tdp->arg = arg;
    tdp->arg = new StartInfo; // JL
    //store(tdp->arg, "forkForPlatform tdp->arg"); // DEBUG
-   *(StartInfo *)(tdp->arg) = *(StartInfo *) arg; // BUGFIX (JL): arg pointed to local struct in thread.h::fork that was sometimes
-                                                  //   getting clobbered before new thread accessed it, so we copy the struct
+
+   // BUGFIX (JL): arg pointed to local struct in thread.h::fork that was sometimes
+   // getting clobbered before new thread accessed it, so we copy the struct.
+   *(StartInfo *)(tdp->arg) = *(StartInfo *) arg;
+
 
    synchronized(getThreadRefCountLock()) {
       getThreadDataMap().put(id, tdp);
    }
    pthread_attr_t attr;
    pthread_attr_init(&attr);
-   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);  // BUGFIX (JL): was DETACHED, but need to be able to join, so...
+
+   // BUGFIX (JL): was PTHREAD_CREATE_DETACHED, but need to be able to join, so...
+   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+
    int osErr = pthread_create(&tdp->pid, &attr, startThread, tdp);
    pthread_attr_destroy(&attr);
    if (osErr != 0) error("fork: Can't create new thread");
@@ -213,15 +219,13 @@ int initLockForPlatform() {
 }
 
 void incLockRefCountForPlatform(int id) {
-   getLockDataMap().get(id)->refCount++; // JL
+   getLockDataMap().get(id)->refCount++; // JL wrote body
 }
 
-void decLockRefCountForPlatform(int id) { // JL body
+void decLockRefCountForPlatform(int id) { // JL wrote body
    LockData *ldp = getLockDataMap().get(id);
    if (--(ldp->refCount) == 0) {
        delete ldp;
-       //if (id > 1) // not the global Lock
-        //storeDel(ldp);
        getLockDataMap().remove(id);
    }
 }

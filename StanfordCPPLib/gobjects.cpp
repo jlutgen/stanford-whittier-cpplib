@@ -673,7 +673,11 @@ bool GArc::contains(double x, double y) const {
       double t = ARC_TOLERANCE / ((rx + ry) / 2);
       if (abs(1.0 - r) > t) return false;
    }
-   return containsAngle(atan2(-dy/ry, dx/rx) * 180 / PI); // BUGFIX (JL): must scale by ry, rx.
+
+   // BUGFIX (JL): must scale by ry, rx. In the case where frameWidth != frameHeight,
+   // the "angles" used in the Java back end are not true angles, but instead are scaled
+   // so that the 45-degree ray passes through the corner of the bounding box.
+   return containsAngle(atan2(-dy/ry, dx/rx) * 180 / PI);
 }
 
 string GArc::getType() const {
@@ -796,7 +800,7 @@ bool GCompound::contains(double x, double y) const {
        y = pt.getY();
    }
    for (int i = 0; i < contents.size(); i++) {
-       if (contents.get(i)->contains(x, y)) return true; // BUGFIX (JL): shift by this->x, this->y
+       if (contents.get(i)->contains(x, y)) return true;
    }
    return false;
 }
@@ -1180,7 +1184,7 @@ GRectangle GPolygon::getBounds() const {
       if (i == 0 || x > xMax) xMax = x;
       if (i == 0 || y > yMax) yMax = y;
    }
-   return GRectangle(xMin + x0, yMin + y0, xMax - xMin, yMax - yMin); // BUGFIX (JL): add x0, y0
+   return GRectangle(xMin + x0, yMin + y0, xMax - xMin, yMax - yMin); // BUGFIX (JL): Must translate by x0, y0.
 }
 
 // JL added code to handle transformed case

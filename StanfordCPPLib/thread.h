@@ -291,7 +291,7 @@ int forkForPlatform(void (*fn)(void *), void *dp);
 
 struct StartWithVoid {
    void (*fn)();
-   void *unused; // JL added so layout matches StartWithClientData, so forkForPlatform can copy fields
+   void *unused; // JL added so layout matches that of StartWithClientData, so forkForPlatform can copy fields
 };
 
 template <typename ClientType>
