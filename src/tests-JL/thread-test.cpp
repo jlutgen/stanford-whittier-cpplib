@@ -5,7 +5,7 @@
  *
  * @author Jeff Lutgen
  */
- 
+
 #include <iostream>
 #include <cstdio>
 #include <unistd.h>
@@ -27,8 +27,8 @@ void threadyWithData(int &depth) {
 
     Thread child[NUM_THREADS];
     int newDepth = depth + 1;
-    if (depth < MAX_DEPTH) { 
-        for (int i=0; i<NUM_THREADS; i++) {
+    if (depth < MAX_DEPTH) {
+        for (int i = 0; i < NUM_THREADS; i++) {
             child[i] = fork(threadyWithData, newDepth);
         }
     }
@@ -38,7 +38,7 @@ void threadyWithData(int &depth) {
     printf("%s\n", ss.str().c_str());
 
     if (depth < MAX_DEPTH) {
-        for (int i=0; i<NUM_THREADS; i++) {
+        for (int i = 0; i < NUM_THREADS; i++) {
             join(child[i]);
         }
     }
@@ -54,7 +54,7 @@ void depthTest() {
         child[i] = fork(threadyWithData, depth);
     }
 
-    for (int i=0; i<NUM_THREADS; i++) {
+    for (int i = 0; i < NUM_THREADS; i++) {
         stringstream ss;
         ss << "calling join, " << i << " child id" << child[i].getId();
         printf("%s\n", ss.str().c_str());
@@ -66,7 +66,7 @@ void depthTest() {
 void inc_count()
 {
     long my_id = getCurrentThread().getId();
-    for (int i=0; i<TCOUNT; i++) {
+    for (int i = 0; i < TCOUNT; i++) {
         synchronized(countLock) {
             sharedCount++;
 
@@ -109,6 +109,9 @@ void watch_count()
     }
 }
 
+/*
+ * Adapted from https://computing.llnl.gov/tutorials/pthreads/#ConVarSignal
+ */
 void waitSignalTest() {
     Thread threads[THREADS];
 
@@ -128,10 +131,10 @@ int main() {
     cout << "Thread tests!" << endl;
     string yn = getLine("Run depth test? (y/n): ");
     if (yn == "y")
-    	depthTest();
+        depthTest();
     yn = getLine("Run waitSignal test? (y/n): ");
     if (yn == "y")
-    	waitSignalTest();
+        waitSignalTest();
     return 0;
 }
 

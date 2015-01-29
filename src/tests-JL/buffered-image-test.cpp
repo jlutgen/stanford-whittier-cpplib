@@ -104,17 +104,17 @@ int main() {
             gw->setVisible(true);
             gw->clear();
             test_load();
-        } else if (cmd =="d") {
+        } else if (cmd == "d") {
             gw->setVisible(true);
             gw->clear();
             test_diff();
         }
-        else if (cmd =="f") {
+        else if (cmd == "f") {
             gw->setVisible(true);
             gw->clear();
             test_fill();
         }
-        else if (cmd =="r") {
+        else if (cmd == "r") {
             gw->setVisible(true);
             gw->clear();
             test_setRGB();

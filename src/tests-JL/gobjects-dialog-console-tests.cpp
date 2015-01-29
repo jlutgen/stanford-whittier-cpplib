@@ -1,3 +1,10 @@
+/*
+ * @file gobjects-dialog-console-tests.cpp
+ *
+ * @author Jeff Lutgen
+ *
+ */
+
 #include <iostream>
 #include <unistd.h>
 #include "gobjects.h"
@@ -16,7 +23,7 @@ using namespace std;
 
 GWindow *gw;
 string colors[13] = {"BLACK", "BLUE", "CYAN", "DARK_GRAY", "GRAY", "GREEN", "LIGHT_GRAY", "MAGENTA", "ORANGE", "PINK",
-                   "RED", "WHITE", "YELLOW"};
+                     "RED", "WHITE", "YELLOW"};
 
 void cycleObjects(Vector<GObject *> &objs, bool forward=true);
 void moveTopDown(Vector<GObject *> & objs);
@@ -39,15 +46,10 @@ void test_front_back() {
     gw->addToRegion(backward, "south");
     gw->addToRegion(stepUp, "south");
     gw->addToRegion(stepDown, "south");
-//    cout << "button sizes: " << endl;
-//    cout << forward->getSize().toString() << endl;
-//    cout << backward->getSize().toString() << endl;
-//    cout << stepUp->getSize().toString() << endl;
-//    cout << stepDown->getSize().toString() << endl;
     GCompound *compound = new GCompound();
-    for (int i=0; i<3; i++) {
-        GOval *oval = new GOval(x0+i*dx, y0+i*dy, objWidth, objHeight);
-        if (i==1)
+    for (int i = 0; i < 3; i++) {
+        GOval *oval = new GOval(x0 + i*dx, y0 + i*dy, objWidth, objHeight);
+        if (i == 1)
             oval->setLocation(oval->getLocation().getX(), oval->getLocation().getY() + 50);
         oval->setFilled(true);
         oval->setFillColor(colors[i]);
@@ -59,7 +61,7 @@ void test_front_back() {
     while(true) {
         GEvent e = waitForEvent(ACTION_EVENT | CLICK_EVENT);
         if (e.getEventType() == MOUSE_CLICKED)
-                break;
+            break;
         else if (e.getEventType() == ACTION_PERFORMED) {
             string cmd = ((GActionEvent) e).getActionCommand();
             if (cmd == "Cycle Forward")
@@ -88,8 +90,8 @@ void cycleObjects(Vector<GObject *> &objs, bool forward) {
     } else {
         int lastIndex = objs.size() - 1;
         GObject *first = objs[0];
-        for (int i = 0; i<lastIndex; i++) {
-            objs[i] = objs[i+1];
+        for (int i = 0; i < lastIndex; i++) {
+            objs[i] = objs[i + 1];
         }
         objs[lastIndex] = first;
         objs[lastIndex]->sendToFront();
@@ -147,9 +149,9 @@ void test_draw() {
     double height = gw->getHeight();
     const int mod = 200;
     int shift;
-    for (int i=0; i<1000; i++) {
+    for (int i = 0; i < 1000; i++) {
         gw->clear();
-        shift = i%mod - mod/2;
+        shift = i % mod - mod / 2;
         gw->drawLine(0 + shift, height / 2, width / 2 + shift, 0);
         gw->drawLine(width / 2 + shift, 0, width + shift, height / 2);
         gw->drawLine(width + shift, height / 2, width / 2 + shift, height);
@@ -183,7 +185,7 @@ void test_rotate_scale() {
     r1a->setColor("red");
     r1a->rotate(20);
     r1a->scale(2, 0.5);
-//    rotate_about_center(r1a, 20);
+    //    rotate_about_center(r1a, 20);
     gw->add(r1a);
 
     GRect *r2 = new GRect(400, 300, 80, 80);
@@ -197,33 +199,24 @@ void test_rotate_scale() {
 }
 
 void test_label() {
-    GLabel *label1 = new GLabel("<html>Line 1<br/>Line 2</html>");
+    GLabel *label1 = new GLabel("<html>Blue Line 1<br/>Line 2</html>");
     label1->setFont("Serif-Bold-18");
     label1->setColor("blue");
     gw->addToRegion(label1, "south");
     pause(2000);
-    label1->setLabel("Grissy"); // doesn't work
-    label1->setFont("Monospaced-Italic-36");
+    label1->setLabel("Red italic");
+    label1->setFont("Monospaced-Italic-24");
     label1->setColor("red");
 
     pause(2000);
-    GLabel *label2 = new GLabel("<html>Line 1<br/>Line 2</html>");
-    label2->setFont("Monospaced-Plain-36");
+    GLabel *label2 = new GLabel("<html>Blue<br/>all on one line</html>");
+    label2->setFont("Monospaced-Plain-24");
     label2->setColor("blue");
     gw->add(label2, 200, 200);
     pause(2000);
-    label2->setLabel("Grissy");
+    label2->setLabel("Rotate me");
     pause(2000);
     label2->rotate(45);
-
-
-//    for (int i=0; i<1000; i++) {
-//        GLabel *lab = new GLabel("Accelerate");
-//        gw->add(lab, randomInteger(20, 50), randomInteger(20, 50));
-//        gw->remove(lab);
-//        delete lab;
-//    }
-
 }
 
 void test_add_remove_torture() {
@@ -243,7 +236,7 @@ void test_add_remove_torture() {
         r->rotate(randomReal(0,90));
         objs.add(r);
     }
-    for (int i=0; i<2000; i++) {
+    for (int i = 0; i < 2000; i++) {
         if (randomChance(0.8)) {
             int index = randomInteger(0, objs.size() - 1);
             gw->add(objs[index]);
@@ -263,8 +256,8 @@ void test_checkbox_selected_torture() {
     GCheckBox *cb = new GCheckBox("checky");
     cb->setLocation(gw->getWidth()/2, gw->getHeight()/2);
     gw->add(cb);
-    for (int i=0; i<4000; i++) {
-        bool state = i%2;
+    for (int i = 0; i < 4000; i++) {
+        bool state = i % 2;
         cb->setSelected(state);
         bool gotState = cb->isSelected();
         if (state != gotState) {
@@ -278,7 +271,7 @@ void test_slider_torture() {
     GSlider *slider = new GSlider(0, 500, 250);
     slider->setLocation(gw->getWidth()/2, gw->getHeight()/2);
     gw->add(slider);
-    for (int i=0; i<10000; i++) {
+    for (int i = 0; i < 10000; i++) {
         int value = randomInteger(0, 500);
         slider->setValue(value);
         int gotValue = slider->getValue();
@@ -291,7 +284,7 @@ void test_slider_torture() {
 
 string randomString(int length) {
     string result = "";
-    for (int i=0; i<length; i++) {
+    for (int i = 0; i < length; i++) {
         result += 'a' + randomInteger(0, 25);
     }
     return result;
@@ -301,7 +294,7 @@ void test_textfield_torture() {
     GTextField *textField = new GTextField(60);
     textField->setLocation(gw->getWidth()/2-textField->getSize().getWidth()/2, gw->getHeight()/2);
     gw->add(textField);
-    for (int i=0; i<1000; i++) {
+    for (int i = 0; i < 1000; i++) {
         string value = randomString(80);
         string rgbString = colors[randomInteger(0,12)];
         textField->setColor(rgbString);
@@ -321,10 +314,10 @@ void test_textfield_torture() {
 
 void test_textarea() {
     for (int i = 0; i < 1000; i++) {
-        GTextArea *textArea = new GTextArea(10, 10, gw->getWidth()-20, gw->getHeight()-20);
+        GTextArea *textArea = new GTextArea(10, 10, gw->getWidth() - 20, gw->getHeight() - 20);
         gw->add(textArea);
         textArea->setFont("Serif-Plain-24");
-        //textArea->setBackgroundColor("#9060c0");
+        textArea->setBackgroundColor("#9060c0");
         string txt = "Here is\nsome text.";
         textArea->setText(txt);
         //textArea->setEditable(false);
@@ -349,10 +342,9 @@ void test_chooser_torture() {
         items.add(item);
         chooser->addItem(item);
     }
-    //chooser->setSize(200, 20);
-    chooser->setLocation(gw->getWidth()/2-chooser->getSize().getWidth()/2, gw->getHeight()/2);
+    chooser->setLocation(gw->getWidth()/2 - chooser->getSize().getWidth()/2, gw->getHeight()/2);
     gw->addToRegion(chooser, "north");
-    for (int i=0; i<10000; i++) {
+    for (int i = 0; i < 10000; i++) {
         int index = randomInteger(0, numItems-1);
         chooser->setSelectedItem(items[index]);
         string item = chooser->getSelectedItem();
@@ -377,7 +369,7 @@ void test_region_alignment() {
     gw->addToRegion(b4, "SOUTH");
     gw->addToRegion(b5, "SOUTH");
     gw->addToRegion(b6, "SOUTH");
-    for (int i=0; i<1000; i++) {
+    for (int i = 0; i < 1000; i++) {
         gw->setRegionAlignment("NORTH", align[randomInteger(0, 2)]);
         pause(1);
         gw->setRegionAlignment("SOUTH", align[randomInteger(0, 2)]);
@@ -386,7 +378,7 @@ void test_region_alignment() {
 }
 
 void test_window_torture() {
-    for (int i=0; i<10; i++) {
+    for (int i = 0; i < 10; i++) {
         GWindow *window = new GWindow(200, 200);
         GOval oval(100, 100);
         window->setColor("red");
@@ -406,12 +398,12 @@ void test_file_dialog() {
         startDir += '/';
     string result;
     if (type == "o") {
-        result = openFileDialog("Pick a freakin' file!", startDir + filter);
+        result = openFileDialog("Pick a file!", startDir + filter);
     } else {
-        result = saveFileDialog("Pick a freakin' file!", startDir + filter);
+        result = saveFileDialog("Pick a file!", startDir + filter);
     }
     if (result.empty())
-        cout << "User cancelled dialog or file could not be opened for reading" << endl;
+        cout << "User canceled dialog or file could not be opened for reading" << endl;
     else
         cout << "Dialog result: " <<  result << endl;
 }
@@ -473,21 +465,21 @@ void test_nested_compounds_with_interactors() {
 void test_console() {
     int p = 100;
     clearConsole();
-    for (int i=8; i<72; i+=3) {
+    for (int i = 8; i < 72; i += 3) {
         string font = string("Monospaced-") + integerToString(i);
         setConsoleFont(font);
         cout << font << endl;
         pause(p);
         clearConsole();
     }
-    for (int i=8; i<72; i+=3) {
+    for (int i = 8; i < 72; i += 3) {
         string font = string("Serif-") + integerToString(i);
         setConsoleFont(font);
         cout << font << endl;
         pause(p);
         clearConsole();
     }
-    for (int i=8; i<72; i+=3) {
+    for (int i = 8; i < 72; i += 3) {
         string font = string("SansSerif-") + integerToString(i);
         setConsoleFont(font);
         cout << font << endl;
@@ -543,6 +535,7 @@ void test_interactors_as_objects() {
     t->setColor("red");
     t->setSize(100, 100);
     t->setLineWidth(20);
+    t->setText("text field");
     gw->add(t, 450, 10);
     gw->drawRect(t->getBounds());
 
@@ -586,15 +579,16 @@ void test_interactors_as_objects() {
     t2->setColor("red");
     t2->setSize(100, 100);
     t2->setLineWidth(20);
+    t2->setText("text field");
     gw->addToRegion(t2, "SOUTH");
 }
 
 void drawGrid() {
     gw->setColor("green");
     for (int i=0; i<gw->getCanvasWidth(); i+=10)
-      gw->drawLine(i, 0, i, gw->getCanvasHeight());
+        gw->drawLine(i, 0, i, gw->getCanvasHeight());
     for (int j=0; j<gw->getCanvasHeight(); j+=10)
-      gw->drawLine(0, j, gw->getCanvasWidth(), j);
+        gw->drawLine(0, j, gw->getCanvasWidth(), j);
 }
 
 void test_contains_and_getBounds() {
@@ -717,10 +711,6 @@ void test_contains_and_getBounds() {
                 int ymin = bds.getY();
                 int xmax = bds.getX() + bds.getWidth();
                 int ymax = bds.getY() + bds.getHeight();
-//                int xmin = 0;
-//                int ymin = 0;
-//                int xmax = gw->getCanvasWidth();
-//                int ymax = gw->getCanvasHeight();
                 int dx = useCompounds ? comp1->getX(): 0;
                 int dy = useCompounds ? comp1->getY(): 0;
                 for (int y = ymin; y < ymax; y+=1)

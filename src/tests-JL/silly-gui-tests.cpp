@@ -36,25 +36,18 @@ int main()
     gw.setColor("red");
     double winWidth = gw.getWidth();
     double winHeight = gw.getHeight();
-    for (int i=0; i<winWidth; i+=100)
+    for (int i = 0; i < winWidth; i += 100)
         gw.drawLine(i, 0, i, winHeight);
-    for (int j=0; j<winHeight; j+=100)
+    for (int j = 0; j < winHeight; j += 100)
         gw.drawLine(0, j, winWidth, j);
     gw.setColor("black");
-    GPolygon *poly = new GPolygon();
-    poly->setLineWidth(2);
-    poly->setColor("green");
-    poly->setLocation(400, 400);
-    gw.add(poly);
-    poly->addEdge(200, 200);
-    //poly->addVertex(300, 300);
 
     cout << "Screen size: " << getScreenWidth() << "x" << getScreenHeight() << endl;
     cout << "GWindow size: " << gw.getWidth() << "x" << gw.getHeight() << endl;
     cout << "Canvas size before adding interactors: " << gw.getCanvasWidth()
          << "x" << gw.getCanvasHeight() << endl;
 
-    gw.setWindowTitle("Balthazar");
+    gw.setWindowTitle("Silly GUI Events Tester");
 
     GButton *button = new GButton("Shift Rectangle and Console");
     GButton *quitButton = new GButton("Quit");
@@ -79,8 +72,7 @@ int main()
     cout << "convertColorToRGB(#66ffc800): " << convertColorToRGB("#66ffc800") << endl;
     cout << "convertColorToRGB(#ffc800): " << convertColorToRGB("#ffc800") << endl;
     rect.setLineWidth(10);
-    gw.add(&rect); // foreground layer
-    gw.drawRect(89, 90, 29, 29); // background, automatically redrawn
+    gw.add(&rect);
 
     gw.addToRegion(textField, "NORTH");
     gw.addToRegion(button, "SOUTH");
@@ -88,20 +80,24 @@ int main()
     gw.addToRegion(chooser, "SOUTH");
     gw.addToRegion(quitButton, "south");
     gw.addToRegion(slider, "WEST");
+
     cout << "Canvas size after adding interactors: " << gw.getCanvasWidth()
          << "x" << gw.getCanvasHeight() << endl;
 
     gw.add(new GLabel("Click in here and type!", 300, 20));
-    for (int i=0; i<winWidth; i+=100)
+
+    // Draw background grid for calibration
+    for (int i = 0; i < winWidth; i += 100)
         gw.drawLine(i, 0, i, winHeight);
-    for (int j=0; j<winHeight; j+=100)
+    for (int j = 0; j < winHeight; j += 100)
         gw.drawLine(0, j, winWidth, j);
+
     double cx = gw.getCanvasWidth() / 2;
     double cy = gw.getCanvasHeight() / 2;
     double r = 25;
     GArc *pacman = new GArc(cx - r, cy - r, 2 * r, 2 * r, 45, 270);
     pacman->setFilled(true);
-    pacman->setFillColor(0x20cccccc);
+    pacman->setFillColor(0x20cccccc); // fairly transparent gray
     gw.add(pacman);
 
     string ans = getLine("remove checkbox? (y/n) ");
@@ -121,8 +117,8 @@ int main()
     {
         GEvent e = waitForEvent();
         EventType type = e.getEventType();
-        if (type==KEY_RELEASED||type==MOUSE_MOVED
-                ||type==MOUSE_PRESSED||type==MOUSE_RELEASED)
+        if (type == KEY_RELEASED || type == MOUSE_MOVED
+                ||type == MOUSE_PRESSED||type == MOUSE_RELEASED)
             continue; // ignore these
         int eclass = e.getEventClass();
         int mods = e.getModifiers();

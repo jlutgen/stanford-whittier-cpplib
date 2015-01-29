@@ -1,11 +1,11 @@
 /*
- * Test file for verifying the Stanford C++ autograder lib functionality.
+ * Test file for verifying the Stanford C++ lib functionality.
  */
 
 #include "console.h"
 #include "simpio.h"
-#include "tests-stepp/testcases.h"
-#include "tests-JL/testcases-jl.h"
+#include "tests-stepp-JL/testcases.h"
+#include "tests-stepp-JL/testcases-jl.h"
 #include "private/version.h"
 #include <iostream>
 #include <fstream>
@@ -25,7 +25,7 @@ int main() {
         cout << "i) cin / cout" << endl;
         cout << "n) segfault (NULL ptr)" << endl;
         cout << "o) divide by zero" << endl;
-        cout << "r) stream insertion" << endl;
+        cout << "r) stream insertion (lexicon)" << endl;
         cout << "s) stack overflow" << endl;
         cout << "t) throw exception (Vector index out of range)" << endl;
         cout << "u) urlstream" << endl;
