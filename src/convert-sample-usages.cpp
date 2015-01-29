@@ -1,4 +1,9 @@
-
+/*
+ * A one-time hack to convert comments in Stanford CPP lib headers
+ * to Doxygen format.
+ *
+ * @author Jeff Lutgen
+ */
 
 #include <fstream>
 #include <iomanip>

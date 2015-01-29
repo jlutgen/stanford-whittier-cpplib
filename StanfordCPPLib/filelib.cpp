@@ -239,7 +239,6 @@ string defaultExtension(string filename, string ext) {
 string openOnPath(ifstream & stream, string path, string filename) {
    Vector<string> paths;
    splitPath(path, paths);
-   cout << "splitPath gave: " << paths.toString() << endl; // DELETE
    foreach (string dir in paths) {
       string pathname = dir + "/" + filename;
       if (openFile(stream, pathname)) return pathname;

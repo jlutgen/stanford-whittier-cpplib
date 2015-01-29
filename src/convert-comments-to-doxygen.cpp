@@ -1,4 +1,9 @@
-
+/* A one-time hack to convert usage examples in Stanford CPP lib headers
+ * to a slightly different Doxygen format after running "convert-comments-to-doxygen"
+ * had converted them to Doxygen format. Hindsight!
+ *
+ * @author Jeff Lutgen
+ */
 
 #include <fstream>
 #include <iomanip>

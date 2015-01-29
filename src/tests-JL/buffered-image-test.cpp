@@ -1,3 +1,9 @@
+/*
+ * @file buffered-image-test.cpp
+ *
+ * @author Jeff Lutgen
+ */
+
 #include <iostream>
 #include "gwindow.h"
 #include "console.h"
@@ -52,7 +58,7 @@ void test_fill() {
     getLine("ENTER to fill");
     bi->fill("red");
     getLine("ENTER to fill region");
-    bi->fillRegion(20, 20, 600-40, 600-40, "green");
+    bi->fillRegion(20, 20, 600 - 40, 600 - 40, "green");
 }
 
 int randomColor() {
@@ -73,9 +79,10 @@ void test_setRGB() {
 
 int main() {
     setConsolePrintExceptions(true);
-    setConsoleSize(getScreenWidth()-710-10, 300);
+    setConsoleSize(getScreenWidth() - 710 - 10, 300);
     setConsoleLocation(720, 470);
     cout << "Ready." << endl;
+
     getLine("ENTER to go");
     gw = new GWindow(710, 610);
     gw->setVisible(false);

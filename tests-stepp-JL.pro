@@ -4,12 +4,13 @@ cache()
 #  Project-specific sources and headers
 #
 
-SOURCES += $$files($$PWD/src/*.cpp)
-HEADERS += $$files($$PWD/src/*.h)
+SOURCES += $$files($$PWD/src/tests-stepp-JL/*.cpp)
+SOURCES -= $$PWD/src/tests-stepp-JL/urlTests.cpp
+
+HEADERS += $$files($$PWD/src/tests-stepp-JL/*.h)
 
 ####################################################################
 # Common configuration for all projects
-
 
 # Mac users: change `10.9` to match your version of Mac OS X, if necessary.
 QMAKE_MAC_SDK = macosx10.9

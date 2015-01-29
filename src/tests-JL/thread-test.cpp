@@ -1,9 +1,17 @@
-
+/*
+ * @file thread-test.cpp
+ *
+ * Uses printf, so don't use Java console.
+ *
+ * @author Jeff Lutgen
+ */
+ 
 #include <iostream>
+#include <cstdio>
 #include <unistd.h>
 #include "strlib.h"
 #include "thread.h"
-#include <cstdio>
+#include "simpio.h"
 
 using namespace std;
 
@@ -14,8 +22,8 @@ static const int THREADS = 9;
 static int sharedCount = 0;
 
 void threadyWithData(int &depth) {
-    const int MAX_DEPTH = 2;
-    const int NUM_THREADS = 8;
+    const int MAX_DEPTH = 3;
+    const int NUM_THREADS = 5;
 
     Thread child[NUM_THREADS];
     int newDepth = depth + 1;
@@ -26,7 +34,7 @@ void threadyWithData(int &depth) {
     }
 
     stringstream ss;
-    ss << "============== hello from " << getCurrentThread().toString() << "level " << depth;
+    ss << "======= hello from " << getCurrentThread().toString() << ", level " << depth;
     printf("%s\n", ss.str().c_str());
 
     if (depth < MAX_DEPTH) {
@@ -44,8 +52,7 @@ void depthTest() {
     int depth = 0;
     for (int i=0; i<NUM_THREADS; i++) {
         child[i] = fork(threadyWithData, depth);
-
-    } // end for
+    }
 
     for (int i=0; i<NUM_THREADS; i++) {
         stringstream ss;
@@ -59,7 +66,6 @@ void depthTest() {
 void inc_count()
 {
     long my_id = getCurrentThread().getId();
-
     for (int i=0; i<TCOUNT; i++) {
         synchronized(countLock) {
             sharedCount++;
@@ -73,7 +79,7 @@ void inc_count()
                 printf("inc_count(): thread %ld, sharedCount = %d  Threshold reached.\n",
                        my_id, sharedCount);
             }
-            printf("inc_count(): thread %ld, sharedCount = %d, iteration %d, unlocking lock\n",
+            printf("inc_count(): thread %ld, sharedCount = %d, iteration %d, releasing lock\n",
                    my_id, sharedCount, i);
         }
         /* Do some "work" so threads can alternate on lock */
@@ -115,19 +121,17 @@ void waitSignalTest() {
     for (int i=0; i<THREADS; i++) {
         join(threads[i]);
     }
-    printf ("waitSignalTest(): Waited on %d  threads. Done.\n", THREADS);
+    cout << "waitSignalTest(): Waited on " << THREADS << " threads. Done." << endl;
 }
 
 int main() {
-    //depthTest();
-    waitSignalTest();
+    cout << "Thread tests!" << endl;
+    string yn = getLine("Run depth test? (y/n): ");
+    if (yn == "y")
+    	depthTest();
+    yn = getLine("Run waitSignal test? (y/n): ");
+    if (yn == "y")
+    	waitSignalTest();
     return 0;
 }
-
-
-
-
-
-
-
 

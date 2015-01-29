@@ -30,8 +30,8 @@ void test_front_back() {
     const int y0 = 100;
     const int dx = 40;
     const int dy = 0;
-    GButton *forward = new GButton("Forward");
-    GButton *backward = new GButton("Backward");
+    GButton *forward = new GButton("Cycle Forward");
+    GButton *backward = new GButton("Cycle Backward");
     GButton *stepUp = new GButton("Backmost +1");
     GButton *stepDown = new GButton("Frontmost -1");
     Vector<GObject *> objects;
@@ -54,21 +54,23 @@ void test_front_back() {
         objects.add(oval);
         compound->add(oval);
     }
-    gw->add(new GLabel("Click in window to quit", 10, 30));
+    gw->add(new GLabel("Click in window to end test", 10, 30));
     gw->add(compound);
     while(true) {
         GEvent e = waitForEvent(ACTION_EVENT | CLICK_EVENT);
         if (e.getEventType() == MOUSE_CLICKED)
                 break;
-        string cmd = ((GActionEvent) e).getActionCommand();
-        if (cmd == "Forward")
-            cycleObjects(objects);
-        if (cmd == "Backward")
-            cycleObjects(objects, false);
-        if (cmd == "Backmost +1")
-            moveBottomUp(objects);
-        if (cmd == "Frontmost -1")
-            moveTopDown(objects);
+        else if (e.getEventType() == ACTION_PERFORMED) {
+            string cmd = ((GActionEvent) e).getActionCommand();
+            if (cmd == "Cycle Forward")
+                cycleObjects(objects);
+            if (cmd == "Cycle Backward")
+                cycleObjects(objects, false);
+            if (cmd == "Backmost +1")
+                moveBottomUp(objects);
+            if (cmd == "Frontmost -1")
+                moveTopDown(objects);
+        }
     }
 
 }
@@ -595,7 +597,7 @@ void drawGrid() {
       gw->drawLine(0, j, gw->getCanvasWidth(), j);
 }
 
-void test_contains() {
+void test_contains_and_getBounds() {
     bool useCompounds = false;
     int x0 = 350;
     int y0 = 300;
@@ -780,8 +782,8 @@ void test_contains() {
 
 int main() {
     setConsolePrintExceptions(true);
-    setConsoleSize(getScreenWidth()-710-10, 300);
-    setConsoleLocation(720, 470);
+    setConsoleSize(getScreenWidth()-710-10, 500);
+    setConsoleLocation(720, 100);
     cout << "Ready." << endl;
     getLine("ENTER to go");
     gw = new GWindow(710, 610);
@@ -805,7 +807,7 @@ int main() {
         cout << "n) nested compounds with interactors" << endl;
         cout << "C) console" << endl;
         cout << "I) interactors as objects" << endl;
-        cout << "co) contains" << endl;
+        cout << "co) contains/getBounds" << endl;
         string cmd = getLine("Command (Enter to quit)?");
         if (cmd.empty()) {
             break;
@@ -869,6 +871,7 @@ int main() {
             test_window_torture();
         } else if (cmd == "n") {
             gw->setVisible(true);
+            gw->clear();
             test_nested_compounds_with_interactors();
         } else if (cmd == "C") {
             gw->setVisible(false);
@@ -881,7 +884,7 @@ int main() {
         } else if (cmd == "co") {
             gw->setVisible(true);
             gw->clear();
-            test_contains();
+            test_contains_and_getBounds();
         }
     }
 

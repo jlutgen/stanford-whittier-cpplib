@@ -4,42 +4,17 @@ cache()
 #  Project-specific sources and headers
 #
 
-SOURCES += $$PWD/src/gobject-tests.cpp
-#SOURCES += $$PWD/src/assign-1-main.cpp
-#SOURCES += $$PWD/src/buffered-image-test.cpp
-
-
-#  unit tests
-#SOURCES += $$PWD/src/main-stepp-tests.cpp
-#SOURCES += $$files($$PWD/src/tests-stepp/*.cpp)
-#SOURCES -= $$PWD/src/tests-stepp/urlTests.cpp
-#SOURCES += $$files($$PWD/src/tests-JL/*.cpp)
-#HEADERS += $$files($$PWD/src/tests-stepp/*.h)
-#HEADERS += $$files($$PWD/src/tests-JL/*.h)
-
-# more basic unit tests
-#SOURCES += $$files($$PWD/src/tests-roberts/*.cpp)
-
+SOURCES += $$PWD/src/tests-JL/buffered-image-test.cpp
 
 ####################################################################
 # Common configuration for all projects
-
 
 # Mac users: change `10.9` to match your version of Mac OS X, if necessary.
 QMAKE_MAC_SDK = macosx10.9
 
 TEMPLATE = app
 CONFIG -= qt
-#CONFIG -= qt_framework
 CONFIG -= debug_and_release
-#CONFIG -= release
-#CONFIG -= shared
-#CONFIG -= qpa
-#CONFIG -= incremental
-#CONFIG -= lex yacc
-#CONFIG -= rez
-#CONFIG -= testcase_targets
-#CONFIG -= import_plugins import_qpa_plugin
 CONFIG += debug
 win32:CONFIG += console
 
@@ -69,7 +44,6 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 QMAKE_CXXFLAGS_WARN_ON += -Wno-sign-compare
 QMAKE_CXXFLAGS_WARN_ON += -Wno-missing-field-initializers
 
-#!win32:QMAKE_LFLAGS += -static-libstdc++ -pthread
 win32: QMAKE_LFLAGS += -static
 
 unix:!macx {

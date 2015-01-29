@@ -4,12 +4,10 @@ cache()
 #  Project-specific sources and headers
 #
 
-SOURCES += $$files($$PWD/src/*.cpp)
-HEADERS += $$files($$PWD/src/*.h)
+SOURCES += $$PWD/src/tests-JL/silly-gui-tests.cpp
 
 ####################################################################
 # Common configuration for all projects
-
 
 # Mac users: change `10.9` to match your version of Mac OS X, if necessary.
 QMAKE_MAC_SDK = macosx10.9
