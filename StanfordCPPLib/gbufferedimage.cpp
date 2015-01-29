@@ -234,7 +234,10 @@ void GBufferedImage::load(const std::string& filename) {
                 error("GBufferedImage::load: image data does not contain valid pixel (x="
                       + integerToString(x) + ", y=" + integerToString(y) + ")");
             }
-            int px = convertColorToRGB(line) & 0x00FFFFFF; // JL added mask
+            // BUGFIX (JL) added mask, because convertColorToRGB returns an int of the form
+            // 0xaarrggbb, but GBufferedImage assumes all ints representing colors are of the
+            // form 0xrrggbb.
+            int px = convertColorToRGB(line) & 0x00FFFFFF;
             m_pixels[y][x] = px;
         }
     }
@@ -274,8 +277,6 @@ GBufferedImage *GBufferedImage::rescale(int width, int height) const {
         error("GBufferedImage::rescale: image data does not contain valid height");
     }
     scaledImage->m_height = stringToInteger(line);
-
-    // BUGFIX (JL) : avoid crash if current grid not big enough to hold image
     scaledImage->m_pixels.resize(m_height, m_width);
 
     for (int y = 0; y < scaledImage->m_height; y++) {
@@ -284,10 +285,6 @@ GBufferedImage *GBufferedImage::rescale(int width, int height) const {
                 error("GBufferedImage::rescale: image data does not contain valid pixel (x="
                       + integerToString(x) + ", y=" + integerToString(y) + ")");
             }
-
-            // BUGFIX (JL) added mask, because convertColorToRGB returns an int of the form
-            // 0xaarrggbb, but GBufferedImage assumes all ints representing colors are of the
-            // form 0xrrggbb.
             int px = convertColorToRGB(line) & 0x00FFFFFF;
 
             scaledImage->m_pixels[y][x] = px;

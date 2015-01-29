@@ -430,7 +430,7 @@ Asterisk in font string (setConsoleFont) doesn't work?
 See Java Font.decode docs.
 TODO
 
-Press return to close window in mac terminal doesn't work
+Press return to close window in mac terminal (Qt Creator) doesn't work
 TODO
 
 Add a consoleFocus command?
@@ -455,7 +455,7 @@ Java GBufferedImage.load: remove debug statements, look into weird bounds
 for GIF image load (256x256 reported as 55x16 or 60x16).
 TODO
 
-Stack traces on Mac aren't very helpful:
+Stack traces on Mac are wrong.
  *** Stack trace (line numbers are approximate):
  *** call_stack_gcc.cpp:275  main
  *** exceptions.cpp:183      start
@@ -499,32 +499,18 @@ TODO
 
 
 Test GObject::contains using mouse click loop.
-TODO
+DONE: see src/gobject-tests.cpp
 
 
-Document that scale, rotate (others?) have no effect on GInteractors.
+Document the fact that scale, rotate (others?) have no effect on GInteractors.
 TODO
-Mac
-Button:
-	scale, rotate: no effect
-	setColor: sets color of text on button
-	setSize: yes
-	getBounds: yes
-	setLineWidth: no
-	
-Slider
-	scale, rotate: no effect
-	setColor: no effect
-	setSize: yes
-	getBounds:yes
-	setLineWidth: no
 
 
 Add CSS tags for formatting #aarrggbb as bold italic monospaced (in GWindow/GObject
 setColor, etc.)
 TODO
 
-Document the fact that getLocation, getX, getY for GObject gives results 
+Document the fact that getLocation, getX, getY for GObject give results 
 relative to the object's parent compound.
 TODO
 

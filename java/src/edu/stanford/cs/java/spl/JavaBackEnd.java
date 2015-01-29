@@ -859,7 +859,7 @@ ChangeListener {
 	}
 
 	// JL modified this method. Attempts to play sound files were producing 
-	// "java.io.IOException: mark/reset" exceptions.
+	// "java.io.IOException: mark/reset unsupported" exceptions.
 	// See http://stackoverflow.com/questions/5529754/java-io-ioexception-mark-reset-not-supported
 	// and http://www.cs.unc.edu/~luv/teaching/COMP110/programs/AudioPlayer.java
 	protected Clip getClip(String name) {
