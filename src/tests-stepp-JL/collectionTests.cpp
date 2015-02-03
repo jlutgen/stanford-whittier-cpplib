@@ -660,12 +660,12 @@ void hashCodeTest() {
 //    std::cout << "hashset of stack: " << hashstack << std::endl;
     
     // Vector
-//    HashSet<Vector<int> > hashvec;
-//    Vector<int> v;
-//    v.add(69);
-//    v.add(42);
-//    hashvec.add(v);
-//    std::cout << "hashset of vector: " << hashvec << std::endl;
+    HashSet<Vector<int> > hashvec;
+    Vector<int> v;
+    v.add(69);
+    v.add(42);
+    hashvec.add(v);
+    std::cout << "hashset of vector: " << hashvec << std::endl;
     
 //    Stack<Student> vstud;
 //    Student sam;

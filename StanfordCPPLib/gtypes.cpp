@@ -30,7 +30,7 @@
 using namespace std;
 
 //static const double PI = 3.14159265358979;
-static const int HASH_MASK = int(unsigned(-1) >> 1);
+//static const int HASH_MASK = int(unsigned(-1) >> 1);
 
 /*
  * Implementation notes: GPoint class

@@ -32,6 +32,7 @@
 #include <sstream>
 #include <string>
 #include "foreach.h"
+#include "hashcode.h"
 #include "private/genericio.h"
 
 /**
@@ -98,7 +99,20 @@ public:
  *     vec.clear();
  */
 
+
    void clear();
+
+/**
+ * Compares two vectors for equality.
+ * Returns \c true if this vector contains exactly the same
+ * values as the given other vector.
+ * Identical in behavior to the == operator.
+ * 
+ * Sample usage:
+ *     if (vec.equals(vec2)) ...
+ */
+   bool equals(const Vector<ValueType>& v) const;
+
 
 /**
  * Returns the element at the specified index in this vector.  This
@@ -207,6 +221,8 @@ public:
    Vector operator+(const Vector & v2) const;
 
 
+   /** \_overload */
+   Vector & operator+=(const Vector & v2);
 /**
  * Adds all of the elements from \em v2 (or the single
  * specified value) to \em v1.  As a convenience, the
@@ -223,10 +239,28 @@ public:
  *     v1 += v2;
  *     v1 += value;
  */
-
-   Vector & operator+=(const Vector & v2);
-   /** \_overload */
    Vector & operator+=(const ValueType & value);
+
+
+/**
+ * Compares two vectors for equality.
+ *
+ * Sample usage:
+ *
+ *      if (vec == vec2) ...
+ */
+    bool operator ==(const Vector& v2) const;
+
+
+/**
+ * Compares two vectors for inequality.
+ *
+ * Sample usage:
+ *
+ *     if (vec != vec2) ...
+ */
+    bool operator !=(const Vector& v2) const;
+
 
 /**
  * Converts this vector to a printable string representation.
@@ -235,8 +269,8 @@ public:
  *
  *     string str = vec.toString();
  */
-
    std::string toString();
+
 
 /**
  * Calls the specified function on each element of this vector in
@@ -246,7 +280,6 @@ public:
  *
  *     vec.mapAll(fn);
  */
-
    void mapAll(void (*fn)(ValueType)) const;
    void mapAll(void (*fn)(const ValueType &)) const;
 
@@ -513,6 +546,22 @@ void Vector<ValueType>::clear() {
 }
 
 template <typename ValueType>
+bool Vector<ValueType>::equals(const Vector<ValueType>& v) const {
+    if (this == &v) {
+        return true;
+    }
+    if (size() != v.size()) {
+        return false;
+    }
+    for (int i = 0, sz = size(); i < sz; i++) {
+        if (get(i) != v.get(i)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+template <typename ValueType>
 const ValueType & Vector<ValueType>::get(int index) const {
     if (index < 0 || index >= count) {
       ostringstream out;
@@ -641,6 +690,16 @@ template <typename ValueType>
 Vector<ValueType> & Vector<ValueType>::operator+=(const ValueType & value) {
    this->add(value);
    return *this;
+}
+
+template <typename ValueType>
+bool Vector<ValueType>::operator ==(const Vector& v2) const {
+    return equals(v2);
+}
+
+template <typename ValueType>
+bool Vector<ValueType>::operator !=(const Vector& v2) const {
+    return !equals(v2);
 }
 
 template <typename ValueType>
@@ -781,6 +840,19 @@ std::istream & operator>>(std::istream & is, Vector<ValueType> & vec) {
       }
    }
    return is;
+}
+
+/*
+ * Template hash function for vectors.
+ * Requires the element type in the Vector to have a hashCode function.
+ */
+template <typename ValueType>
+int hashCode(const Vector<ValueType>& v) {
+    int code = HASH_SEED;
+    for (ValueType element : v) {
+        code = HASH_MULTIPLIER * code + hashCode(element);
+    }
+    return (code & HASH_MASK);
 }
 
 #endif
