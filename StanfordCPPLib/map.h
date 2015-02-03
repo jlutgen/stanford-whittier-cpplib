@@ -11,6 +11,7 @@
 
 #include <cstdlib>
 #include "foreach.h"
+#include "hashcode.h"
 #include "stack.h"
 
 
@@ -40,6 +41,19 @@ public:
  * Frees any heap storage associated with this map.
  */
    virtual ~Map();
+
+
+/**
+ * Associates \em key with \em value in this map.
+ * Any previous value associated with \em key is replaced
+ * by the new value.
+ * A synonym for the \ref put method.
+ *
+ * Sample usage:
+ *
+ *      map.add(key, value)
+ */
+    void add(const KeyType& key, const ValueType& value);
 
 
 /**
@@ -97,6 +111,17 @@ public:
 
 
 /**
+ * Returns \c true if the two maps contain exactly the same
+ * key/value pairs, and \c false otherwise.
+ *
+ * Sample usage:
+ *
+ *      if (map.equals(map2)) ...
+ */
+   bool equals(const Map& map2) const;
+
+
+/**
  * Removes any entry for \em key from this map.
  *
  * Sample usage:
@@ -131,6 +156,24 @@ public:
    ValueType & operator[](const KeyType & key);
    ValueType operator[](const KeyType & key) const;
 
+/**
+ * Compares two maps for equality.
+ *
+ * Sample usage:
+ *
+ *      if (map == map2) ...
+ */
+   bool operator ==(const Map& map2) const;
+
+
+/**
+ * Compares two maps for inequality.
+ *
+ * Sample usage:
+ *
+ *     if (map != map2) ...
+ */
+   bool operator !=(const Map& map2) const;
 
 /**
  * Returns a printable string representation of this map.
@@ -753,6 +796,11 @@ Map<KeyType,ValueType>::~Map() {
 }
 
 template <typename KeyType, typename ValueType>
+void Map<KeyType, ValueType>::add(const KeyType& key, const ValueType& value) {
+    put(key, value);
+}
+
+template <typename KeyType, typename ValueType>
 int Map<KeyType,ValueType>::size() const {
    return nodeCount;
 }
@@ -794,6 +842,29 @@ bool Map<KeyType,ValueType>::containsKey(const KeyType & key) const {
 }
 
 template <typename KeyType, typename ValueType>
+bool Map<KeyType, ValueType>::equals(const Map<KeyType, ValueType>& map2) const {
+    if (this == &map2) {
+        return true;
+    }
+    if (size() != map2.size()) {
+        return false;
+    }
+
+    // compare both ways; each must be subset of the other
+    for (KeyType key : *this) {
+        if (!map2.containsKey(key) || map2.get(key) != get(key)) {
+            return false;
+        }
+    }
+    for (KeyType key : map2) {
+        if (!containsKey(key) || get(key) != map2.get(key)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+template <typename KeyType, typename ValueType>
 ValueType & Map<KeyType,ValueType>::operator[](const KeyType & key) {
    bool dummy;
    return *addNode(root, key, dummy);
@@ -802,6 +873,16 @@ ValueType & Map<KeyType,ValueType>::operator[](const KeyType & key) {
 template <typename KeyType, typename ValueType>
 ValueType Map<KeyType,ValueType>::operator[](const KeyType & key) const {
    return get(key);
+}
+
+template <typename KeyType, typename ValueType>
+bool Map<KeyType, ValueType>::operator ==(const Map& map2) const {
+    return equals(map2);
+}
+
+template <typename KeyType, typename ValueType>
+bool Map<KeyType, ValueType>::operator !=(const Map& map2) const {
+    return equals(map2);
 }
 
 template <typename KeyType, typename ValueType>
@@ -878,6 +959,21 @@ std::istream & operator>>(std::istream & is, Map<KeyType,ValueType> & map) {
       }
    }
    return is;
+}
+
+/*
+ * Template hash function for maps.
+ * Requires the key and value types in the Map to have a hashCode function.
+ */
+template <typename K, typename V>
+int hashCode(const Map<K, V>& map) {
+    int code = HASH_SEED;
+    for (K k : map) {
+        code = HASH_MULTIPLIER * code + hashCode(k);
+        V v = map[k];
+        code = HASH_MULTIPLIER * code + hashCode(v);
+    }
+    return int(code & HASH_MASK);
 }
 
 #endif

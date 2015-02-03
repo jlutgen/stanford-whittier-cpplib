@@ -604,12 +604,12 @@ void hashCodeTest() {
 //    std::cout << "hashset of linkedlist: " << hashlink << std::endl;
     
     // Map
-//    HashSet<Map<int, int> > hashmap;
-//    Map<int, int> map;
-//    map.add(69, 96);
-//    map.add(42, 24);
-//    hashmap.add(map);
-//    std::cout << "hashset of map: " << hashmap << std::endl;
+    HashSet<Map<int, int> > hashmap;
+    Map<int, int> map;
+    map.add(69, 96);
+    map.add(42, 24);
+    hashmap.add(map);
+    std::cout << "hashset of map: " << hashmap << std::endl;
     
     // PriorityQueue
 //    HashSet<PriorityQueue<std::string> > hashpq;
