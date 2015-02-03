@@ -647,17 +647,17 @@ void hashCodeTest() {
 //    std::cout << "hashset of sparsegrid: " << hashsparsegrid << std::endl;
     
     // Stack
-//    HashSet<Stack<int> > hashstack;
-//    Stack<int> s;
-//    s.add(69);
-//    s.add(42);
+    HashSet<Stack<int> > hashstack;
+    Stack<int> s;
+    s.add(69);
+    s.add(42);
     
 //    for (int val : s) {
 //        std::cout << "stack value: " << val << std::endl;
 //    }
     
-//    hashstack.add(s);
-//    std::cout << "hashset of stack: " << hashstack << std::endl;
+    hashstack.add(s);
+    std::cout << "hashset of stack: " << hashstack << std::endl;
     
     // Vector
     HashSet<Vector<int> > hashvec;
@@ -667,13 +667,17 @@ void hashCodeTest() {
     hashvec.add(v);
     std::cout << "hashset of vector: " << hashvec << std::endl;
     
-//    Stack<Student> vstud;
-//    Student sam;
-//    vstud.add(sam);
-//    Vector <Student> vstud2;
-//    vstud2.add(sam);
-//    std::cout << "stack of student: size " << vstud.size() << std::endl;
-    
+    // Vector & Stack of objects that don't have == or <
+    Stack<Student> vstud;
+    Student sam;
+    Student joe;
+    vstud.add(sam);
+    vstud.add(joe);
+    Vector <Student> vstud2;
+    vstud2.add(sam);
+    vstud2.add(joe);
+    std::cout << "stack of student: size " << vstud.size() << std::endl;
+    std::cout << "vector of student: size " << vstud2.size() << std::endl;
     
 //    std::cout << std::endl;
 //    HashMap< HashSet<Vector<std::string> >, Vector<std::string> > ngram;

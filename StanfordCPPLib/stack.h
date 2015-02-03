@@ -27,6 +27,7 @@
 #ifndef _stack_h
 #define _stack_h
 
+#include "hashcode.h"
 #include "vector.h"
 
 /**
@@ -79,6 +80,16 @@ public:
  */
    bool isEmpty() const;
 
+/**
+ * Pushes the specified value onto the top of this stack.
+ * A synonym for the \ref push method.
+ *
+ * Sample usage:
+ *
+ *      stack.add(value);
+ */
+   void add(const ValueType& value);
+
 
 /**
  * Removes all elements from this stack.
@@ -88,6 +99,18 @@ public:
  *     stack.clear();
  */
    void clear();
+
+
+/**
+ * Compares two stacks for equality.
+ * Returns \c true if this stack contains exactly the same
+ * values as the given other stack.
+ * Identical in behavior to the == operator.
+ *
+ * Sample usage:
+ *     if (stack.equals(stack2)) ...
+ */
+      bool equals(const Stack<ValueType>& s) const;
 
 
 /**
@@ -140,6 +163,26 @@ public:
 
 
 /**
+ * Compares two stacks for equality.
+ *
+ * Sample usage:
+ *
+ *      if (stack == stack2) ...
+ */
+       bool operator ==(const Stack& s2) const;
+
+
+/**
+ * Compares two vectors for inequality.
+ *
+ * Sample usage:
+ *
+ *     if (stack != stack2) ...
+ */
+       bool operator !=(const Stack& s2) const;
+
+
+/**
  * Returns a printable string representation of this stack.
  *
  * Sample usage:
@@ -164,6 +207,9 @@ public:
  * and copy assignment are already solved by the implementation of the
  * underlying Vector class.
  */
+
+   template <typename T>
+   friend int hashCode(const Stack<T>& s);
 
 private:
    Vector<ValueType> elements;
@@ -226,8 +272,29 @@ ValueType & Stack<ValueType>::top() {
 }
 
 template <typename ValueType>
+void Stack<ValueType>::add(const ValueType& value) {
+    push(value);
+}
+
+template <typename ValueType>
 void Stack<ValueType>::clear() {
    elements.clear();
+}
+
+template <typename ValueType>
+bool Stack<ValueType>::equals(const Stack<ValueType>& stack2) const {
+    if (this == &stack2) {
+        return true;
+    }
+    if (size() != stack2.size()) {
+        return false;
+    }
+    for (int i = 0; i < size(); i++) {
+        if (elements[i] != stack2.elements[i]) {
+            return false;
+        }
+    }
+    return true;
 }
 
 template <typename ValueType>
@@ -235,6 +302,16 @@ std::string Stack<ValueType>::toString() {
    ostringstream os;
    os << *this;
    return os.str();
+}
+
+template <typename ValueType>
+bool Stack<ValueType>::operator ==(const Stack& stack2) const {
+    return elements == stack2.elements;
+}
+
+template <typename ValueType>
+bool Stack<ValueType>::operator !=(const Stack & stack2) const {
+    return elements != stack2.elements;
 }
 
 template <typename ValueType>
@@ -274,6 +351,15 @@ std::istream & operator>>(std::istream & is, Stack<ValueType> & stack) {
       }
    }
    return is;
+}
+
+/*
+ * Template hash function for stacks.
+ * Requires the element type in the Stack to have a hashCode function.
+ */
+template <typename T>
+int hashCode(const Stack<T>& s) {
+    return hashCode(s.elements);
 }
 
 #endif
