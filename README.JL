@@ -127,7 +127,7 @@ Really, front-end users shouldn't be able to add interactors to a GCompound. I c
 would be a nice feature. The problem now is that when interactors are added to a GCompound
 in the front end, things like sendToBack don't have the expected effect, since the 
 interactors are always drawn on top of other GObjects in the compound, no matter what
-the internal ordering. But his is true even when interactors are added directly to the 
+the internal ordering. But this is true even when interactors are added directly to the 
 window, since they are really just added to the top compound.
 
 
@@ -386,7 +386,7 @@ DONE
 Test thread.h on both platforms.
 Fix serious bugs in thread library.
 See GTimer for possible way to handle refCount.
-DONE - I think. See thread-test.cpp.
+DONE - I think. See src/thread-test.cpp.
 
 
 Add red text div to css.

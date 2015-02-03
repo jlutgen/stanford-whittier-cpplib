@@ -30,6 +30,7 @@
 #include "foreach.h"
 #include "strlib.h"
 #include "vector.h"
+#include "hashcode.h"
 
 /**
  * This class stores an indexed, two-dimensional array.  The following code,
@@ -114,6 +115,18 @@ public:
  *     grid.resize(nRows, nCols, retain);
  */
    void resize(int nRows, int nCols, bool retain = false);
+
+
+/**
+ * Returns \c true if this grid contains exactly the same
+ * values as the given other grid.
+ * Identical in behavior to the == operator.
+ *
+ * Sample usage:
+ *
+ *      if (grid.equals(grid2)) ...
+ */
+   bool equals(const Grid<ValueType>& grid2) const;
 
 
 /**
@@ -215,6 +228,25 @@ public:
  *
  * The iteration forms process the grid in row-major order.
  */
+
+/**
+ * Compares two grids for equality.
+ *
+ * Sample usage:
+ *
+ *      if (grid1 == grid2) ...
+ */
+   bool operator ==(const Grid& grid2) const;
+
+
+/**
+ * Compares two grids for inequality.
+ *
+ * Sample usage:
+ *
+ *     if (grid1 != grid2) ...
+ */
+   bool operator !=(const Grid& grid2) const;
 
 /* Private section */
 
@@ -491,6 +523,25 @@ void Grid<ValueType>::resize(int nRows, int nCols, bool retain) {
    }
 }
 
+template <typename ValueType>
+bool Grid<ValueType>::equals(const Grid<ValueType>& grid2) const {
+    // optimization: if literally same grid, stop
+    if (this == &grid2) {
+        return true;
+    }
+
+    if (nRows != grid2.nRows || nCols != grid2.nCols) {
+        return false;
+    }
+    for (int row = 0; row < nRows; row++) {
+        for (int col = 0; col < nCols; col++) {
+            if (get(row, col) != grid2.get(row, col)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
 
 template <typename ValueType>
 void Grid<ValueType>::fill(const ValueType& value) {
@@ -537,6 +588,16 @@ template <typename ValueType>
 const typename Grid<ValueType>::GridRowConst
 Grid<ValueType>::operator [](int row) const {
     return GridRowConst(const_cast<Grid*>(this), row);
+}
+
+template <typename ValueType>
+bool Grid<ValueType>::operator ==(const Grid& grid2) const {
+    return equals(grid2);
+}
+
+template <typename ValueType>
+bool Grid<ValueType>::operator !=(const Grid& grid2) const {
+    return !equals(grid2);
 }
 
 template <typename ValueType>
@@ -612,6 +673,19 @@ std::istream & operator>>(std::istream & is, Grid<ValueType> & grid) {
       }
    }
    return is;
+}
+
+/*
+ * Template hash function for grids.
+ * Requires the element type in the Grid to have a hashCode function.
+ */
+template <typename T>
+int hashCode(const Grid<T>& g) {
+    int code = HASH_SEED;
+    for (T n : g) {
+        code = HASH_MULTIPLIER * code + hashCode(n);
+    }
+    return int(code & HASH_MASK);
 }
 
 #endif

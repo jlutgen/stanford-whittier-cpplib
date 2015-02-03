@@ -35,7 +35,7 @@ int main() {
         } else if (cmd == "c") {
             compareTest();
             foreachTest();
-//            hashCodeTest();
+            hashCodeTest();
         } else if (cmd == "e") {
             coutCerrMixTest();
         } else if (cmd =="f") {

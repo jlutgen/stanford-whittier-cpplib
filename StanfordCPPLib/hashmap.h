@@ -75,6 +75,19 @@ public:
 
 
 /**
+* Associates \em key with \em value in this map.
+* Any previous value associated with \em key is replaced
+* by the new value.
+* A synonym for the \ref put method.
+*
+* Sample usage:
+*
+*      map.add(key, value)
+*/
+   void add(const KeyType& key, const ValueType& value);
+
+
+/**
  * Returns the number of entries in this map.
  *
  * Sample usage:
@@ -470,6 +483,11 @@ HashMap<KeyType,ValueType>::HashMap() {
 template <typename KeyType,typename ValueType>
 HashMap<KeyType,ValueType>::~HashMap() {
    deleteBuckets(buckets);
+}
+
+template <typename KeyType, typename ValueType>
+void HashMap<KeyType, ValueType>::add(const KeyType& key, const ValueType& value) {
+    put(key, value);
 }
 
 template <typename KeyType,typename ValueType>
