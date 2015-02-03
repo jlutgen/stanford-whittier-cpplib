@@ -106,7 +106,7 @@ public:
  * Compares two vectors for equality.
  * Returns \c true if this vector contains exactly the same
  * values as the given other vector.
- * Identical in behavior to the == operator.
+ * Identical in behavior to the \c == operator.
  * 
  * Sample usage:
  *     if (vec.equals(vec2)) ...

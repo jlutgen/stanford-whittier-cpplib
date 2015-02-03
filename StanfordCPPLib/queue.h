@@ -28,6 +28,7 @@
 #ifndef _queue_h
 #define _queue_h
 
+#include "hashcode.h"
 #include "vector.h"
 
 
@@ -56,6 +57,41 @@ public:
  * Frees any heap storage associated with this queue.
  */
    virtual ~Queue();
+
+
+/**
+ * Adds \em value to the end of the queue.
+ * A synonym for the \ref enqueue method.
+ *
+ * Sample usage:
+ *
+ *      queue.add(value);
+ */
+   void add(const ValueType& value);
+
+
+/**
+ * Compares two queues for equality.
+ * Returns \c true if this queue contains exactly the same
+ * values as the given other queue.
+ * Identical in behavior to the \c == operator.
+ *
+ * Sample usage:
+ *
+ *      if (queue.equals(queue2)) ...
+ */
+   bool equals(const Queue<ValueType>& queue2) const;
+
+
+/**
+ * Removes and returns the first item in the queue.
+ * A synonym for the \ref dequeue method.
+ *
+ * Sample usage:
+ *
+ *      ValueType first = queue.remove();
+ */
+   ValueType remove();
 
 
 /**
@@ -151,6 +187,29 @@ public:
    std::string toString();
 
 
+/**
+ * Compares two queues for equality.
+ *
+ * Sample usage:
+ *
+ *      if (queue == queue2) ...
+ */
+    bool operator ==(const Queue& queue2) const;
+
+
+/**
+ * Compares two queues for inequality.
+ *
+ * Sample usage:
+ *
+ *     if (queue != queue2) ...
+ */
+    bool operator !=(const Queue& queue2) const;
+
+
+    template <typename T>
+    friend int hashCode(const Queue<T>& s);
+
 /* Private section */
 
 /**********************************************************************/
@@ -227,6 +286,11 @@ Queue<ValueType>::~Queue() {
 }
 
 template <typename ValueType>
+void Queue<ValueType>::add(const ValueType& value) {
+    enqueue(value);
+}
+
+template <typename ValueType>
 int Queue<ValueType>::size() const {
    return count;
 }
@@ -253,6 +317,24 @@ void Queue<ValueType>::enqueue(ValueType value) {
    count++;
 }
 
+template <typename ValueType>
+bool Queue<ValueType>::equals(const Queue<ValueType>& queue2) const {
+    if (this == &queue2) {
+        return true;
+    }
+    if (size() != queue2.size()) {
+        return false;
+    }
+    Queue<ValueType> copy1 = *this;
+    Queue<ValueType> copy2 = queue2;
+    while (!copy1.isEmpty() && !copy2.isEmpty()) {
+        if (!(copy1.dequeue() == copy2.dequeue())) {
+            return false;
+        }
+    }
+    return copy1.isEmpty() == copy2.isEmpty();
+}
+
 /*
  * Implementation notes: dequeue, peek
  * -----------------------------------
@@ -273,6 +355,16 @@ template <typename ValueType>
 ValueType Queue<ValueType>::peek() const {
    if (count == 0) error("Queue::peek: Attempting to peek at an empty queue");
    return ringBuffer.get(head);
+}
+
+template <typename ValueType>
+ValueType Queue<ValueType>::remove() {
+    // this isEmpty check is also done in dequeue(), but we repeat it
+    // here so that the possible error message will be more descriptive.
+    if (isEmpty()) {
+        error("Queue::remove: Attempting to remove from an empty queue");
+    }
+    return dequeue();
 }
 
 template <typename ValueType>
@@ -315,6 +407,16 @@ std::string Queue<ValueType>::toString() {
 }
 
 template <typename ValueType>
+bool Queue<ValueType>::operator ==(const Queue& queue2) const {
+    return equals(queue2);
+}
+
+template <typename ValueType>
+bool Queue<ValueType>::operator !=(const Queue& queue2) const {
+    return !equals(queue2);
+}
+
+template <typename ValueType>
 std::ostream & operator<<(std::ostream & os, const Queue<ValueType> & queue) {
    os << "{";
    Queue<ValueType> copy = queue;
@@ -347,6 +449,19 @@ std::istream & operator>>(std::istream & is, Queue<ValueType> & queue) {
       }
    }
    return is;
+}
+
+/*
+ * Template hash function for queues.
+ * Requires the element type in the queue to have a hashCode function.
+ */
+template <typename T>
+int hashCode(const Queue<T>& q) {
+    int code = HASH_SEED;
+    for (int i = 0; i < q.count; i++) {
+        code = HASH_MULTIPLIER * code + hashCode(q.ringBuffer[(q.head + i) % q.capacity]);
+    }
+    return int(code & HASH_MASK);
 }
 
 #endif

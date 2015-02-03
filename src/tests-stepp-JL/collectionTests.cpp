@@ -620,12 +620,12 @@ void hashCodeTest() {
 //    std::cout << "hashset of priorityqueue: " << hashpq << std::endl;
     
     // Queue
-//    HashSet<Queue<int> > hashq;
-//    Queue<int> q;
-//    q.add(69);
-//    q.add(42);
-//    hashq.add(q);
-//    std::cout << "hashset of queue: " << hashq << std::endl;
+    HashSet<Queue<int> > hashq;
+    Queue<int> q;
+    q.add(69);
+    q.add(42);
+    hashq.add(q);
+    std::cout << "hashset of queue: " << hashq << std::endl;
     
 //    for (int n : q) {
 //        std::cout << "queue element: " << n << std::endl;

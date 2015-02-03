@@ -105,7 +105,7 @@ public:
  * Compares two stacks for equality.
  * Returns \c true if this stack contains exactly the same
  * values as the given other stack.
- * Identical in behavior to the == operator.
+ * Identical in behavior to the \c == operator.
  *
  * Sample usage:
  *     if (stack.equals(stack2)) ...
