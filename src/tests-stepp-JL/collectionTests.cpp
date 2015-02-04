@@ -580,12 +580,12 @@ void hashCodeTest() {
     std::cout << "hashset of hashmap: " << hashhashmap << std::endl;
     
     // HashSet
-//    HashSet<HashSet<int> > hashhashset;
-//    HashSet<int> hset;
-//    hset.add(69);
-//    hset.add(42);
-//    hashhashset.add(hset);
-//    std::cout << "hashset of hashset: " << hashhashset << std::endl;
+    HashSet<HashSet<int> > hashhashset;
+    HashSet<int> hset;
+    hset.add(69);
+    hset.add(42);
+    hashhashset.add(hset);
+    std::cout << "hashset of hashset: " << hashhashset << std::endl;
     
     // Lexicon
 //    HashSet<Lexicon> hashlex;

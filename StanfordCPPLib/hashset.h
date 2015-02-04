@@ -64,6 +64,18 @@ public:
 
 
 /**
+ * Returns \c true if this set contains exactly the same values
+ * as the given other set.
+ * Identical in behavior to the \c == operator.
+ *
+ * Sample usage:
+ *
+ *      if (set.equals(set2)) ...
+ */
+    bool equals(const HashSet<ValueType>& set2) const;
+
+
+/**
  * Returns the number of elements in this set.
  *
  * Sample usage:
@@ -445,6 +457,20 @@ void HashSet<ValueType>::add(const ValueType & value) {
 }
 
 template <typename ValueType>
+bool HashSet<ValueType>::equals(const HashSet<ValueType>& set2) const {
+    // optimization: if literally same set, stop
+    if (this == &set2) {
+        return true;
+    }
+
+    if (size() != set2.size()) {
+        return false;
+    }
+
+    return isSubsetOf(set2) && set2.isSubsetOf(*this);
+}
+
+template <typename ValueType>
 void HashSet<ValueType>::insert(const ValueType & value) {
    map.put(value, true);
 }
@@ -483,13 +509,13 @@ bool HashSet<ValueType>::isSubsetOf(const HashSet & set2) const {
  */
 
 template <typename ValueType>
-bool HashSet<ValueType>::operator==(const HashSet & set2) const {
-   return this->isSubsetOf(set2) && set2.isSubsetOf(*this);
+bool HashSet<ValueType>::operator ==(const HashSet& set2) const {
+    return equals(set2);
 }
 
 template <typename ValueType>
-bool HashSet<ValueType>::operator!=(const HashSet & set2) const {
-   return !(*this == set2);
+bool HashSet<ValueType>::operator !=(const HashSet& set2) const {
+    return !equals(set2);
 }
 
 template <typename ValueType>
@@ -644,6 +670,19 @@ std::istream & operator>>(std::istream & is, HashSet<ValueType> & set) {
       }
    }
    return is;
+}
+
+/*
+ * Template hash function for hash sets.
+ * Requires the element type in the HashSet to have a hashCode function.
+ */
+template <typename T>
+int hashCode(const HashSet<T>& s) {
+    int code = HASH_SEED;
+    for (T n : s) {
+        code = HASH_MULTIPLIER * code + hashCode(n);
+    }
+    return int(code & HASH_MASK);
 }
 
 #endif

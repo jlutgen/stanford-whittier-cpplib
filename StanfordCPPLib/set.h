@@ -57,14 +57,15 @@ public:
    virtual ~Set();
 
 
-    /*
-     * Method: equals
-     * Usage: if (set.equals(set2)) ...
-     * --------------------------------
-     * Returns <code>true</code> if this set contains exactly the same values
-     * as the given other set.
-     * Identical in behavior to the == operator.
-     */
+/**
+ * Returns \c true if this set contains exactly the same values
+ * as the given other set.
+ * Identical in behavior to the \c == operator.
+ *
+ * Sample usage:
+ *
+ *      if (set.equals(set2)) ...
+ */
     bool equals(const Set<ValueType>& set2) const;
 
 
