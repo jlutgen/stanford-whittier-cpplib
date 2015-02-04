@@ -145,6 +145,16 @@ public:
 
 
 /**
+ * A synonym for the dequeue method.
+ *
+ * Sample usage:
+ *
+ *      ValueType first = queue.remove();
+ */
+    ValueType remove();
+
+
+/**
  * Returns the first value in this queue, without removing it.  For
  * compatibility with the STL `queue` class, the Stanford `%Queue` class
  * has a variant of this method called \ref front, which returns the

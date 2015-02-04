@@ -612,12 +612,12 @@ void hashCodeTest() {
     std::cout << "hashset of map: " << hashmap << std::endl;
     
     // PriorityQueue
-//    HashSet<PriorityQueue<std::string> > hashpq;
-//    PriorityQueue<std::string> pq;
-//    pq.add("a", 3);
-//    pq.add("b", 2);
-//    hashpq.add(pq);
-//    std::cout << "hashset of priorityqueue: " << hashpq << std::endl;
+    HashSet<PriorityQueue<std::string> > hashpq;
+    PriorityQueue<std::string> pq;
+    pq.add("a", 3);
+    pq.add("b", 2);
+    hashpq.add(pq);
+    std::cout << "hashset of priorityqueue: " << hashpq << std::endl;
     
     // Queue
     HashSet<Queue<int> > hashq;

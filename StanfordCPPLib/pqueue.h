@@ -27,6 +27,7 @@
 #ifndef _pqueue_h
 #define _pqueue_h
 
+#include "hashcode.h"
 #include "vector.h"
 
 /**
@@ -56,6 +57,29 @@ public:
  * Frees any heap storage associated with this priority queue.
  */
    virtual ~PriorityQueue();
+
+
+/**
+ * A synonym for the \ref enqueue method.
+ *
+ * Sample usage:
+ *
+ *      pq.add(value, priority);
+ */
+    void add(const ValueType& value, double priority);
+
+
+/**
+ * Compares two priority queues for equality.
+ * Returns \c true if this queue contains exactly the same
+ * values and priorities as the given other queue.
+ * Identical in behavior to the \c == operator.
+ *
+ * Sample usage:
+ *
+ *      if (pq.equals(pq2)) ...
+ */
+    bool equals(const PriorityQueue<ValueType>& pq2) const;
 
 
 /**
@@ -114,6 +138,16 @@ public:
 
 
 /**
+ * A synonym for the dequeue method.
+ *
+ * Sample usage:
+ *
+ *      ValueType first = pq.remove();
+ */
+    ValueType remove();
+
+
+/**
  * Returns the value of highest priority in this queue, without
  * removing it.
  *
@@ -165,6 +199,26 @@ public:
  *     string str = pq.toString();
  */
    std::string toString();
+
+
+/**
+ * Compares two priority queues for equality.
+ *
+ * Sample usage:
+ *
+ *      if (pq == pq2) ...
+ */
+    bool operator ==(const PriorityQueue& queue2) const;
+
+
+/**
+ * Compares two priority queues for inequality.
+ *
+ * Sample usage:
+ *
+ *     if (pq != pq2) ...
+ */
+    bool operator !=(const PriorityQueue& queue2) const;
 
 
 /* Private section */
@@ -225,6 +279,33 @@ PriorityQueue<ValueType>::PriorityQueue() {
 template <typename ValueType>
 PriorityQueue<ValueType>::~PriorityQueue() {
    /* Empty */
+}
+
+template <typename ValueType>
+void PriorityQueue<ValueType>::add(const ValueType& value, double priority) {
+    enqueue(value, priority);
+}
+
+template <typename ValueType>
+bool PriorityQueue<ValueType>::equals(const PriorityQueue<ValueType>& pq2) const {
+    // optimization: if literally same pq, stop
+    if (this == &pq2) {
+        return true;
+    }
+    if (size() != pq2.size()) {
+        return false;
+    }
+    PriorityQueue<ValueType> backup1 = *this;
+    PriorityQueue<ValueType> backup2 = pq2;
+    while (!backup1.isEmpty() && !backup2.isEmpty()) {
+        if (backup1.peekPriority() != backup2.peekPriority()) {
+            return false;
+        }
+        if (backup1.dequeue() != backup2.dequeue()) {
+            return false;
+        }
+    }
+    return backup1.isEmpty() == backup2.isEmpty();
 }
 
 template <typename ValueType>
@@ -289,6 +370,11 @@ ValueType PriorityQueue<ValueType>::dequeue() {
 }
 
 template <typename ValueType>
+ValueType PriorityQueue<ValueType>::remove() {
+    return dequeue();
+}
+
+template <typename ValueType>
 ValueType PriorityQueue<ValueType>::peek() const {
    if (count == 0) error("PriorityQueue::peek: Attempting to peek at an empty queue");
    return heap.get(0).value;
@@ -334,6 +420,16 @@ std::string PriorityQueue<ValueType>::toString() {
 }
 
 template <typename ValueType>
+bool PriorityQueue<ValueType>::operator ==(const PriorityQueue& pq2) const {
+    return equals(pq2);
+}
+
+template <typename ValueType>
+bool PriorityQueue<ValueType>::operator !=(const PriorityQueue& pq2) const {
+    return !equals(pq2);
+}
+
+template <typename ValueType>
 std::ostream & operator<<(std::ostream & os,
                           const PriorityQueue<ValueType> & pq) {
    os << "{";
@@ -371,6 +467,23 @@ std::istream & operator>>(std::istream & is, PriorityQueue<ValueType> & pq) {
       }
    }
    return is;
+}
+
+/*
+ * Template hash function for priority queues.
+ * Requires the element type in the PriorityQueue to have a hashCode function.
+ */
+template <typename T>
+int hashCode(const PriorityQueue<T>& pq) {
+    // (slow, memory-inefficient) implementation: copy pq, dequeue all, and hash together
+    PriorityQueue<T> backup = pq;
+    int code = HASH_SEED;
+    while (!backup.isEmpty()) {
+        code = HASH_MULTIPLIER * code + hashCode(backup.peek());
+        code = HASH_MULTIPLIER * code + hashCode(backup.peekPriority());
+        backup.dequeue();
+    }
+    return int(code & HASH_MASK);
 }
 
 #endif
