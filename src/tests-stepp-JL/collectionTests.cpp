@@ -632,12 +632,12 @@ void hashCodeTest() {
 //    }
     
     // Set
-//    HashSet<Set<int> > hashset;
-//    Set<int> set;
-//    set.add(69);
-//    set.add(42);
-//    hashset.add(set);
-//    std::cout << "hashset of set: " << hashset << std::endl;
+    HashSet<Set<int> > hashset;
+    Set<int> set;
+    set.add(69);
+    set.add(42);
+    hashset.add(set);
+    std::cout << "hashset of set: " << hashset << std::endl;
     
     // SparseGrid
 //    HashSet<SparseGrid<int> > hashsparsegrid;

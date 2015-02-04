@@ -29,6 +29,7 @@
 
 #include <iostream>
 #include "foreach.h"
+#include "hashcode.h"
 #include "map.h"
 #include "vector.h"
 
@@ -54,6 +55,17 @@ public:
  * Frees any heap storage associated with this set.
  */
    virtual ~Set();
+
+
+    /*
+     * Method: equals
+     * Usage: if (set.equals(set2)) ...
+     * --------------------------------
+     * Returns <code>true</code> if this set contains exactly the same values
+     * as the given other set.
+     * Identical in behavior to the == operator.
+     */
+    bool equals(const Set<ValueType>& set2) const;
 
 
 /**
@@ -163,6 +175,7 @@ public:
  *     set1 != set2
  */
    bool operator!=(const Set & set2) const;
+
 
 /** \_overload */
    Set operator+(const Set & set2) const;
@@ -434,6 +447,28 @@ Set<ValueType>::~Set() {
 }
 
 template <typename ValueType>
+bool Set<ValueType>::equals(const Set<ValueType>& set2) const {
+    // optimization: if literally same set, stop
+    if (this == &set2) {
+        return true;
+    }
+    if (size() != set2.size()) {
+        return false;
+    }
+    iterator it1 = begin();
+    iterator it2 = set2.map.begin();
+    iterator end = this->end();
+    while (it1 != end) {
+        if (map.compareKeys(*it1, *it2) != 0) {
+            return false;
+        }
+        ++it1;
+        ++it2;
+    }
+    return true;
+}
+
+template <typename ValueType>
 int Set<ValueType>::size() const {
    return map.size();
 }
@@ -488,21 +523,12 @@ bool Set<ValueType>::isSubsetOf(const Set & set2) const {
 
 template <typename ValueType>
 bool Set<ValueType>::operator==(const Set & set2) const {
-   if (size() != set2.map.size()) return false;
-   iterator it1 = begin();
-   iterator it2 = set2.map.begin();
-   iterator end = this->end();
-   while (it1 != end) {
-      if (map.compareKeys(*it1, *it2) != 0) return false;
-      ++it1;
-      ++it2;
-   }
-   return true;
+   return equals(set2);
 }
 
 template <typename ValueType>
 bool Set<ValueType>::operator!=(const Set & set2) const {
-   return !(*this == set2);
+   return !equals(set2);
 }
 
 template <typename ValueType>
@@ -656,6 +682,19 @@ std::istream & operator>>(std::istream & is, Set<ValueType> & set) {
       }
    }
    return is;
+}
+
+/*
+ * Template hash function for sets.
+ * Requires the element type in the Set to have a hashCode function.
+ */
+template <typename T>
+int hashCode(const Set<T>& s) {
+    int code = HASH_SEED;
+    for (T n : s) {
+        code = HASH_MULTIPLIER * code + hashCode(n);
+    }
+    return int(code & HASH_MASK);
 }
 
 #endif

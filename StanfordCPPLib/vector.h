@@ -109,6 +109,7 @@ public:
  * Identical in behavior to the \c == operator.
  * 
  * Sample usage:
+ *
  *     if (vec.equals(vec2)) ...
  */
    bool equals(const Vector<ValueType>& v) const;
