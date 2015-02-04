@@ -88,6 +88,17 @@ public:
 
 
 /**
+ * Returns \c true if the two maps contain exactly the same
+ * key/value pairs, and \c false otherwise.
+ *
+ * Sample usage:
+ *
+ *      if (map.equals(map2)) ...
+ */
+   bool equals(const HashMap& map2) const;
+
+
+/**
  * Returns the number of entries in this map.
  *
  * Sample usage:
@@ -175,6 +186,26 @@ public:
  */
    ValueType & operator[](KeyType key);
    ValueType operator[](KeyType key) const;
+
+
+/**
+ * Compares two maps for equality.
+ *
+ * Sample usage:
+ *
+ *      if (map == map2) ...
+ */
+   bool operator ==(const HashMap& map2) const;
+
+
+/**
+ * Compares two maps for inequality.
+ *
+ * Sample usage:
+ *
+ *     if (map != map2) ...
+ */
+   bool operator !=(const HashMap& map2) const;
 
 
 /**
@@ -517,6 +548,31 @@ bool HashMap<KeyType,ValueType>::containsKey(KeyType key) const {
    return findCell(hashCode(key) % nBuckets, key) != NULL;
 }
 
+template <typename KeyType, typename ValueType>
+bool HashMap<KeyType, ValueType>::equals(const HashMap<KeyType, ValueType>& map2) const {
+    // optimization: if literally same map, stop
+    if (this == &map2) {
+        return true;
+    }
+
+    if (size() != map2.size()) {
+        return false;
+    }
+
+    // compare both ways; each must be subset of the other
+    for (KeyType key : *this) {
+        if (!map2.containsKey(key) || map2.get(key) != get(key)) {
+            return false;
+        }
+    }
+    for (KeyType key : map2) {
+        if (!containsKey(key) || get(key) != map2.get(key)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 template <typename KeyType,typename ValueType>
 void HashMap<KeyType,ValueType>::remove(KeyType key) {
    int bucket = hashCode(key) % nBuckets;
@@ -599,6 +655,16 @@ std::string HashMap<KeyType,ValueType>::toString() {
    return os.str();
 }
 
+template <typename KeyType, typename ValueType>
+bool HashMap<KeyType, ValueType>::operator ==(const HashMap& map2) const {
+    return equals(map2);
+}
+
+template <typename KeyType, typename ValueType>
+bool HashMap<KeyType, ValueType>::operator !=(const HashMap& map2) const {
+    return !equals(map2); // BUGFIX (JL): was missing '!'
+}
+
 /*
  * Implementation notes: << and >>
  * -------------------------------
@@ -650,6 +716,21 @@ std::istream & operator>>(std::istream & is,
       }
    }
    return is;
+}
+
+/*
+ * Template hash function for hash maps.
+ * Requires the key and value types in the HashMap to have a hashCode function.
+ */
+template <typename K, typename V>
+int hashCode(const HashMap<K, V>& map) {
+    int code = HASH_SEED;
+    for (K k : map) {
+        code = HASH_MULTIPLIER * code + hashCode(k);
+        V v = map[k];
+        code = HASH_MULTIPLIER * code + hashCode(v);
+    }
+    return int(code & HASH_MASK);
 }
 
 #endif

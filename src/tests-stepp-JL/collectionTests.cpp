@@ -572,12 +572,12 @@ void hashCodeTest() {
     std::cout << "hashset of grid: " << hashgrid << std::endl;
     
     // HashMap
-//    HashSet<HashMap<int, int> > hashhashmap;
-//    HashMap<int, int> hmap;
-//    hmap.add(69, 96);
-//    hmap.add(42, 24);
-//    hashhashmap.add(hmap);
-//    std::cout << "hashset of hashmap: " << hashhashmap << std::endl;
+    HashSet<HashMap<int, int> > hashhashmap;
+    HashMap<int, int> hmap;
+    hmap.add(69, 96);
+    hmap.add(42, 24);
+    hashhashmap.add(hmap);
+    std::cout << "hashset of hashmap: " << hashhashmap << std::endl;
     
     // HashSet
 //    HashSet<HashSet<int> > hashhashset;
