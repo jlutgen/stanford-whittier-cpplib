@@ -134,6 +134,7 @@ public:
 
    void enqueue(ValueType value);
 
+
 /**
  * Removes and returns the first item in this queue.
  *
@@ -142,16 +143,6 @@ public:
  *     ValueType first = queue.dequeue();
  */
    ValueType dequeue();
-
-
-/**
- * A synonym for the dequeue method.
- *
- * Sample usage:
- *
- *      ValueType first = queue.remove();
- */
-    ValueType remove();
 
 
 /**

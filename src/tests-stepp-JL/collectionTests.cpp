@@ -12,7 +12,7 @@
 //#include "deque.h"
 #include "graph.h"
 #include "grid.h"
-//#include "hashcode.h"
+#include "hashcode.h"
 #include "hashmap.h"
 #include "hashset.h"
 #include "lexicon.h"
@@ -533,36 +533,36 @@ void hashCodeTest() {
 //    std::cout << "hashset of deque: " << hashdeq << std::endl;
 
     // Graph
-//    Graph<DumbNode, DumbEdge> graph;
-//    graph.addNode("a");
-//    graph.addNode("b");
-//    graph.addNode("c");
-//    graph.addNode("d");
-//    graph.addNode("e");
-//    graph.addArc("a", "b");
-//    graph.addArc("a", "d");
-//    graph.addArc("b", "c");
-//    graph.addArc("b", "d");
-//    graph.addArc("c", "b");
-//    graph.addArc("c", "e");
-//    Graph<DumbNode, DumbEdge> graph2;
-//    graph2.addNode("a");
-//    graph2.addNode("b");
-//    graph2.addNode("c");
-//    graph2.addNode("d");
-//    graph2.addNode("e");
-//    graph2.addNode("f");
-//    graph2.addArc("a", "b");
-//    graph2.addArc("a", "d");
-//    graph2.addArc("b", "c");
-//    graph2.addArc("b", "d");
-//    graph2.addArc("c", "b");
-//    graph2.addArc("b", "e");
-//    //graph2.addArc("c", "e");
-//    HashSet<Graph<DumbNode, DumbEdge> > hashgraph;
-//    hashgraph.add(graph);
-//    hashgraph.add(graph2);
-//    std::cout << "hashset of graph: " << hashgraph << std::endl;
+    Graph<DumbNode, DumbEdge> graph;
+    graph.addNode("a");
+    graph.addNode("b");
+    graph.addNode("c");
+    graph.addNode("d");
+    graph.addNode("e");
+    graph.addArc("a", "b");
+    graph.addArc("a", "d");
+    graph.addArc("b", "c");
+    graph.addArc("b", "d");
+    graph.addArc("c", "b");
+    graph.addArc("c", "e");
+    Graph<DumbNode, DumbEdge> graph2;
+    graph2.addNode("a");
+    graph2.addNode("b");
+    graph2.addNode("c");
+    graph2.addNode("d");
+    graph2.addNode("e");
+    graph2.addNode("f");
+    graph2.addArc("a", "b");
+    graph2.addArc("a", "d");
+    graph2.addArc("b", "c");
+    graph2.addArc("b", "d");
+    graph2.addArc("c", "b");
+    graph2.addArc("b", "e");
+    //graph2.addArc("c", "e");
+    HashSet<Graph<DumbNode, DumbEdge> > hashgraph;
+    hashgraph.add(graph);
+    hashgraph.add(graph2);
+    std::cout << "hashset of graph: " << hashgraph << std::endl;
     
     // Grid
     HashSet<Grid<int> > hashgrid;
