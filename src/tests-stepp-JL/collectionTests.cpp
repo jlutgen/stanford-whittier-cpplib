@@ -588,12 +588,12 @@ void hashCodeTest() {
     std::cout << "hashset of hashset: " << hashhashset << std::endl;
     
     // Lexicon
-//    HashSet<Lexicon> hashlex;
-//    Lexicon lex;
-//    lex.add("a");
-//    lex.add("abc");
-//    hashlex.add(lex);
-//    std::cout << "hashset of lexicon: " << hashlex << std::endl;
+    HashSet<Lexicon> hashlex;
+    Lexicon lex;
+    lex.add("a");
+    lex.add("abc");
+    hashlex.add(lex);
+    std::cout << "hashset of lexicon: " << hashlex << std::endl;
     
     // LinkedList
 //    HashSet<LinkedList<int> > hashlink;

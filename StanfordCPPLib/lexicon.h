@@ -30,6 +30,7 @@
 #include <string>
 #include <cctype>
 #include "foreach.h"
+#include "lexicon.h"
 #include "set.h"
 #include "stack.h"
 
@@ -93,6 +94,17 @@ public:
  * Deallocates any storage associated with this lexicon.
  */
    virtual ~Lexicon();
+
+
+/**
+ * Compares two lexicons for equality.
+ * Identical in behavior to the \c == operator.
+ *
+ * Sample usage:
+ *
+ *      if (lex1.equals(lex2)) ...
+ */
+    bool equals(const Lexicon& lex2) const;
 
 
 /**
@@ -184,6 +196,19 @@ public:
    void mapAll(void (*fn)(const std::string &)) const;
    template <typename FunctorType>
    void mapAll(FunctorType fn) const;
+
+
+    /** \_overload */ // Not really. Just a comment-hack for Doxygen.
+    bool operator !=(const Lexicon& lex2) const;
+/*
+ * Relational operators to compare two lexicons to see if they have the same elements.
+ *
+ * Sample usages:
+ *
+ *      if (lex1 == lex2) ...
+ *      if (lex1 != lex2) ...
+ */
+    bool operator ==(const Lexicon& lex2) const;
 
 
 /*
@@ -387,5 +412,15 @@ void Lexicon::mapAll(FunctorType fn) const {
       fn(word);
    }
 }
+
+/*
+ * Hashing function for lexicons
+ */
+int hashCode(const Lexicon& l);
+
+/*
+ * Prints the lexicon to the given output stream.
+ */
+std::ostream& operator <<(std::ostream& os, const Lexicon& lex);
 
 #endif

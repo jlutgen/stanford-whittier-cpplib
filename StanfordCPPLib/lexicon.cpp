@@ -171,6 +171,27 @@ void Lexicon::addWordsFromFile(string filename) {
    istr.close();
 }
 
+bool Lexicon::equals(const Lexicon& lex2) const {
+    // optimization: if literally same lexicon, stop
+    if (this == &lex2) {
+        return true;
+    }
+    if (size() != lex2.size()) {
+        return false;
+    }
+
+    // compare both ways; each must be subset of the other
+    for (string s : *this) {
+        if (!lex2.contains(s))
+            return false;
+    }
+    for (string s : lex2) {
+        if (!contains(s))
+            return false;
+    }
+    return true;
+}
+
 int Lexicon::size() const {
    return numDawgWords + otherWords.size();
 }
@@ -259,6 +280,14 @@ Lexicon & Lexicon::operator=(const Lexicon & src) {
    return *this;
 }
 
+bool Lexicon::operator ==(const Lexicon& lex2) const {
+    return equals(lex2);
+}
+
+bool Lexicon::operator !=(const Lexicon& lex2) const {
+    return !equals(lex2);
+}
+
 void Lexicon::deepCopy(const Lexicon & src) {
    if (src.edges == NULL) {
       edges = NULL;
@@ -330,4 +359,27 @@ static void toLowerCaseInPlace(string & str) {
    for (int i = 0; i < nChars; i++) {
       str[i] = tolower(str[i]);
    }
+}
+
+std::ostream & operator<<(std::ostream & os, const Lexicon & lex) {
+   os << "{";
+   bool started = false;
+   for (string s : lex) {
+      if (started) os << ", ";
+      os << s;
+      started = true;
+   }
+   os << "}";
+   return os;
+}
+
+/*
+ * Hash function for lexicons.
+ */
+int hashCode(const Lexicon& l) {
+    int code = HASH_SEED;
+    for (std::string n : l) {
+        code = HASH_MULTIPLIER * code + hashCode(n);
+    }
+    return int(code & HASH_MASK);
 }
