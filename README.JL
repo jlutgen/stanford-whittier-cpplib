@@ -495,7 +495,7 @@ DONE
 
 
 Finish GTextArea docs.
-TODO
+DONE
 
 
 Test GObject::contains using mouse click loop.
@@ -508,14 +508,15 @@ TODO
 
 Add CSS tags for formatting #aarrggbb as bold italic monospaced (in GWindow/GObject
 setColor, etc.)
-TODO
+DONE (didn't use css, though, and decided not to use monospaced font)
+
 
 Document the fact that getLocation, getX, getY for GObject give results 
 relative to the object's parent compound.
 TODO
 
 Document redefinition of containment for unfilled GArc.
-TODO
+DONE
 
 Versioning, version checking.
 TODO

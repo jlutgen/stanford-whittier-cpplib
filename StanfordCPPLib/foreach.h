@@ -5,13 +5,13 @@
  * This file defines the \em foreach keyword, which implements
  * a substitute for the range-based \em for loop from C++11.
  *
- * All iterable classes in the Stanford libraries import this file, so
+ * All iterable classes in the Stanford-Whittier libraries import this file, so
  * clients don't ordinarily need to do so explicitly.  This version of
  * \em foreach also supports C++ strings and arrays.
  *
  * The \em foreach statement steps through the elements in
  * a collection.  It works correctly with the collection classes in
- * both the Standard Template Library and the Stanford C++ libraries,
+ * both the Standard Template Library and the Stanford-Whittier C++ libraries,
  * but can also be used with C++ strings and statically initialized
  * arrays.
  *

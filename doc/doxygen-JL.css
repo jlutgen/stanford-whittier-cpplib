@@ -1,4 +1,3 @@
-/* The standard CSS for doxygen 1.8.6 */
 
 body, table, div, p, dl {
 	font-family: initial;
@@ -23,6 +22,7 @@ code, pre {
 b.redfont {
 	color: red;
 }
+
 
 /* @group Heading Levels */
 

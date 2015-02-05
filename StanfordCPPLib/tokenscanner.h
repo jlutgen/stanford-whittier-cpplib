@@ -48,8 +48,11 @@ enum TokenType {
 
 
 /**
- * This class divides a string into individual tokens.  The typical
- * use of the `%TokenScanner` class is illustrated by the
+ * @class TokenScanner
+ *
+ * @brief This class divides a string into individual tokens.
+ *
+ * The typical use of the `%TokenScanner` class is illustrated by the
  * following pattern, which reads the tokens in the string variable
  * \c input:
  *

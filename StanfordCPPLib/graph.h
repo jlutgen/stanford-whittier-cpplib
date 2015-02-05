@@ -38,7 +38,10 @@
 #include "strlib.h"
 
 /**
- * This class represents a graph with the specified node and arc types.
+ * @class Graph
+ *
+ * @brief This class represents a graph with the specified node and arc types.
+ *
  * The \c NodeType and \c ArcType parameters indicate
  * the structure type or class used for nodes and arcs, respectively.
  * These types can contain any fields or methods required by the client,
@@ -1155,6 +1158,14 @@ bool Graph<NodeType, ArcType>::operator !=(const Graph& graph2) const {
  * contain client-specific data.  To ensure that this information is
  * correctly written and read by these operators, clients must override
  * the methods writeNodeData, writeArcData, scanNodeData, and scanArcData.
+ */
+/**
+ * Overloads the `<<` operator so that it is able
+ * to display `%Graph` objects.
+ *
+ * Sample usage:
+ *
+ *     cout << g;
  */
 template <typename NodeType, typename ArcType>
 std::ostream& operator <<(std::ostream& os, const Graph<NodeType, ArcType>& g) {

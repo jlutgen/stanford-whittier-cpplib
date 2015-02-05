@@ -33,14 +33,16 @@
 #include "vector.h"
 
 /**
- * This class implements an efficient abstraction for storing sets
- * of distinct elements.  This class is identical to the Set
- * class except that it uses a hash table as its underlying
- * representation.  The advantage of the `%HashSet` class is that
- * it operates in constant time, as opposed to the <i>O</i>(log <i>N</i>)
- * time for the Set class.  The disadvantage of
- * `%HashSet` is that iterators return the values in an
- * unspecified order.
+ * @class HashSet
+ *
+ * @brief This class implements an efficient abstraction for storing sets
+ * of distinct elements.
+ *
+ * This class is identical to the Set class except that it uses a hash
+ * table as its underlying representation.  The advantage of the
+ * `%HashSet` class is that it operates in constant time, as opposed
+ * to the <i>O</i>(log <i>N</i>) time for the Set class.  The disadvantage of
+ * `%HashSet` is that iterators return the values in an unspecified order.
  */
 template <typename ValueType>
 class HashSet {
@@ -49,6 +51,16 @@ public:
 
 /**
  * Initializes an empty set of the specified element type.
+ * The type used for the elements must define
+ * the <code>==</code> operator, and there must be a free function
+ * with the following signature:
+ *
+ *      int hashCode(ValueType element);
+ *
+ * that returns a positive integer determined by the element.  The hashcode.h interface
+ * exports \c hashCode functions for \c string and
+ * the C++ primitive types. In addition, each of the Stanford-Whittier collection
+ * classes (Vector, Stack, Queue, etc.) exports its own \c hashCode function.
  *
  * Sample usage:
  *
@@ -636,6 +648,14 @@ void HashSet<ValueType>::mapAll(FunctorType fn) const {
    map.mapAll(fn);
 }
 
+/**
+ * Overloads the `<<` operator so that it is able
+ * to display hash sets.
+ *
+ * Sample usage:
+ *
+ *     cout << set;
+ */
 template <typename ValueType>
 std::ostream & operator<<(std::ostream & os, const HashSet<ValueType> & set) {
    os << "{";

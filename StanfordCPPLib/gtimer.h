@@ -43,9 +43,12 @@ struct GTimerData {
 
 
 /**
- * This class implements a simple interval timer that generates a
- * GTimerEvent with a specified frequency.  Copying
- * a `%GTimer` object is legal and creates an object that
+ * @class GTimer
+ *
+ * @brief This class implements a simple interval timer that generates a
+ * GTimerEvent with a specified frequency.
+ *
+ * Copying a `%GTimer` object is legal and creates an object that
  * refers to the same internal timer.
  */
 class GTimer {

@@ -33,9 +33,14 @@
 
 
 /**
- * \class GTextArea
+ * @class GTextArea
  *
- * This class represents a multi-line area that displays plain text.
+ * @brief This interactor subclass represents a multi-line
+ * area that displays plain text.
+ *
+ * Scrollbars are added to the text area automatically if the
+ * text is too large to fit in the displayed region of the
+ * text area.
  */
 class GTextArea : public GInteractor {
 public:
@@ -47,8 +52,12 @@ public:
      * and initial location. If no location is passed, the default
      * of `(0, 0)` is used.
      *
+     * The text area is editable by default.
+     *
      * Sample usages:
      *
+     *      GTextArea *textarea = new GTextArea(width, height);
+     *      GTextArea *textarea = new GTextArea(x, y, width, height);
      */
     /** \_overload */
     GTextArea(double x, double y, double width, double height);
@@ -60,67 +69,67 @@ public:
 
     /* unique GTextArea behavior */
 
-     /**
+    /**
       * Sets the font used by this text area.
       *
       * Sample usage:
       *
       *     textarea->setFont();
       */
-      void setFont(std::string font);
+    void setFont(std::string font);
 
 
-      /**
-       * Returns the current text displayed by this text area.
-       *
-       * Sample usage:
-       *
-       *     string font = textarea->getText();
-       */
-       std::string getText() const;
+    /**
+     * Returns the text currently displayed by this text area.
+     *
+     * Sample usage:
+     *
+     *     string font = textarea->getText();
+     */
+    std::string getText() const;
 
 
-       /**
-        * Sets the text displayed by this text area.
-        *
-        * Sample usage:
-        *
-        *     textarea->setText();
-        */
-        void setText(std::string text);
+    /**
+      * Sets the text displayed by this text area.
+      *
+      * Sample usage:
+      *
+      *     textarea->setText();
+      */
+    void setText(std::string text);
 
 
-        /**
-         * Sets whether this text area is editable.
-         *
-         * Sample usage:
-         *
-         *     textarea->setText(isEditable);
-         */
-         void setEditable(bool isEditable);
+    /**
+      * Sets whether this text area is editable.
+      *
+      * Sample usage:
+      *
+      *     textarea->setText(isEditable);
+      */
+    void setEditable(bool isEditable);
 
 
-        /** \_overload */
-        void setBackgroundColor(std::string color);
-        /**
-         * Sets the background color used by this text area. The color
-         * may be specified as a string or an integer. See
-         * the documentation for \ref GObject::setColor() for the
-         * more information on color specifications.
-         *
-         * To set the color of the text displayed in a text area, call
-         * the text area's \c setColor method.
-         *
-         * Sample usage:
-         *
-         *     textarea->setBackgroundColor(color);
-         */
-         void setBackgroundColor(int rgb);
+    /** \_overload */
+    void setBackgroundColor(std::string color);
+    /**
+     * Sets the background color used by this text area. The color
+     * may be specified as a string or an integer. See
+     * the documentation for \ref GObject::setColor() for the
+     * more information on color specifications.
+     *
+     * To set the color of the text displayed in a text area, call
+     * the text area's \c setColor method.
+     *
+     * Sample usage:
+     *
+     *     textarea->setBackgroundColor(color);
+     */
+    void setBackgroundColor(int rgb);
 
 private:
-         std::string backgroundColor;
-         double width;
-         double height;
+    std::string backgroundColor;
+    double width;
+    double height;
 
 };
 

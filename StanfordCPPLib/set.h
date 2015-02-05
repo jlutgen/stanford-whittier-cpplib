@@ -34,7 +34,9 @@
 #include "vector.h"
 
 /**
- * This class represents a collection of distinct elements of the same type.
+ * @class Set
+ *
+ * @brief This class represents a collection of distinct elements of the same type.
  */
 template <typename ValueType>
 class Set {
@@ -649,6 +651,14 @@ void Set<ValueType>::mapAll(FunctorType fn) const {
    map.mapAll(fn);
 }
 
+/**
+ * Overloads the `<<` operator so that it is able
+ * to display sets.
+ *
+ * Sample usage:
+ *
+ *     cout << set;
+ */
 template <typename ValueType>
 std::ostream & operator<<(std::ostream & os, const Set<ValueType> & set) {
    os << "{";

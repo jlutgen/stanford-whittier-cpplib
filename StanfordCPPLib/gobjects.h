@@ -43,13 +43,14 @@ class GCompound;
 
 
 /**
- * \class GObject
+ * @class GObject
  *
- * This abstract class is the common superclass of all graphical objects that can
- * be displayed on a graphical window.  The class `%GObject`
- * itself is an <b><i>abstract class</i></b>, which means that you are not
- * allowed to construct a `%GObject` directly but must instead
- * construct one of the concrete subclasses.
+ * @brief This abstract class is the common superclass of all
+ * graphical objects that can be displayed on a graphical window.
+ *
+ * The class `%GObject` itself is an <b><i>abstract class</i></b>,
+ * which means that you are not allowed to construct a `%GObject`
+ * directly but must instead construct one of the concrete subclasses.
  * <include src="pictures/ClassHierarchies/GObjectHierarchy.html">
  *
  * Most methods used for graphics take a pointer to a `%GObject`
@@ -222,19 +223,19 @@ public:
  * are spaces and underscores, so that the color <code>DARK_GRAY</code>
  * can be written as <code>"Dark Gray"</code>.
  *
- * The color can also be specified as a string in the form
- * <code>#</code><i><b>rrggbb</b></i> where <code>rr</code>, <code>gg</code>, and
- * <code>bb</code> are pairs of hexadecimal digits indicating the
+ * The color may also be specified as a string of the form
+ * <code>#</code><b><i>rrggbb</i></b>, where <b><i>rr</i></b>, <b><i>gg</i></b>, and
+ * <b><i>bb</i></b> are pairs of hexadecimal digits indicating the
  * red, green, and blue components of the color, respectively.
  *
- * A color string may also have the form <code>"#aarrggbb"</code>, where
- * the extra pair <code>aa</code> of hexadecimal digits indicates the
- * <b>alpha component</b> of the color. Like the red, green, and blue components,
+ * A color string may also have the form <code>#</code><b><i>aarrggbb</i></b>, where
+ * the extra pair <b><i>aa</i></b> of hexadecimal digits indicates the
+ * <b><i>alpha component</i></b> of the color. Like the red, green, and blue components,
  * the alpha component may have any value in the range 0..255 (`0x00`..`0xff`).
  * The alpha component determines the transparency
- * of the color; a color with an alpha value of 0 is completely transparent,
- * while one with an alpha value of 255 (`0xff`) is completely opaque. If the <code>aa</code>
- * pair is omitted from the color string, the alpha value is set to 255 by default.
+ * of the color; a color with an alpha component of 0 is completely transparent,
+ * while one with an alpha component of 255 (`0xff`) is completely opaque. If the <b><i>aa</i></b>
+ * pair is omitted from the color string, the alpha component is set to 255 by default.
  *
  * Sample usages:
  *
@@ -249,14 +250,14 @@ public:
 
 /**
  * Returns the color used to display this object in the form
- * <code>"#rrggbb"</code> or <code>"#aarrggbb"</code>.
- * In this string, the values <code>rr</code>, <code>gg</code>,
- * and <code>bb</code> are two-digit hexadecimal values representing
+ * <code>#</code><b><i>rrggbb</i></b> or <code>#</code><b><i>aarrggbb</i></b>.
+ * In this string, the values <b><i>rr</i></b>, <b><i>gg</i></b>,
+ * and <b><i>bb</i></b> are pairs of hexadecimal digits representing
  * the red, green, and blue components of the color, respectively.
- * The value <code>aa</code> represents the alpha component of the color,
+ * The value <b><i>aa</i></b> represents the alpha component of the color,
  * and is displayed only if it is not equal to the default value of
  * <code>0xff</code>, or 255. (For more about the alpha component,
- * see the description of \ref setColor.
+ * see the description of \ref setColor.)
  *
  * Sample usage:
  *
@@ -483,11 +484,12 @@ protected:
 
 
 /**
- * \class GRect
+ * @class GRect
  *
- * This graphical object subclass represents a graphical object whose appearance consists of
- * a rectangular box.  For example, the following code adds a filled, red
- * 200-by-100 rectangle
+ * @brief This graphical object subclass represents a graphical object having
+ * the appearance of a rectangular box.
+ *
+ * For example, the following code adds a filled, red 200-by-100 rectangle
  * at the upper-left corner of the graphics window:
  *
  * ~~~
@@ -630,10 +632,10 @@ protected:
 
 
 /**
- * \class GRoundRect
+ * @class GRoundRect
  *
- * This graphical object subclass represents a graphical object having the appearance
- * of a rectangular box with rounded corners.
+ * @brief This graphical object subclass represents a graphical object
+ * having the appearance of a rectangular box with rounded corners.
  */
 class GRoundRect : public GRect {
 
@@ -650,7 +652,7 @@ public:
  * specified width and height.  In the alternative versions, the
  * the \em x and \em y parameters specify the location of the
  * upper-left corner of the rectangle, while the \em corner parameter
- * specifies the diameter of the arc forming the rounded corners.
+ * specifies the diameter of the quarter-circle arcs forming the rounded corners.
  *
  * Sample usages:
  *
@@ -685,9 +687,9 @@ protected:
 
 
 /**
- * \class G3DRect
+ * @class G3DRect
  *
- * This graphical object subclass represents a rectangular box that can
+ * @brief This graphical object subclass represents a rectangular box that can
  * be drawn in a way that suggests that it is raised above the background.
  */
 class G3DRect : public GRect {
@@ -761,10 +763,12 @@ protected:
 
 
 /**
- * \class GOval
+ * @class GOval
  *
- * This graphical object subclass represents an oval inscribed in
- * a rectangular box.  For example, the following code displays a
+ * @brief This graphical object subclass represents an oval inscribed in
+ * an invisible rectangular box.
+ *
+ * For example, the following code displays a
  * filled green oval inscribed in the graphics window:
  *
  * ~~~
@@ -906,10 +910,11 @@ protected:
 
 
 /**
- * \class GArc
+ * @class GArc
  *
- * This graphical object subclass represents an elliptical arc.  The
- * arc is specified by the following parameters:
+ * @brief This graphical object subclass represents an elliptical arc.
+ *
+ * The arc is specified by the following parameters:
  *
  * <ul>
  *   <li>The coordinates of the bounding rectangle (<code>x</code>,
@@ -1120,7 +1125,17 @@ public:
 /* Prototypes for the virtual methods */
 
    virtual GRectangle getBounds() const;
+
+   /**
+    * Returns true if the specified point is inside this arc.  For the
+    * <code>GArc</code> class, containment depends on whether the arc
+    * is filled.  Filled arcs are a wedge in which containment is
+    * defined in the natural way. For an unfilled arc, a point is considered
+    * to be "inside" the arc if it is inside the closed curve obtained by
+    * connecting the endpoints of the arc with a line segment.
+    */
    virtual bool contains(double x, double y) const;
+
    virtual std::string getType() const;
    virtual std::string toString() const;
 
@@ -1143,13 +1158,14 @@ private:
 
 
 /**
- * \class GCompound
+ * @class GCompound
  *
- * This graphical object subclass represents a collection
- * of other graphical objects.  Once assembled, the internal objects
- * can be manipulated as a unit.  A `%GCompound` keeps
- * track of its own position, and all objects within it are drawn
- * relative to that location.
+ * @brief This graphical object subclass represents a collection
+ * of other graphical objects.
+ *
+ * Once assembled, the internal objects can be manipulated as a unit.
+ * A `%GCompound` keeps track of its own position, and all objects
+ * within it are drawn relative to that location.
  */
 class GCompound : public GObject {
 
@@ -1249,9 +1265,10 @@ private:
 
 
 /**
- * \class GImage
+ * @class GImage
  *
- * This graphical object subclass represents an image from a file.
+ * @brief This graphical object subclass represents an image from a file.
+ *
  * For example, the following code displays a `%GImage`
  * containing the Whittier College logo at the center of the window, assuming
  * that the image file <code>WhittierLogo.png</code> exists, either in
@@ -1319,10 +1336,11 @@ private:
 
 
 /**
- * \class GLabel
+ * @class GLabel
  *
- * This graphical object subclass represents a text string.  For
- * example, the following code adds a `%GLabel` containing
+ * @brief This graphical object subclass represents a text string.
+ *
+ * For example, the following code adds a `%GLabel` containing
  * the string <code>"hello, world"</code> to the center of the window:
  *
  * ~~~
@@ -1473,10 +1491,11 @@ private:
 
 
 /**
- * \class GLine
+ * @class GLine
  *
- * This graphical object subclass represents a line segment.  For
- * example, the following code adds lines that mark the diagonals
+ * @brief This graphical object subclass represents a line segment.
+ *
+ * For example, the following code adds lines that mark the diagonals
  * of the graphics window:
  *
  * ~~~
@@ -1568,9 +1587,9 @@ protected:
 
 
 /**
- * \class GPolygon
+ * @class GPolygon
  *
- * This graphical object subclass represents a polygon.
+ * @brief This graphical object subclass represents a polygon.
  *
  * Conceptually, a polygon is a list of vertices, and represents a closed curve
  * formed from line segments joining consecutive vertices in cyclical fashion.

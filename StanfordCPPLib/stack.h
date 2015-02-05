@@ -31,11 +31,14 @@
 #include "vector.h"
 
 /**
- * This class models a linear structure called a <b><i>stack</i></b>
+ * @class Stack
+ *
+ * @brief This class models a linear structure called a <b><i>stack</i></b>
  * in which values are added and removed only from one end.
+ *
  * This discipline gives rise to a last-in/first-out behavior (LIFO)
  * that is the defining feature of stacks.  The fundamental stack
- * operations are <code>push</code> (add to top) and <code>pop</code>
+ * operations are \ref push (add to top) and \ref pop
  * (remove from top).
  */
 
@@ -137,7 +140,7 @@ public:
 /**
  * Returns the top element from this stack, without removing
  * it.  This method signals an error if this stack is empty.  For
- * compatibility with the STL `stack` class, the Stanford
+ * compatibility with the STL `stack` class, the Stanford-Whittier
  * `%Stack` class has a variant of this method called \ref top,
  * which returns the value by reference.
  *
@@ -314,6 +317,14 @@ bool Stack<ValueType>::operator !=(const Stack & stack2) const {
     return elements != stack2.elements;
 }
 
+/**
+ * Overloads the `<<` operator so that it is able
+ * to display stacks.
+ *
+ * Sample usage:
+ *
+ *     cout << stack;
+ */
 template <typename ValueType>
 std::ostream & operator<<(std::ostream & os, const Stack<ValueType> & stack) {
    os << "{";

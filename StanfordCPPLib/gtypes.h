@@ -31,8 +31,11 @@
 #include <string>
 
 /**
- * This class contains real-valued \em x and \em y fields.  It is used to
- * represent a location on the graphics plane.
+ * @class GPoint
+ *
+ * @brief This class contains represents a location on the graphics plane.
+ *
+ * It contains real-valued \em x and \em y fields.
  */
 class GPoint {
 
@@ -106,8 +109,11 @@ private:
 
 
 /**
- * This class contains real-valued width and height fields.  It is used
- * to represent the size of a graphical object.
+ * @class GDimension
+ *
+ * @brief This class is used to represent the size of a graphical object.
+ *
+ * It contains real-valued width and height fields.
  */
 class GDimension {
 
@@ -183,10 +189,13 @@ private:
 
 
 /**
- * This class contains real-valued \em x, \em y, \em width, and \em height
- * fields.  It is used to represent the bounding box of a graphical object.
- * The \em x and \em y values specify the location of the upper-left corner
- * of the rectangle.
+ * @class GRectangle
+ *
+ * @brief This class is used to represent the bounding box of a graphical object.
+ *
+ * It contains real-valued \em x, \em y, \em width, and \em height
+ * fields. The \em x and \em y values specify the location of the
+ * upper-left corner of the rectangle.
  */
 class GRectangle {
 
@@ -313,9 +322,32 @@ private:
  * This section of the interface declares the insertion, comparison,
  * and hashCode functions for the geometric types.
  */
-
+/**
+ * Overloads the `<<` operator so that it is able
+ * to display `%GPoint` values.
+ *
+ * Sample usage:
+ *
+ *     cout << pt;
+ */
 std::ostream & operator<<(std::ostream & os, const GPoint & pt);
+
+/**
+ * Compares two `%GPoint` objects for equality.
+ *
+ * Sample usage:
+ *
+ *     if (p1 == p2) ...
+ */
 bool operator==(const GPoint & p1, const GPoint & p2);
+
+/**
+ * Compares two `%GPoint` objects for inequality.
+ *
+ * Sample usage:
+ *
+ *     if (p1 != p2) ...
+ */
 bool operator!=(const GPoint & p1, const GPoint & p2);
 
 
@@ -337,13 +369,60 @@ int hashCode(const GDimension & dim);
  */
 int hashCode(const GRectangle & r);
 
+/**
+ * Overloads the `<<` operator so that it is able
+ * to display `%GDimension` values.
+ *
+ * Sample usage:
+ *
+ *     cout << dim;
+ */
 std::ostream & operator<<(std::ostream & os, const GDimension & dim);
+
+/**
+ * Compares two `%GDimension` objects for equality.
+ *
+ * Sample usage:
+ *
+ *     if (d1 -= d2) ...
+ */
 bool operator==(const GDimension & d1, const GDimension & d2);
+
+/**
+ * Compares two `%GDimension` objects for inequality.
+ *
+ * Sample usage:
+ *
+ *     if (d1 != d2) ...
+ */
 bool operator!=(const GDimension & d1, const GDimension & d2);
 
-
+/**
+ * Overloads the `<<` operator so that it is able
+ * to display `%GRectangle` values.
+ *
+ * Sample usage:
+ *
+ *     cout << rect;
+ */
 std::ostream & operator<<(std::ostream & os, const GRectangle & rect);
+
+/**
+ * Compares two `%GRectangle` objects for equality.
+ *
+ * Sample usage:
+ *
+ *     if (r1 == r2) ...
+ */
 bool operator==(const GRectangle & r1, const GRectangle & r2);
+
+/**
+ * Compares two `%GRectangle` objects for inequality.
+ *
+ * Sample usage:
+ *
+ *     if (r1 != r2) ...
+ */
 bool operator!=(const GRectangle & r1, const GRectangle & r2);
 
 

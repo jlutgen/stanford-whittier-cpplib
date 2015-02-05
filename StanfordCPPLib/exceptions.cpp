@@ -428,7 +428,7 @@ static void stanfordCppLibSignalHandler(int sig) {
     
     std::cerr << std::endl;
     std::cerr << " ***" << std::endl;
-    std::cerr << " *** STANFORD C++ LIBRARY (WHITTIER VERSION)" << std::endl;
+    std::cerr << " *** STANFORD-WHITTIER C++ LIBRARY" << std::endl;
     std::cerr << " *** " << SIGNAL_KIND << " occurred during program execution." << std::endl;
     std::cerr << " *** " << SIGNAL_DETAILS << std::endl;;
     std::cerr << " ***" << std::endl;;
@@ -457,7 +457,7 @@ static void stanfordCppLibTerminateHandler() {
     std::string msg;
     msg += "\n";
     msg += " ***\n";
-    msg += " *** STANFORD C++ LIBRARY (WHITTIER VERSION)\n";
+    msg += " *** STANFORD-WHITTIER C++ LIBRARY\n";
     msg += " *** " + DEFAULT_EXCEPTION_KIND + " occurred during program execution: \n";
     msg += " *** " + DEFAULT_EXCEPTION_DETAILS + "\n";
     msg += " ***\n";

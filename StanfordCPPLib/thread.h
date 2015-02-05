@@ -47,12 +47,13 @@ class Lock;
 
 
 /**
- * \class Thread
+ * @class Thread
  *
- * This class encapsulates a lightweight process running in the same address
- * space as the creator.  The class itself is opaque and is manipulated by
+ * @brief This class encapsulates a lightweight process running in the same address
+ * space as the creator.
+ *
+ * The class itself is opaque and is manipulated by
  * top-level functions as illustrated in the following paradigm:
- *
  *
  *     Thread child = fork(fn);
  *     ... code for the parent thread ...
@@ -161,11 +162,12 @@ Thread getCurrentThread();
 
 
 /**
- * \class Lock
+ * @class Lock
  *
- * This class represents a simple lock used to control concurrency.  The
- * usual strategy for using locks is to use the \link thread.h synchronized \endlink
- * macro.
+ * @brief This class represents a simple lock used to control concurrency.
+ *
+ * The usual strategy for using locks is to use the
+ * \link thread.h synchronized \endlink macro.
  */
 class Lock {
 

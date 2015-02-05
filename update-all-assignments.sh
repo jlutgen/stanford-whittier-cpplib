@@ -3,7 +3,7 @@
 
 SCRIPT=./update-assignment.sh
 
-$SCRIPT assign1-intro ../assign1-intro/assign1-intro-qtc             
+#$SCRIPT assign1-intro ../assign1-intro/assign1-intro-qtc             
 $SCRIPT wordladder-randomwriter ../assign2-wordladder-randomwriter/assign2-wordladder-randomwriter-qtc 
 $SCRIPT maze ../assign3-maze/assign3-maze-qtc                  
 $SCRIPT recursion-problems ../assign4-recursion-problems/assign4-recursion-problems-qtc

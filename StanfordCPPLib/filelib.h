@@ -193,7 +193,7 @@ void readEntireFile(std::istream & is, Vector<std::string> & lines);
  * string vector \em lines.  The client is responsible for
  * opening and closing the stream.  The vector can be either an STL
  * \c vector or a Vector as defined in the
- * Stanford C++ libraries.
+ * Stanford-Whittier C++ libraries.
  *
  * Sample usage:
  *
@@ -449,7 +449,7 @@ void listDirectory(std::string path, Vector<std::string> & list);
 /**
  * Adds an alphabetized list of the files in the specified directory
  * to the string vector \em list. The \em list argument may be either
- * an STL \c vector or a Stanford Vector.  The generated list excludes the
+ * an STL \c vector or a Stanford-Whittier Vector.  The generated list excludes the
  * <code>.</code> and <code>..</code> entries. If \em path is the empty
  * string, the contents of the current directory are listed.
  *

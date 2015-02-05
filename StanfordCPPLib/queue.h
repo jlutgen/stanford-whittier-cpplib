@@ -33,8 +33,11 @@
 
 
 /**
- * This class models a linear structure called a <b><i>queue</i></b>
+ * @class Queue
+ *
+ * @brief This class models a linear structure called a <b><i>queue</i></b>
  * in which values are added at one end and removed from the other.
+ *
  * This discipline gives rise to a first-in/first-out behavior (FIFO)
  * that is the defining feature of queues.
  */
@@ -147,9 +150,9 @@ public:
 
 /**
  * Returns the first value in this queue, without removing it.  For
- * compatibility with the STL `queue` class, the Stanford `%Queue` class
- * has a variant of this method called \ref front, which returns the
- * value by reference.
+ * compatibility with the STL `queue` class, the Stanford-Whittier
+ * `%Queue` class has a variant of this method called \ref front,
+ * which returns the value by reference.
  *
  * Sample usage:
  *
@@ -417,6 +420,14 @@ bool Queue<ValueType>::operator !=(const Queue& queue2) const {
     return !equals(queue2);
 }
 
+/**
+ * Overloads the `<<` operator so that it is able
+ * to display queues.
+ *
+ * Sample usage:
+ *
+ *     cout << queue;
+ */
 template <typename ValueType>
 std::ostream & operator<<(std::ostream & os, const Queue<ValueType> & queue) {
    os << "{";

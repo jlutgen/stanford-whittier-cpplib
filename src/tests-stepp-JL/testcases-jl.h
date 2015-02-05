@@ -9,5 +9,6 @@
 
 void readEntireFileTest();
 void streamInsertionLexiconTest();
+void streamInsertionOthersTest();
 
 #endif

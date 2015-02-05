@@ -28,9 +28,12 @@
 
 
 /**
- * This class encapsulates a sound file.  The sound file is specified in the
- * constructor and must be a file in either the current directory or a
- * subdirectory named <code>sounds</code>.
+ * @class Sound
+ *
+ * @brief This class encapsulates a sound file.
+ *
+ * The sound file is specified in the constructor and must be a file
+ * in either the current directory or a subdirectory named <code>sounds</code>.
  *
  * As an example, the following code loads and plays the sound file
  * <code>ringtone.wav</code>:

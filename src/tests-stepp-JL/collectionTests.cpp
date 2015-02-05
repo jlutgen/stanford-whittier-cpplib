@@ -679,12 +679,12 @@ void hashCodeTest() {
     std::cout << "stack of student: size " << vstud.size() << std::endl;
     std::cout << "vector of student: size " << vstud2.size() << std::endl;
     
-//    std::cout << std::endl;
-//    HashMap< HashSet<Vector<std::string> >, Vector<std::string> > ngram;
-//    HashSet<Vector<std::string> > key;
-//    Vector<std::string> value;
-//    ngram.put(key, value);
-//    std::cout << "ngram is " << ngram << std::endl;
+    std::cout << std::endl;
+    HashMap< HashSet<Vector<std::string> >, Vector<std::string> > ngram;
+    HashSet<Vector<std::string> > key;
+    Vector<std::string> value;
+    ngram.put(key, value);
+    std::cout << "ngram is " << ngram << std::endl;
 
     std::cout << "================== END HASHCODE TESTS ==================" << std::endl;
 }

@@ -34,9 +34,12 @@
 #include "hashcode.h"
 
 /**
- * This class implements an efficient association between
- * <b><i>keys</i></b> and <b><i>values</i></b>.  This class is
- * identical to the Map class
+ * @class HashMap
+ *
+ * @brief This class implements an efficient association between
+ * <b><i>keys</i></b> and <b><i>values</i></b>.
+ *
+ * This class is identical to the Map class
  * except that it uses a hash table as its underlying
  * representation.  Although the `%HashMap` class operates in
  * constant time, a disadvantage is that the iterator for `%HashMap`
@@ -53,13 +56,12 @@ public:
  * the <code>==</code> operator, and there must be a free function
  * with the following signature:
  *
- * ~~~
- *    int hashCode(KeyType key);
- * ~~~
+ *      int hashCode(KeyType key);
  *
  * that returns a positive integer determined by the key.  The hashcode.h interface
- * exports \ref hashCode functions for \c string and
- * the C++ primitive types.
+ * exports \c hashCode functions for \c string and
+ * the C++ primitive types. In addition, each of the Stanford-Whittier collection
+ * classes (Vector, Stack, Queue, etc.) exports its own \c hashCode function.
  *
  * Sample usage:
  *
@@ -673,6 +675,14 @@ bool HashMap<KeyType, ValueType>::operator !=(const HashMap& map2) const {
  * specially.
  */
 
+/**
+ * Overloads the `<<` operator so that it is able
+ * to display hash maps.
+ *
+ * Sample usage:
+ *
+ *     cout << map;
+ */
 template <typename KeyType, typename ValueType>
 std::ostream & operator<<(std::ostream & os,
                           const HashMap<KeyType,ValueType> & map) {

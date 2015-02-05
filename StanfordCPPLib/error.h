@@ -32,8 +32,12 @@
 
 
 /**
- * An %ErrorException is thrown by calls to the \ref error
- * function. Typical code for catching errors looks like this:
+ * @class ErrorException
+ *
+ * @brief An %ErrorException is thrown by calls to the \ref error
+ * function.
+ *
+ * Typical code for catching errors looks like this:
  *
  *   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *    try {
@@ -62,6 +66,10 @@ private:
 /**
  * Signals an error condition in a program by throwing an
  * ErrorException with the specified message.
+ *
+ * Sample usage:
+ *
+ *      error(msg);
  */
 void error(std::string msg);
 

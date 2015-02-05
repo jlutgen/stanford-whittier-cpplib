@@ -33,9 +33,13 @@
 #include "hashcode.h"
 
 /**
- * This class stores an indexed, two-dimensional array.  The following code,
- * for example, creates an identity matrix of size \em n, in which
- * the elements are 1.0 along the main diagonal and 0.0 everywhere else:
+ * @class Grid
+ *
+ * @brief This class stores an indexed, two-dimensional array.
+ *
+ * The following code, for example, creates an identity matrix
+ * of size \em n, in which the elements are 1.0 along the main
+ * diagonal and 0.0 everywhere else:
  *
  * ~~~
  *    Grid<double> createIdentityMatrix(int n) {
@@ -642,7 +646,14 @@ std::string Grid<ValueType>::toString() {
  * strlib.h to read and write generic values in a way that treats strings
  * specially.
  */
-
+/**
+ * Overloads the `<<` operator so that it is able
+ * to display `%Grid` objects.
+ *
+ * Sample usage:
+ *
+ *     cout << grid;
+ */
 template <typename ValueType>
 std::ostream & operator<<(std::ostream & os, const Grid<ValueType> & grid) {
    os << "{";

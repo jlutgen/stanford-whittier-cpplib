@@ -35,15 +35,18 @@
 #include "stack.h"
 
 /**
- * This class is used to represent a <b><i>lexicon,</i></b> or word list.
+ * @class Lexicon
+ *
+ * @brief This class represents a <b><i>lexicon,</i></b> or word list.
+ *
  * The main difference between a lexicon and a dictionary is that
  * a lexicon does not provide any mechanism for storing definitions;
  * the lexicon contains only words, with no associated information.
- * It is therefore similar to a set of strings, but with a more
+ * It is similar to a set of strings, but with a more
  * space-efficient internal representation.  This class
  * supports efficient lookup operations for words and prefixes.
  *
- * As an example of the use of the Lexicon class, the
+ * As an example of the use of the `%Lexicon` class, the
  * following program lists all the two-letter words in the lexicon
  * stored in the file <code>EnglishWords.dat</code>:
  *
@@ -73,7 +76,7 @@ public:
  *  <li>A space-efficient precompiled binary format, or
  *  <li>A text file containing one word per line.
  * </ol>
- * The Stanford library distribution
+ * The Stanford-Whittier library distribution
  * includes a binary lexicon file named <code>EnglishWords.dat</code>
  * containing more than 127,000 English words.  The standard code pattern
  * to initialize that lexicon looks like this:
@@ -418,8 +421,13 @@ void Lexicon::mapAll(FunctorType fn) const {
  */
 int hashCode(const Lexicon& l);
 
-/*
- * Prints the lexicon to the given output stream.
+/**
+ * Overloads the `<<` operator so that it is able
+ * to display lexicons.
+ *
+ * Sample usage:
+ *
+ *     cout << lex;
  */
 std::ostream& operator <<(std::ostream& os, const Lexicon& lex);
 

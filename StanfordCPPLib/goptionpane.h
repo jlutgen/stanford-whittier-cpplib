@@ -49,9 +49,9 @@
 #include "gwindow.h"
 
 /**
- * \class GOptionPane
+ * @class GOptionPane
  *
- * This class provides static methods that support pop-up graphical dialog
+ * @brief This class provides static methods that support pop-up graphical dialog
  * boxes for messages and user input.
  */
 class GOptionPane {

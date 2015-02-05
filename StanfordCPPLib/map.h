@@ -16,10 +16,13 @@
 
 
 /**
- * This class maintains an association between <b><i>keys</i></b> and
- * <b><i>values</i></b>.  The types used for keys and values are
- * specified using templates, which makes it possible to use
- * this structure with any data type.
+ * @class Map
+ *
+ * @brief This class maintains an association between <b><i>keys</i></b> and
+ * <b><i>values</i></b>.
+ *
+ * The types used for keys and values are specified using templates, which
+ * makes it possible to use this structure with any data type.
  */
 template <typename KeyType, typename ValueType>
 class Map {
@@ -917,6 +920,14 @@ std::string Map<KeyType,ValueType>::toString() {
  * specially.
  */
 
+/**
+ * Overloads the `<<` operator so that it is able
+ * to display maps.
+ *
+ * Sample usage:
+ *
+ *     cout << map;
+ */
 template <typename KeyType, typename ValueType>
 std::ostream & operator<<(std::ostream & os,
                           const Map<KeyType,ValueType> & map) {

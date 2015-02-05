@@ -214,7 +214,7 @@ public class GArc extends GObject implements GFillable {
  * <code>GArc</code> class, containment depends on whether the arc
  * is filled.  Filled arcs are a wedge in which containment can be
  * defined in a natural way; we define a point to be "inside" an 
- * unfilled arcs if it inside the closed curve obtained by 
+ * unfilled arcs if it is inside the closed curve obtained by 
  * connecting the arc's endpoints with a line segment.
  *
  * @param x The x-coordinate of the point being tested

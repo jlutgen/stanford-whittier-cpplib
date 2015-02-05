@@ -36,7 +36,10 @@
 #include "private/genericio.h"
 
 /**
- * This class stores an ordered list of values similar to an array.
+ * @class Vector
+ *
+ * @brief This class stores an ordered list of values similar to an array.
+ *
  * It supports traditional array selection using square brackets, but
  * also supports inserting and deleting elements.  It is similar in
  * function to the STL <code>vector</code> type, but is simpler both
@@ -144,7 +147,7 @@ public:
  * method signals an error if the index is outside the range from 0
  * up to and including the length of the vector.  To maintain
  * compatibility with older code, this method may also be called as
- * <code>insertAt</code>.
+ * \ref insertAt;.
  *
  * Sample usage:
  *
@@ -165,7 +168,7 @@ public:
  * subsequent elements are shifted one position to the left.  This
  * method signals an error if the index is outside the array range.
  * To maintain compatibility with older code, this method may also
- * be called as \c removeAt.
+ * be called as \ref removeAt.
  *
  * Sample usage:
  *
@@ -183,7 +186,7 @@ public:
 /**
  * Adds a new value to the end of this vector.  To ensure compatibility
  * with the \c vector class in the Standard Template Library,
- * this method is may also be called as \c push_back.
+ * this method may also be called as \ref push_back.
  *
  * Sample usage:
  *
@@ -227,7 +230,7 @@ public:
 /**
  * Adds all of the elements from \em v2 (or the single
  * specified value) to \em v1.  As a convenience, the
- * %Vector class also overloads the comma operator so
+ * \c %Vector class also overloads the comma operator so
  * that it is possible to initialize a vector like this:
  *
  * ~~~
@@ -809,6 +812,14 @@ void Vector<ValueType>::expandCapacity() {
  * specially.
  */
 
+/**
+ * Overloads the `<<` operator so that it is able
+ * to display vectors.
+ *
+ * Sample usage:
+ *
+ *     cout << vec;
+ */
 template <typename ValueType>
 std::ostream & operator<<(std::ostream & os, const Vector<ValueType> & vec) {
    os << "{";

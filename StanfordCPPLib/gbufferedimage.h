@@ -34,14 +34,18 @@
 #define GBUFFEREDIMAGE_DEFAULT_DIFF_PIXEL_COLOR 0xdd00dd
 
 /**
- * This interactor subclass implements a 2D region of colored pixels that can be read/set
+ * @class GBufferedImage
+ *
+ * @brief This interactor subclass implements a 2D region of colored pixels that can be read/set
  * individually, not unlike the <code>BufferedImage</code> class in Java.
+ *
  * The color of each pixel in a \c %GBufferedImage is represented
  * as a 32-bit integer in the range from `0x000000` to `0xffffff`. Such a color
- * value has the form <code>0x</code><i>rrggbb</i> and represents the
+ * value has the form <code>0x</code><b><i>rrggbb</i></b> and represents the
  * color having red, green, and blue components given by the hex values
- * \em rr, \em gg, and \em bb, respectively. Each component can take on any
- * of the 256 values from 0 through 255 (00 through ff, in hexadecimal).
+ * <b><i>rr</i></b>, <b><i>gg</i></b>, and <b><i>bb</i></b>, respectively.
+ * Each component can take on any of the 256 values from 0 through 255
+ * (00 through ff, in hexadecimal).
  *
  * For example, the integer <code>0xff00cc</code> is a purple color, while
  * <code>0x770000</code> is a dark red.
@@ -335,7 +339,8 @@ public:
     void setRGB(double x, double y, int rgb);
     /**
      * Sets the color of the pixel at the given <i>xy</i>-coordinates of this
-     * image to the given value.
+     * image to the given value. The color may be specified as an int or a
+     * string, as described above in the class description for GBufferedImage.
      * Implementation/performance note: Each call to this method produces a
      * call to the Java graphical back-end.  Calling this method many times
      * in a tight loop can lead to poor performance.  If you need to fill a

@@ -54,9 +54,10 @@ struct GWindowData {
 };
 
 /**
- * \class GWindow
+ * @class GWindow
  *
- * This class represents a graphics window that supports simple graphics.
+ * @brief This class represents a graphics window that supports simple graphics.
+ *
  * Each `%GWindow` consists of two layers.  The background layer
  * provides a surface for drawing static pictures that involve no animation.
  * Graphical objects drawn in the background layer are persistent and do
@@ -252,9 +253,9 @@ public:
 
 /** \_overload */
    void setColor(std::string color);
-/**
- * Sets the color used for drawing in this window.  The \em color parameter is
- * usually one of the predefined color names:
+ /**
+ * Sets the color used for drawing in this window.  The \em color
+ * string is usually one of the predefined color names:
  *
  *    <code>BLACK</code>,
  *    <code>BLUE</code>,
@@ -274,19 +275,19 @@ public:
  * are spaces and underscores, so that the color <code>DARK_GRAY</code>
  * can be written as <code>"Dark Gray"</code>.
  *
- * The color can also be specified as a string in the form
- * <code>"#rrggbb"</code> where <code>rr</code>, <code>gg</code>, and
- * <code>bb</code> are pairs of hexadecimal digits indicating the
+ * The color may also be specified as a string of the form
+ * <code>#</code><b><i>rrggbb</i></b>, where <b><i>rr</i></b>, <b><i>gg</i></b>, and
+ * <b><i>bb</i></b> are pairs of hexadecimal digits indicating the
  * red, green, and blue components of the color, respectively.
  *
- * A color string may also have the form <code>"#aarrggbb"</code>, where
- * the extra pair <code>aa</code> of hexadecimal digits indicates the
- * <b>alpha component</b> of the color. Like the red, green, and blue components,
+ * A color string may also have the form <code>#</code><b><i>aarrggbb</i></b>, where
+ * the extra pair <b><i>aa</i></b> of hexadecimal digits indicates the
+ * <b><i>alpha component</i></b> of the color. Like the red, green, and blue components,
  * the alpha component may have any value in the range 0..255 (`0x00`..`0xff`).
  * The alpha component determines the transparency
- * of the color; a color with an alpha value of 0 is completely transparent,
- * while one with an alpha value of 255 (`0xff`) is completely opaque. If the <code>aa</code>
- * pair is omitted from the color string, the alpha value is set to 255 by default.
+ * of the color; a color with an alpha component of 0 is completely transparent,
+ * while one with an alpha component of 255 (`0xff`) is completely opaque. If the <b><i>aa</i></b>
+ * pair is omitted from the color string, the alpha component is set to 255 by default.
  *
  * Sample usages:
  *
@@ -299,14 +300,13 @@ public:
    void setColor(int color);
 
 
-/**
- * Returns the current drawing color for this window
- * as a string in the form <code>"#rrggbb"</code>
- * or <code>"#aarrggbb"</code>.
- * In this string, the values <code>rr</code>, <code>gg</code>,
- * and <code>bb</code> are two-digit hexadecimal values representing
+ /**
+ * Returns the current drawing color for this window in the form
+ * <code>#</code><b><i>rrggbb</i></b> or <code>#</code><b><i>aarrggbb</i></b>.
+ * In this string, the values <b><i>rr</i></b>, <b><i>gg</i></b>,
+ * and <b><i>bb</i></b> are pairs of hexadecimal digits representing
  * the red, green, and blue components of the color, respectively.
- * The value <code>aa</code> represents the alpha component of the color,
+ * The value <b><i>aa</i></b> represents the alpha component of the color,
  * and is displayed only if it is not equal to the default value of
  * <code>0xff</code>, or 255. (For more about the alpha component,
  * see the description of \ref setColor.)
@@ -557,21 +557,6 @@ private:
 
 /* Free functions */
 
-// /**
-// * Issues a request to update all graphics windows.  This function
-// * is called automatically when the program pauses, waits for an
-// * event, waits for user input on the console, or terminates.  As
-// * a result, most clients never need to call <code>repaint</code>
-// * explicitly.
-// *
-// * Sample usage:
-// *
-// *     repaint();
-// *
-// */
-
-//void repaint();
-
 
 /**
  * Pauses for the specified number of milliseconds.  This function is
@@ -582,7 +567,6 @@ private:
  *     pause(milliseconds);
  *
  */
-
 void pause(double milliseconds);
 
 
@@ -594,7 +578,6 @@ void pause(double milliseconds);
  *     width = getScreenWidth();
  *
  */
-
 double getScreenWidth();
 
 
@@ -606,7 +589,6 @@ double getScreenWidth();
  *     height = getScreenHeight();
  *
  */
-
 double getScreenHeight();
 
 
@@ -628,11 +610,11 @@ int convertColorToRGB(std::string colorName);
 
 /**
  * Converts an integer <code>rgb</code> value into a color name in the
- * form <code>"#rrggbb"</code> or <code>"#aarrggbb"</code>.
- * Each of the <code>rr</code>, <code>gg</code>, and <code>bb</code> values
- * are two-digit hexadecimal numbers indicating the intensity of red,
+ * form <code>#</code><b><i>rrggbb</i></b> or <code>#</code><b><i>aarrggbb</i></b>.
+ * Each of the <b><i>rr</i></b>, <b><i>gg</i></b>, and <b><i>bb</i></b> values
+ * is a two-digit hexadecimal value indicating the intensity of the red,
  * green, and blue components, respectively, of the color.
- * The value <code>aa</code> represents the alpha component of the color,
+ * The value <b><i>aa</i></b> represents the alpha component of the color,
  * and is displayed only if it is not equal to the default value of
  * <code>0xff</code>, or 255. (For more about the alpha component,
  * see the description of \link GWindow::setColor(std::string)
@@ -643,16 +625,6 @@ int convertColorToRGB(std::string colorName);
  *     int colorName = convertRGBToColor(rgb);
  */
 std::string convertRGBToColor(int rgb);
-
-
-/**
- * Waits for a mouse click to occur anywhere in any window.
- *
- * Sample usage:
- *
- *     waitForClick();
- */
-void waitForClick();
 
 
 /**

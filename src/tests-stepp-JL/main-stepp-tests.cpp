@@ -25,7 +25,7 @@ int main() {
         cout << "i) cin / cout" << endl;
         cout << "n) segfault (NULL ptr)" << endl;
         cout << "o) divide by zero" << endl;
-        cout << "r) stream insertion (lexicon)" << endl;
+        cout << "r) stream insertion (collections)" << endl;
         cout << "s) stack overflow" << endl;
         cout << "t) throw exception (Vector index out of range)" << endl;
         cout << "u) urlstream" << endl;
@@ -52,6 +52,7 @@ int main() {
             segfaultTest(SIGFPE);
         } else if (cmd == "r") {
             streamInsertionLexiconTest();
+            streamInsertionOthersTest();
         } else if (cmd == "s") {
             //getPlatform()->setStackSize(1024*1024*128);
             stackOverflowTest();

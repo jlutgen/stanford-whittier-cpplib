@@ -31,8 +31,12 @@
 
 
 /**
- * This class represents an (\em x, \em y) coordinate point on a
- * two-dimensional integer grid.  If you need to work with real-valued coordinates,
+ * @class Point
+ *
+ * @brief This class represents an (\em x, \em y) coordinate point on a
+ * two-dimensional integer grid.
+ *
+ * If you need to work with real-valued coordinates,
  * you should use the GPoint class from the \ref gtypes.h interface instead.
  */
 

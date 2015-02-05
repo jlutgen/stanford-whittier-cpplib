@@ -31,11 +31,14 @@
 #include "vector.h"
 
 /**
- * This class models a structure called a <b><i>priority&nbsp;queue</i></b>
- * in which values are processed in order of priority.  As in conventional
- * English usage, lower priority numbers correspond to higher effective
- * priorities, so that a "priority 1" item takes precedence over a
- * "priority 2" item.
+ * @class PriorityQueue
+ *
+ * @brief This class models a structure called a <b><i>priority&nbsp;queue</i></b>
+ * in which values are processed in order of priority.
+ *
+ * As in conventional English usage, lower priority numbers correspond
+ * to higher effective priorities, so that a "priority 1" item takes
+ * precedence over a "priority 2" item.
  */
 
 template <typename ValueType>
@@ -429,6 +432,14 @@ bool PriorityQueue<ValueType>::operator !=(const PriorityQueue& pq2) const {
     return !equals(pq2);
 }
 
+/**
+ * Overloads the `<<` operator so that it is able
+ * to display priority queues.
+ *
+ * Sample usage:
+ *
+ *     cout << pq;
+ */
 template <typename ValueType>
 std::ostream & operator<<(std::ostream & os,
                           const PriorityQueue<ValueType> & pq) {

@@ -38,9 +38,10 @@
 #include "vector.h"
 
 /**
- * \class GInteractor
+ * @class GInteractor
  *
- * This abstract class is the common superclass for all graphical interactors.
+ * @brief This abstract class is the common superclass for all graphical interactors.
+ *
  * In most applications, interactors will be added to a control strip
  * along one of the sides of the GWindow by calling the \link GWindow::addToRegion
  * addToRegion \endlink method, but they can also be placed in specific positions (by calling
@@ -112,11 +113,12 @@ protected:
 };
 
 /**
- * \class GButton
+ * @class GButton
  *
- * This interactor subclass represents an onscreen button.  The following
- * program displays a button that, when pressed, generates the message
- * <em>Please do not press this button again</em>
+ * @brief This interactor subclass represents an onscreen button.
+ *
+ * The following program displays a button that, when pressed, generates
+ * the message <em>Please do not press this button again</em>
  * (with thanks to Douglas Adams):
  *
  * ~~~
@@ -171,10 +173,11 @@ private:
 };
 
 /**
- * \class GCheckBox
+ * @class GCheckBox
  *
- * This interactor subclass represents an onscreen check box.  Clicking
- * once on the check box selects it; clicking again unselects it.
+ * @brief This interactor subclass represents an onscreen check box.
+ *
+ * Clicking once on the check box selects it; clicking again unselects it.
  * If a `%GCheckBox` has an action command, clicking on the box
  * generates a GActionEvent.
  *
@@ -235,10 +238,11 @@ private:
 };
 
 /**
- * \class GSlider
+ * @class GSlider
  *
- * This interactor subclass represents an onscreen slider.  Dragging
- * the slider control generates an ActionEvent if the
+ * @brief This interactor subclass represents an onscreen slider.
+ *
+ * Dragging the slider control generates an ActionEvent if the
  * slider has a nonempty action command.
  *
  * The display image of a slider is platform-dependent, but the declaration
@@ -305,10 +309,12 @@ private:
 };
 
 /**
- * \class GTextField
+ * @class GTextField
  *
- * This interactor subclass represents a text field for entering short
- * text strings.  Hitting the ENTER key while in a text field generates a
+ * @brief This interactor subclass represents a text field for entering short
+ * text strings.
+ *
+ * Hitting the ENTER key while in a text field generates a
  * <code>GActionEvent</code> if the text field has a nonempty action command.
  */
 class GTextField : public GInteractor {
@@ -357,10 +363,11 @@ public:
 };
 
 /**
- * \class GChooser
+ * @class GChooser
  *
- * This interactor subclass represents a selectable list.  The
- * `%GChooser` constructor creates an empty chooser.
+ * @brief This interactor subclass represents a selectable list.
+ *
+ * The `%GChooser` constructor creates an empty chooser.
  * Once the chooser has been created, clients can use \ref addItem
  * to add items to the chooser.  For example, the following code creates a
  * `%GChooser` containing the four strings
