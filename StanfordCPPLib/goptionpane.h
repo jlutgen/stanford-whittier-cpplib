@@ -6,7 +6,7 @@
  * pop-up graphical dialog boxes for messages and user input.
  * 
  * This class is inspired by, extremely similar to, and implemented on
- * the back-end by, Java's JOptionPane class, so you may wish to consult
+ * the back-end by Java's \c JOptionPane class, so you may wish to consult
  * that class's documentation in the Java API Specification for more
  * information.
  */
@@ -57,7 +57,7 @@
 class GOptionPane {
 public:
     /**
-     * Constants for \ref showConfirmDialog types, taken from Java's JOptionPane.
+     * Constants for \ref showConfirmDialog types, taken from Java's \c JOptionPane.
      *
      * The three types of confirm dialogs are Yes/No, Yes/No/Cancel, and OK/Cancel.
      */
@@ -82,6 +82,8 @@ public:
      * Constants for \ref showMessageDialog types, taken from Java's JOptionPane.
      */
     enum MessageType {
+        // BUGFIX (JL): appended "_MESSAGE" to all these names to avoid compiler error
+        // on Windows/MinGW caused by "#define ERROR 0" in <wingdi.h>.
         ERROR_MESSAGE = 0,          ///<.
         INFORMATION_MESSAGE = 1,    ///<.
         PLAIN_MESSAGE = -1,         ///<.
@@ -96,7 +98,7 @@ public:
      * The caller can supply an optional window title; if none is passed, a default is used.
      *
      * The parameter \em parent specifies the GWindow in front of which the dialog box will
-     * pop up. If \em parent is \code NULL, the dialog will pop up in front of the graphical
+     * pop up. If \em parent is \c NULL, the dialog will pop up in front of the graphical
      * console window.
      *
      * Sample usages:
@@ -115,7 +117,7 @@ public:
      * If the user cancels the box, an empty string is returned.
      *
      * The parameter \em parent specifies the GWindow in front of which the dialog box will
-     * pop up. If \em parent is \code NULL, the dialog will pop up in front of the graphical
+     * pop up. If \em parent is \c NULL, the dialog will pop up in front of the graphical
      * console window.
      *
      * Sample usages:
@@ -134,7 +136,7 @@ public:
      * the dialog's appearance.  The default is \ref PLAIN_MESSAGE.
      *
      * The parameter \em parent specifies the GWindow in front of which the dialog box will
-     * pop up. If \em parent is \code NULL, the dialog will pop up in front of the graphical
+     * pop up. If \em parent is \c NULL, the dialog will pop up in front of the graphical
      * console window.
      *
      * Sample usages:
@@ -155,7 +157,7 @@ public:
      * The caller can supply an optional initially selected value from the list.
      *
      * The parameter \em parent specifies the GWindow in front of which the dialog box will
-     * pop up. If \em parent is \code NULL, the dialog will pop up in front of the graphical
+     * pop up. If \em parent is \c NULL, the dialog will pop up in front of the graphical
      * console window.
      *
      * Sample usages:
@@ -176,7 +178,7 @@ private:
      * static methods, not by instantiation.
      */
     GOptionPane();
-    
+
     enum InternalResult {
         /*
          * The results that can come back from showConfirmDialog.
