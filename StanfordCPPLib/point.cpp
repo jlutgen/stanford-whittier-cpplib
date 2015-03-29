@@ -24,10 +24,9 @@
 
 #include <string>
 #include "point.h"
+#include "hashcode.h"
 #include "strlib.h"
 using namespace std;
-
-const int HASH_MASK = unsigned(-1) >> 1;
 
 int hashCode(const Point & p) {
     return HASH_MASK & (p.x ^ p.y);
