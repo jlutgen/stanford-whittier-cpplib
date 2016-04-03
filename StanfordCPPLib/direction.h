@@ -30,7 +30,6 @@
 
 #include <iostream>
 #include <string>
-#include "foreach.h"
 
 
 /**

@@ -24,6 +24,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <string>
 #include <sstream>
 #include "gevents.h"
 #include "gmath.h"
@@ -32,6 +33,8 @@
 #include "gwindow.h"
 #include "platform.h"
 #include "vector.h"
+
+using namespace std;
 
 static Platform *pp = getPlatform();
 

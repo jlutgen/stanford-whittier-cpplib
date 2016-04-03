@@ -27,7 +27,6 @@
 #ifndef _grid_h
 #define _grid_h
 
-#include "foreach.h"
 #include "strlib.h"
 #include "vector.h"
 #include "hashcode.h"
@@ -634,7 +633,7 @@ void Grid<ValueType>::mapAll(FunctorType fn) const {
 
 template <typename ValueType>
 std::string Grid<ValueType>::toString() {
-   ostringstream os;
+   std::ostringstream os;
    os << *this;
    return os.str();
 }

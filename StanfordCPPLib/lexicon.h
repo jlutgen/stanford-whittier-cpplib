@@ -29,7 +29,6 @@
 
 #include <string>
 #include <cctype>
-#include "foreach.h"
 #include "lexicon.h"
 #include "set.h"
 #include "stack.h"
@@ -237,8 +236,12 @@ public:
 private:
 
 #ifdef _WIN32
+#ifndef LITTLE_ENDIAN
 #define LITTLE_ENDIAN 1
+#endif
+#ifndef BYTE_ORDER
 #define BYTE_ORDER LITTLE_ENDIAN
+#endif
 #endif
 
 #pragma pack(1)
@@ -411,7 +414,7 @@ private:
 
 template <typename FunctorType>
 void Lexicon::mapAll(FunctorType fn) const {
-   foreach (std::string word in *this) {
+   for (std::string word : *this) {
       fn(word);
    }
 }

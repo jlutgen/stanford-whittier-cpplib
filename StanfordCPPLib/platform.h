@@ -55,9 +55,9 @@ public:
    std::string getDirectoryPathSeparator();
    std::string getSearchPathSeparator();
    std::string expandPathname(std::string filename);
-   void listDirectory(std::string path, vector<std::string> & list);
+   void listDirectory(std::string path, std::vector<std::string> & list);
    std::string openFileDialog(std::string title, std::string mode,
-                              std::string path, string patternName);
+                              std::string path, std::string patternName);
    void createGWindow(const GWindow & gw, double width, double height,
                       GObject *topCompound);
    void deleteGWindow(const GWindow & gw);
@@ -163,7 +163,7 @@ public:
    void goptionpane_showMessageDialog(std::string message, std::string title, int type, GWindow *parent);
    int goptionpane_showOptionDialog(std::string message,
                                         std::string title,
-                                        const Vector<string> &options,
+                                        const Vector<std::string> &options,
                                         std::string initiallySelected,
                                         GWindow *parent);
    void gtextarea_create(GObject* gobj, double width, double height);

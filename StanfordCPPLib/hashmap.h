@@ -29,7 +29,7 @@
 
 #include <cstdlib>
 #include <string>
-#include "foreach.h"
+#include <sstream>
 #include "vector.h"
 #include "hashcode.h"
 
@@ -652,7 +652,7 @@ ValueType HashMap<KeyType,ValueType>::operator[](KeyType key) const {
 
 template <typename KeyType, typename ValueType>
 std::string HashMap<KeyType,ValueType>::toString() {
-   ostringstream os;
+   std::ostringstream os;
    os << *this;
    return os.str();
 }

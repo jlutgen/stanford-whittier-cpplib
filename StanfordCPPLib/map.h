@@ -10,7 +10,8 @@
 #define _map_h
 
 #include <cstdlib>
-#include "foreach.h"
+#include <functional>
+#include <sstream>
 #include "hashcode.h"
 #include "stack.h"
 
@@ -789,7 +790,7 @@ template <typename KeyType, typename ValueType>
 Map<KeyType,ValueType>::Map() {
    root = NULL;
    nodeCount = 0;
-   cmpp = new TemplateComparator< less<KeyType> >(less<KeyType>());
+   cmpp = new TemplateComparator< std::less<KeyType> >(std::less<KeyType>());
 }
 
 template <typename KeyType, typename ValueType>
@@ -907,7 +908,7 @@ void Map<KeyType,ValueType>::mapAll(FunctorType fn) const {
 
 template <typename KeyType, typename ValueType>
 std::string Map<KeyType,ValueType>::toString() {
-   ostringstream os;
+   std::ostringstream os;
    os << *this;
    return os.str();
 }

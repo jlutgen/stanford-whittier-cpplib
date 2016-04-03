@@ -28,6 +28,7 @@
 #ifndef _queue_h
 #define _queue_h
 
+#include <sstream>
 #include "hashcode.h"
 #include "vector.h"
 
@@ -405,7 +406,7 @@ void Queue<ValueType>::expandRingBufferCapacity() {
 
 template <typename ValueType>
 std::string Queue<ValueType>::toString() {
-   ostringstream os;
+   std::ostringstream os;
    os << *this;
    return os.str();
 }

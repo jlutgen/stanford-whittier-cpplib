@@ -24,9 +24,12 @@
 /* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 /*************************************************************************/
 
+#include <string>
 #include "gtextarea.h"
 #include "platform.h"
 #include "base64.h"
+
+using namespace std;
 
 static Platform* pp = getPlatform();
 

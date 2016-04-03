@@ -28,7 +28,6 @@
 #define _hashset_h
 
 #include <iostream>
-#include "foreach.h"
 #include "hashmap.h"
 #include "vector.h"
 
@@ -533,7 +532,7 @@ bool HashSet<ValueType>::operator !=(const HashSet& set2) const {
 template <typename ValueType>
 HashSet<ValueType> HashSet<ValueType>::operator+(const HashSet & set2) const {
    HashSet<ValueType> set = *this;
-   foreach (ValueType value in set2) {
+   for (ValueType value : set2) {
       set.add(value);
    }
    return set;
@@ -550,7 +549,7 @@ HashSet<ValueType>::operator+(const ValueType & element) const {
 template <typename ValueType>
 HashSet<ValueType> HashSet<ValueType>::operator*(const HashSet & set2) const {
    HashSet<ValueType> set;
-   foreach (ValueType value in *this) {
+   for (ValueType value : *this) {
       if (set2.map.containsKey(value)) set.add(value);
    }
    return set;
@@ -559,7 +558,7 @@ HashSet<ValueType> HashSet<ValueType>::operator*(const HashSet & set2) const {
 template <typename ValueType>
 HashSet<ValueType> HashSet<ValueType>::operator-(const HashSet & set2) const {
    HashSet<ValueType> set;
-   foreach (ValueType value in *this) {
+   for (ValueType value : *this) {
       if (!set2.map.containsKey(value)) set.add(value);
    }
    return set;
@@ -575,7 +574,7 @@ HashSet<ValueType>::operator-(const ValueType & element) const {
 
 template <typename ValueType>
 HashSet<ValueType> & HashSet<ValueType>::operator+=(const HashSet & set2) {
-   foreach (ValueType value in set2) {
+   for (ValueType value : set2) {
       this->add(value);
    }
    return *this;
@@ -591,10 +590,10 @@ HashSet<ValueType> & HashSet<ValueType>::operator+=(const ValueType & value) {
 template <typename ValueType>
 HashSet<ValueType> & HashSet<ValueType>::operator*=(const HashSet & set2) {
    Vector<ValueType> toRemove;
-   foreach (ValueType value in *this) {
+   for (ValueType value : *this) {
       if (!set2.map.containsKey(value)) toRemove.add(value);
    }
-   foreach (ValueType value in toRemove) {
+   for (ValueType value : toRemove) {
       this->remove(value);
    }
    return *this;
@@ -603,10 +602,10 @@ HashSet<ValueType> & HashSet<ValueType>::operator*=(const HashSet & set2) {
 template <typename ValueType>
 HashSet<ValueType> & HashSet<ValueType>::operator-=(const HashSet & set2) {
    Vector<ValueType> toRemove;
-   foreach (ValueType value in *this) {
+   for (ValueType value : *this) {
       if (set2.map.containsKey(value)) toRemove.add(value);
    }
-   foreach (ValueType value in toRemove) {
+   for (ValueType value : toRemove) {
       this->remove(value);
    }
    return *this;
@@ -660,7 +659,7 @@ template <typename ValueType>
 std::ostream & operator<<(std::ostream & os, const HashSet<ValueType> & set) {
    os << "{";
    bool started = false;
-   foreach (ValueType value in set) {
+   for (ValueType value : set) {
       if (started) os << ", ";
       writeGenericValue(os, value, true);
       started = true;

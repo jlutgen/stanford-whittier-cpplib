@@ -12,6 +12,7 @@
 #include "strlib.h"
 #include "thread.h"
 #include "simpio.h"
+#include "console.h"
 
 using namespace std;
 

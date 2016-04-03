@@ -27,6 +27,7 @@
 #ifndef _stack_h
 #define _stack_h
 
+#include <sstream>
 #include "hashcode.h"
 #include "vector.h"
 
@@ -302,7 +303,7 @@ bool Stack<ValueType>::equals(const Stack<ValueType>& stack2) const {
 
 template <typename ValueType>
 std::string Stack<ValueType>::toString() {
-   ostringstream os;
+   std::ostringstream os;
    os << *this;
    return os.str();
 }

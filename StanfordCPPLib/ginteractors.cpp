@@ -23,6 +23,7 @@
 /*************************************************************************/
 
 #include <iostream>
+#include <string>
 #include <sstream>
 #include "gevents.h"
 #include "ginteractors.h"
@@ -30,6 +31,8 @@
 #include "gtypes.h"
 #include "gwindow.h"
 #include "platform.h"
+
+using namespace std;
 
 static Platform *pp = getPlatform();
 

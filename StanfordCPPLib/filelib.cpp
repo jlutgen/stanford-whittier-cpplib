@@ -34,7 +34,6 @@
 #include "platform.h"
 #include "strlib.h"
 #include "vector.h"
-#include "foreach.h"
 using namespace std;
 
 static Platform *pp = getPlatform();
@@ -239,7 +238,7 @@ string defaultExtension(string filename, string ext) {
 string openOnPath(ifstream & stream, string path, string filename) {
    Vector<string> paths;
    splitPath(path, paths);
-   foreach (string dir in paths) {
+   for (string dir : paths) {
       string pathname = dir + "/" + filename;
       if (openFile(stream, pathname)) return pathname;
    }
@@ -249,7 +248,7 @@ string openOnPath(ifstream & stream, string path, string filename) {
 string openOnPath(ofstream & stream, string path, string filename) {
    Vector<string> paths;
    splitPath(path, paths);
-   foreach (string dir in paths) {
+   for (string dir : paths) {
       string pathname = dir + "/" + filename;
       if (openFile(stream, pathname)) return pathname;
    }
@@ -333,7 +332,7 @@ void listDirectory(string path, Vector<string> & list) {
    vector<string> vec;
    listDirectory(path, vec);
    list.clear();
-   foreach (string file in vec) {
+   for (string file : vec) {
       list.add(file);
    }
 }

@@ -28,7 +28,8 @@
 #define _set_h
 
 #include <iostream>
-#include "foreach.h"
+#include <string>
+#include <sstream>
 #include "hashcode.h"
 #include "map.h"
 #include "vector.h"
@@ -537,7 +538,7 @@ bool Set<ValueType>::operator!=(const Set & set2) const {
 template <typename ValueType>
 Set<ValueType> Set<ValueType>::operator+(const Set & set2) const {
    Set<ValueType> set = *this;
-   foreach (ValueType value in set2) {
+   for (ValueType value : set2) {
       set.add(value);
    }
    return set;
@@ -554,7 +555,7 @@ template <typename ValueType>
 Set<ValueType> Set<ValueType>::operator*(const Set & set2) const {
    Set<ValueType> set = *this;
    set.clear();
-   foreach (ValueType value in *this) {
+   for (ValueType value : *this) {
       if (set2.contains(value)) set.add(value);
    }
    return set;
@@ -563,7 +564,7 @@ Set<ValueType> Set<ValueType>::operator*(const Set & set2) const {
 template <typename ValueType>
 Set<ValueType> Set<ValueType>::operator-(const Set & set2) const {
    Set<ValueType> set = *this;
-   foreach (ValueType value in set2) {
+   for (ValueType value : set2) {
       set.remove(value);
    }
    return set;
@@ -578,7 +579,7 @@ Set<ValueType> Set<ValueType>::operator-(const ValueType & element) const {
 
 template <typename ValueType>
 Set<ValueType> & Set<ValueType>::operator+=(const Set & set2) {
-   foreach (ValueType value in set2) {
+   for (ValueType value : set2) {
       this->add(value);
    }
    return *this;
@@ -594,10 +595,10 @@ Set<ValueType> & Set<ValueType>::operator+=(const ValueType & value) {
 template <typename ValueType>
 Set<ValueType> & Set<ValueType>::operator*=(const Set & set2) {
    Vector<ValueType> toRemove;
-   foreach (ValueType value in *this) {
+   for (ValueType value : *this) {
       if (!set2.map.containsKey(value)) toRemove.add(value);
    }
-   foreach (ValueType value in toRemove) {
+   for (ValueType value : toRemove) {
       this->remove(value);
    }
    return *this;
@@ -606,10 +607,10 @@ Set<ValueType> & Set<ValueType>::operator*=(const Set & set2) {
 template <typename ValueType>
 Set<ValueType> & Set<ValueType>::operator-=(const Set & set2) {
    Vector<ValueType> toRemove;
-   foreach (ValueType value in *this) {
+   for (ValueType value : *this) {
       if (set2.map.containsKey(value)) toRemove.add(value);
    }
-   foreach (ValueType value in toRemove) {
+   for (ValueType value : toRemove) {
       this->remove(value);
    }
    return *this;
@@ -630,7 +631,7 @@ ValueType Set<ValueType>::first() const {
 
 template <typename ValueType>
 std::string Set<ValueType>::toString() {
-   ostringstream os;
+   std::ostringstream os;
    os << *this;
    return os.str();
 }
@@ -663,7 +664,7 @@ template <typename ValueType>
 std::ostream & operator<<(std::ostream & os, const Set<ValueType> & set) {
    os << "{";
    bool started = false;
-   foreach (ValueType value in set) {
+   for (ValueType value : set) {
       if (started) os << ", ";
       writeGenericValue(os, value, true);
       started = true;

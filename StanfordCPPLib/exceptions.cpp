@@ -100,7 +100,8 @@ void myInvalidParameterHandler(const wchar_t* expression,
 }
 
 LONG WINAPI UnhandledException(LPEXCEPTION_POINTERS exceptionInfo) {
-    if (exceptionInfo && exceptionInfo->ContextRecord && exceptionInfo->ContextRecord->Eip) {
+    //if (exceptionInfo && exceptionInfo->ContextRecord && exceptionInfo->ContextRecord->Eip) {
+    if (exceptionInfo && exceptionInfo->ContextRecord) {
         // stacktrace::setFakeCallStackPointer((void*) exceptionInfo->ContextRecord->Eip);
         stacktrace::setFakeCallStackPointer((void*) exceptionInfo);
     }

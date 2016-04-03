@@ -97,7 +97,7 @@ static uint32_t my_ntohl(uint32_t arg) {
 void Lexicon::readBinaryFile(string filename) {
    long startIndex, numBytes;
    char firstFour[4], expected[] = "DAWG";
-   ifstream istr(filename.c_str(), IOS_IN | IOS_BINARY);
+   ifstream istr(filename.c_str(), ios::in | ios::binary);
    if (false) my_ntohl(0);
    if (istr.fail()) {
       error("Couldn't open lexicon file " + filename);
@@ -247,7 +247,7 @@ bool Lexicon::containsPrefix(string prefix) const {
    if (prefix.empty()) return true;
    toLowerCaseInPlace(prefix);
    if (traceToLastEdge(prefix)) return true;
-   foreach (string word in otherWords) {
+   for (string word : otherWords) {
       if (startsWith(word, prefix)) return true;
       if (prefix < word) return false;
    }
@@ -303,13 +303,13 @@ void Lexicon::deepCopy(const Lexicon & src) {
 }
 
 void Lexicon::mapAll(void (*fn)(string)) const {
-   foreach (string word in *this) {
+   for (string word : *this) {
       fn(word);
    }
 }
 
 void Lexicon::mapAll(void (*fn)(const string &)) const {
-   foreach (string word in *this) {
+   for (string word : *this) {
       fn(word);
    }
 }

@@ -31,7 +31,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include "foreach.h"
+#include <algorithm>
 #include "hashcode.h"
 #include "private/genericio.h"
 
@@ -568,7 +568,7 @@ bool Vector<ValueType>::equals(const Vector<ValueType>& v) const {
 template <typename ValueType>
 const ValueType & Vector<ValueType>::get(int index) const {
     if (index < 0 || index >= count) {
-      ostringstream out;
+      std::ostringstream out;
       out << "Vector::get: Index of " << index
           << " is outside of valid range of [0.." << (count-1) << "]";
       error(out.str());
@@ -579,7 +579,7 @@ const ValueType & Vector<ValueType>::get(int index) const {
 template <typename ValueType>
 void Vector<ValueType>::set(int index, const ValueType & value) {
     if (index < 0 || index >= count) {
-      ostringstream out;
+      std::ostringstream out;
       out << "Vector::set: Index of " << index
           << " is outside of valid range of [0.." << (count-1) << "]";
       error(out.str());
@@ -599,7 +599,7 @@ template <typename ValueType>
 void Vector<ValueType>::insert(int index, ValueType value) {
    if (count == capacity) expandCapacity();
    if (index < 0 || index > count) {
-     ostringstream out;
+     std::ostringstream out;
      out << "Vector::insert: Index of " << index
          << " is outside of valid range of [0.." << count << "]";
      error(out.str());
@@ -619,7 +619,7 @@ void Vector<ValueType>::insertAt(int index, ValueType value) {
 template <typename ValueType>
 void Vector<ValueType>::remove(int index) {
     if (index < 0 || index >= count) {
-      ostringstream out;
+      std::ostringstream out;
       out << "Vector::remove: Index of " << index
           << " is outside of valid range of [0.." << (count-1) << "]";
       error(out.str());
@@ -655,7 +655,7 @@ void Vector<ValueType>::push_back(ValueType value) {
 template <typename ValueType>
 ValueType & Vector<ValueType>::operator[](int index) {
     if (index < 0 || index >= count) {
-      ostringstream out;
+      std::ostringstream out;
       out << "Vector::operator []: Selection index of " << index
           << " is outside of valid range of [0.." << (count-1) << "]";
       error(out.str());
@@ -665,7 +665,7 @@ ValueType & Vector<ValueType>::operator[](int index) {
 template <typename ValueType>
 const ValueType & Vector<ValueType>::operator[](int index) const {
    if (index < 0 || index >= count) {
-     ostringstream out;
+     std::ostringstream out;
      out << "Vector::operator []: Selection index of " << index
          << " is outside of valid range of [0.." << (count-1) << "]";
      error(out.str());
@@ -676,7 +676,7 @@ const ValueType & Vector<ValueType>::operator[](int index) const {
 template <typename ValueType>
 Vector<ValueType> Vector<ValueType>::operator+(const Vector & v2) const {
    Vector<ValueType> vec = *this;
-   foreach (ValueType value in v2) {
+   for (ValueType value : v2) {
       vec.add(value);
    }
    return vec;
@@ -684,7 +684,7 @@ Vector<ValueType> Vector<ValueType>::operator+(const Vector & v2) const {
 
 template <typename ValueType>
 Vector<ValueType> & Vector<ValueType>::operator+=(const Vector & v2) {
-   foreach (ValueType value in v2) {
+   for (ValueType value : v2) {
       *this += value;
    }
    return *this;
@@ -708,7 +708,7 @@ bool Vector<ValueType>::operator !=(const Vector& v2) const {
 
 template <typename ValueType>
 std::string Vector<ValueType>::toString() {
-   ostringstream os;
+   std::ostringstream os;
    os << *this;
    return os.str();
 }
@@ -795,7 +795,7 @@ void Vector<ValueType>::mapAll(FunctorType fn) const {
 
 template <typename ValueType>
 void Vector<ValueType>::expandCapacity() {
-   capacity = max(1, capacity * 2);
+   capacity = std::max(1, capacity * 2);
    ValueType *array = new ValueType[capacity];
    for (int i = 0; i < count; i++) {
       array[i] = elements[i];
